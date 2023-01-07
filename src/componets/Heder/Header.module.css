@@ -1,0 +1,34 @@
+.Header {
+    grid-area: Header;
+    display: grid;
+    gap: 5px;
+    grid-template-columns: 74px 250px 1fr;
+}
+
+
+.label{
+    max-width: 67px;
+    max-height: 45px;
+}
+
+.NameLabel {
+    justify-self: start;
+    font-size: 32px;
+    text-align: center;
+    
+    max-width: 250px;
+    max-height: 48px;
+    border-radius: 5px;
+}
+
+.ExitLabel {
+    justify-self: end;
+    font-size: 32px;
+    text-align: center;
+    vertical-align: middle;
+    
+    max-width: 250px;
+    max-height: 48px;
+    border-radius: 5px;
+    
+}

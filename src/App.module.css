@@ -1,0 +1,23 @@
+body {
+    background-color: white;
+    padding: 0;
+}
+
+.App {
+    display: grid;
+    gap: 5px;
+    font-family: Roboto;
+    font-size: 20px;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    grid-template-columns: 260px 1fr 1fr;
+    grid-template-areas: 
+    'Header Header Header' 
+    'Navbar Main Main' 
+    'Footer Footer Footer';
+}
+
+
+
+
