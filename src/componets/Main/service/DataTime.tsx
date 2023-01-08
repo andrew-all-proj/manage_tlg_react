@@ -20,7 +20,7 @@ export default function ComponentDateTimePicker() {
         React.useState<Dayjs | null>(dayjs('2019-01-01T18:54'));
 
     return (
-        <Card sx={{ maxWidth: 345}}>
+        <>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Stack spacing={3} sx={{ marginTop: 1}}>
                 <MobileDateTimePicker
@@ -49,8 +49,7 @@ export default function ComponentDateTimePicker() {
                 />
             </Stack>
         </LocalizationProvider>
-        <Button variant="contained" sx={{ margin: 1 }}>Опубликовать</Button>
-        </Card>
+        </>
 
     );
 }

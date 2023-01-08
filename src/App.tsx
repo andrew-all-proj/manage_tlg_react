@@ -15,17 +15,29 @@ import CreateSchedule from './componets/Main/CreateSchedule/CreateSchedule';
 import AddMedia from './componets/Main/AddMedia/AddMedia';
 import MyChanels from './componets/Main/MyChanels/MyChanels';
 import Tags from './componets/Main/Tags/Tags';
+import LoginPage from './componets/LoginPage/LoginPage';
 
+
+import RequireAuth from './componets/hoc/RequireAuth';
+import { AuthProvider } from './componets/hoc/AuthProvider';
 
 
 
 const App: React.FC = () => {
   return (
-    <>
+    <AuthProvider>
         <Routes>
+          <Route>
+            <Route path='login' element={<LoginPage />} />
+          </Route>
           <Route path='/' element={<Layout />}>
             <Route index element={<CreatePosts />} />
-            <Route path='createpost' element={<CreatePosts />} />
+    
+            <Route path='createpost' element={
+              <RequireAuth>
+                <CreatePosts /> 
+              </RequireAuth>
+              } />
             <Route path='savedposts' element={<SavedPosts />} />
             <Route path='createschedule' element={<CreateSchedule />} />
             <Route path='addmedia' element={<AddMedia />} />
@@ -34,7 +46,7 @@ const App: React.FC = () => {
             <Route path='*' element={<h3>NOT FOUND PAGE</h3>} />
           </Route>
         </Routes>
-    </>
+    </AuthProvider>
   )
 }
 
