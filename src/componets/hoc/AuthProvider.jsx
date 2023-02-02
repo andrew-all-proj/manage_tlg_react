@@ -4,19 +4,21 @@ import { createContext, useState } from "react";
 export const AuthContext = createContext(null)
 
 export const AuthProvider = ({children}) => {
-    const [user, setUser] = useState(null);
+    const [token, setUser] = useState(null);
 
-    const signin = (newUser, cb) => {
-        setUser(newUser)
+    const signin = (newtoken, cb) => {
+        setUser(newtoken)
+        localStorage.setItem('manage_jwt', newtoken)
         cb();
     }
 
     const signout = (cb) => {
-        setUser(null);
+        localStorage.setItem('manage_jwt', null)
+        setUser();
         cb();
     }
 
-    const value = {user, signin, signout}
+    const value = {token, signin, signout}
 
     return (<AuthContext.Provider value={value}>
         {children}

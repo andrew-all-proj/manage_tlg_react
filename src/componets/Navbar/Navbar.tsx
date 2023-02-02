@@ -61,7 +61,7 @@ export default function Navbar() {
                         <ContentPaste fontSize="small" />
                     </ListItemIcon>
                     <ListItemText>
-                    <NavLink to="/mychanels" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                    <NavLink to="/channels" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                         Мои каналы
                     </NavLink> 
                     </ListItemText>

@@ -10,6 +10,8 @@ import EditText from '../service/EditText';
 import Tags from '../service/TagsForm';
 import FotoCard from '../service/FotoCard';
 import { Card } from '@mui/material';
+import { useAuth } from "../../hook/useAuth";
+
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -18,6 +20,7 @@ const Item = styled(Paper)(({ theme }) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
 }));
+
 
 export default function CreatePost() {
     return (
