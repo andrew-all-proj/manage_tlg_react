@@ -13,7 +13,7 @@ export const AuthProvider = ({children}) => {
     }
 
     const signout = (cb) => {
-        localStorage.setItem('manage_jwt', null)
+        localStorage.setItem('manage_jwt', '')
         setUser();
         cb();
     }

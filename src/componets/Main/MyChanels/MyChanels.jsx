@@ -58,16 +58,6 @@ export default function MyChanels() {
 
 
 
-// {
-//     "id_channel": 3,
-//     "id_telegram": "-123456787",
-//     "is_archive": false,
-//     "link_channel": "@link_chanel3",
-//     "name_channel": "channel 3"
-//   }
-
-
-
 export function TableChannel(props) {
     return(
         <TableContainer component={Paper}>

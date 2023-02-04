@@ -2,7 +2,7 @@ import React from 'react';
 import style from './App.module.css'
 import Header from './componets/Heder/Header';
 import Navbar from './componets/Navbar/Navbar';
-import CreatePosts from './componets/Main/CreatePost/CreatePosts';
+import CreatePosts from './componets/Main/Posts/CreatePosts';
 import SavedPosts from './componets/Main/SavedPosts/SavedPosts';
 import Footer from './componets/Footer/Footer';
 import { styled } from '@mui/material/styles';
@@ -22,6 +22,7 @@ import LoginPage from './componets/LoginPage/LoginPage';
 import RequireAuth from './componets/hoc/RequireAuth';
 import { AuthProvider } from './componets/hoc/AuthProvider';
 import EditChannel from './componets/Main/MyChanels/Channel';
+import EditPost from './componets/Main/Posts/EditPost';
 
 
 
@@ -39,6 +40,12 @@ const App: React.FC = () => {
             <Route path='createpost' element={
               <RequireAuth>
                 <CreatePosts /> 
+              </RequireAuth>
+              } />
+
+            <Route path='post/:id' element={
+              <RequireAuth>
+                <EditPost /> 
               </RequireAuth>
               } />
 

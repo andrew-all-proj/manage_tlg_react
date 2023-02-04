@@ -12,6 +12,7 @@ import Pagination from '@mui/material/Pagination';
 import TableRow from '@mui/material/TableRow';
 
 import { BASE_URL } from '../../../api/api';
+import { NavLink } from 'react-router-dom';
 
 export default function DataTable() {
     const token = localStorage.getItem('manage_jwt')
@@ -61,9 +62,11 @@ export default function DataTable() {
                         ,
                     </span>) : '' }
                     <p>
+                        <NavLink to={`/post/${iteam.id_post}`} style={{ color: 'inherit', textDecoration: 'inherit'}}>
                         id поста {iteam.id_post}<br/>
                         дата создания {iteam.date_create}<br/>
-                        дата обновления {iteam.data_update}<br/> 
+                        дата обновления {iteam.data_update}<br/>
+                        </NavLink> 
                     </p> 
                 </Grid>)}
                 <Grid key='a1'>

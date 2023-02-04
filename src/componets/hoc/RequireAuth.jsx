@@ -8,7 +8,7 @@ const RequireAuth = ({children}) => {
     //const {token} = useAuth();
     const token = localStorage.getItem('manage_jwt')
 
-    if (!token){
+    if (!token || token == ''){
         return <Navigate to='/login' state={{from: loccation}} />
     }
 
