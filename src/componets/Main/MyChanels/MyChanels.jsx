@@ -15,6 +15,7 @@ import TableRow from '@mui/material/TableRow';
 import { BASE_URL } from '../../../api/api';
 import { Link, NavLink } from 'react-router-dom';
 import { useLocation, useNavigate } from "react-router-dom";
+import {get_list_channels} from "../../../api/channels"
 
 
 
@@ -28,11 +29,9 @@ export default function MyChanels() {
     };
     useEffect(() => {
         setListChanels([])
-        axios
-            .get(`${BASE_URL}channels`, config)
-            .then((response) => {
-                const data = response.data;
-                setListChanels([...data])
+        get_list_channels()
+        .then((data) => {
+            setListChanels([...data])
             });
     }, []);
     
