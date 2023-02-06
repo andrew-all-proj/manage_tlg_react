@@ -13,6 +13,8 @@ import axios from "axios";
 import { BASE_URL } from '../../../api/api';
 import PostTextInput from './PostTextInput'
 import PhotoInput from './PhotoInput'
+import { post_create, get_post, update_post, unset_media_to_post, post_media, set_media_to_post } from '../../../api/api'
+
 
 
 export default function CreatePost() {
@@ -21,75 +23,48 @@ export default function CreatePost() {
     const [selectedImage, setSelectedImage] = useState(null);
     const [textPost, setTextPost] = useState('');
     const [idPost, setIdPost] = useState(null)
-    const [idMedia, setIdMedia] = useState(null)
+    const [loadPost, setLoadPost] = useState(false)
 
-
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
-
-    const createPost = () => {
-        const data = {
-            "text": textPost
-        }
-        axios.post(`${BASE_URL}posts`, data, config)
-            .then(function (res) {
-                const data = res.data;
-                setTextPost(data.text)
-                setIdPost(data.id_post)
-            })
-            .catch(function (err) {
-                console.log(err)
-            });
-    }
 
     useEffect(() => {
-        if ((idPost && !selectedImage) || idMedia) {
-            const id = idPost
-            setIdPost(null)
-            navigate('/post/' + id, { replace: false })
-        }
-    }, [idPost, idMedia]);
+        if(loadPost){
+        post_create(textPost)
+        .then(function(data){
+            setTextPost(data.text)
+            setIdPost(data.id_post)
+        })
+        }   
+    }, [loadPost]);
+
 
 
     useEffect(() => {
         if (idPost && selectedImage) {
-            let formData = new FormData();
-            formData.append("file", selectedImage);
-            axios.post(`${BASE_URL}media`, formData, {
-                headers: {
-                    "Content-Type": 'multipart/form-data',
-                    "Authorization": `Bearer ${token}`
-                }
+            post_media(selectedImage).
+            then(function(data) {
+                console.log(data.id_media)
+                set_media_to_post(data.id_media, idPost)
+            }).
+            then(function(data) {
+                const id = idPost
+                setIdPost(null)
+                navigate('/post/' + id, { replace: false })
             })
-                .then(function (res) {
-                    const data = res.data;
-                    setIdMedia(data.id_media)
-                })
-                .catch(function (err) {
-                    console.log(err)
-                });
+        }else if(idPost){
+            const id = idPost
+            setIdPost(null)
+            navigate('/post/' + id, { replace: false })
         }
     }, [idPost]);
 
 
-    useEffect(() => {
-        if (idMedia) {
-            const media = [idMedia]
-            const data = { "media": media }
-
-            axios.put(`${BASE_URL}posts/${idPost}/setmedia`, data, config)
-                .then(function (res) {
-                    const data = res.data;
-                })
-                .catch(function (err) {
-                    console.log(err)
-                });
-        }
-    }, [idMedia]);
 
     const deleteMedia = () => {
         setSelectedImage(null)
+    }
+
+    const createPost = () => {
+        setLoadPost(true)
     }
 
     const selectMedia = (event) => {
@@ -101,6 +76,7 @@ export default function CreatePost() {
         <Box sx={{ border: 1, borderColor: '#DCDCDC', borderRadius: 2 }}>
             <Grid container spacing={1}>
                 <Grid xs={12}>
+                    СОЗДАТЬ НОВЫЙ ПОСТ
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
                     <PhotoInput deleteMedia={deleteMedia} selectedImage={selectedImage} selectMedia={selectMedia} />

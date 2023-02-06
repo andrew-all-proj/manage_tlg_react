@@ -13,27 +13,24 @@ import TableRow from '@mui/material/TableRow';
 
 import { BASE_URL } from '../../../api/api';
 import { NavLink } from 'react-router-dom';
+import { get_list_posts, get_post, update_post, unset_media_to_post, post_media, set_media_to_post } from '../../../api/api'
+
+
 
 export default function DataTable() {
-    const token = localStorage.getItem('manage_jwt')
     const [listPosts, setListPosts] = useState([]);
     const [page, setPage] = React.useState(1);
     const [totalPage, setTotalPage] = React.useState(1);
 
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
 
     useEffect(() => {
         setListPosts([])
-        axios
-        .get(`${BASE_URL}posts/?page=${page}&per_page=3`, config)
-        .then((response) => {
-            const data = response.data;
+        get_list_posts(page).
+        then(function(data) {
             setListPosts([...data.items])
             setTotalPage(data.total_count)
-            console.log(listPosts)
-        });
+        })
+        
     }, [page]);
 
 
