@@ -17,7 +17,8 @@ import { BASE_URL } from '../../../api/api';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PostTextInput from './PostTextInput'
 import PhotoInput from './PhotoInput'
-import { get_post, update_post, unset_media_to_post, post_media, set_media_to_post, delete_post } from '../../../api/api'
+import SelectChannel from './SelectChannel'
+import { get_post, update_post, unset_media_to_post, post_media, set_media_to_post, delete_post } from '../../../api/posts'
 
 
 
@@ -71,7 +72,7 @@ export default function EditPost() {
                 unset_media_to_post(idMedia, dataPost.id_post)}
             post_media(selectedImage, setIdMedia).
             then(function (data){
-                set_media_to_post(data.id_media, dataPost.id_post)
+                set_media_to_post(data.id_media, dataPost.id_post) // set media to post
                 .then(function (data){
                     setIdMedia(null)
                     setIdMedia(data.media[0].id_media)
@@ -79,7 +80,7 @@ export default function EditPost() {
                     setIsExistMedia(true)
                 })
             })
-        }else if(update && !selectedImage && idMedia && !downloadMedia){
+        }else if(update && !selectedImage && idMedia && !downloadMedia){ // unset media to post
             console.log("UNSET")
             unset_media_to_post(idMedia, dataPost.id_post).
             then(() => {setIdMedia(null)
@@ -169,7 +170,8 @@ export default function EditPost() {
                         onClick={del_post}>Удалить</Button>
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
-                    <Card sx={{ maxWidth: 345 }}>
+                    <Card sx={{ maxWidth: 345, p: 1}}>
+                        <SelectChannel />
                         <ComponentDateTimePicker />
                         <Button variant="contained"  onClick={Pass}
                             sx={{ margin: 1, width: "155px" }}>Опубликовать</Button>

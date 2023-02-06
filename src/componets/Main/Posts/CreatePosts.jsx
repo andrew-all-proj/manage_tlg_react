@@ -13,7 +13,7 @@ import axios from "axios";
 import { BASE_URL } from '../../../api/api';
 import PostTextInput from './PostTextInput'
 import PhotoInput from './PhotoInput'
-import { post_create, get_post, update_post, unset_media_to_post, post_media, set_media_to_post } from '../../../api/api'
+import { post_create, get_post, update_post, unset_media_to_post, post_media, set_media_to_post } from '../../../api/posts'
 
 
 

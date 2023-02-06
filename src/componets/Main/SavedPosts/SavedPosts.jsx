@@ -13,7 +13,7 @@ import TableRow from '@mui/material/TableRow';
 
 import { BASE_URL } from '../../../api/api';
 import { NavLink } from 'react-router-dom';
-import { get_list_posts, get_post, update_post, unset_media_to_post, post_media, set_media_to_post } from '../../../api/api'
+import { get_list_posts, get_post, update_post, unset_media_to_post, post_media, set_media_to_post } from '../../../api/posts'
 
 
 
