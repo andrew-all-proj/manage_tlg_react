@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import dayjs, { Dayjs } from 'dayjs';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
@@ -32,6 +33,11 @@ export default function EditPost() {
     const [textPost, setTextPost] = useState('');
     const [downloadMedia, setDownloadMedia] = useState(false)
     const [isExistMedia, setIsExistMedia] = useState(false)
+    const [channel, setChannel] = useState('');
+
+
+    const [datePosts, setDatePosts] = useState(dayjs('2022-01-02T18:54'));
+    const [dateRemovePost, setDateRemovePost] = useState(dayjs(null));
 
 
     // GET POST
@@ -171,8 +177,11 @@ export default function EditPost() {
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
                     <Card sx={{ maxWidth: 345, p: 1}}>
-                        <SelectChannel />
-                        <ComponentDateTimePicker />
+                        <SelectChannel  setChannel={setChannel} channel={channel}/>
+                        <ComponentDateTimePicker  sx={{ margin: 2}} datePosts={datePosts} 
+                                                                    setDatePosts={setDatePosts} 
+                                                                    dateRemovePost={dateRemovePost} 
+                                                                    setDateRemovePost={setDateRemovePost}/>
                         <Button variant="contained"  onClick={Pass}
                             sx={{ margin: 1, width: "155px" }}>Опубликовать</Button>
                     </Card>

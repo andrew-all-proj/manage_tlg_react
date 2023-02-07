@@ -16,7 +16,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 export default function Navbar() {
     return (
-        <Paper sx={{ minWidth: '100%', height: 800}}>
+        <Paper sx={{ minWidth: '100%'}}>
             <MenuList>
                 <MenuItem>
                     <ListItemIcon>

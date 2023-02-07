@@ -7,12 +7,11 @@ import Select from '@mui/material/Select';
 import { useState, useEffect } from "react";
 import {get_list_channels} from "../../../api/channels"
 
-export default function SelectChannel() {
-    const [channel, setChannel] = useState('');
+export default function SelectChannel(props) {
     const [listChannels, setListChannels] = useState([]);
 
     const handleChange = (event) => {
-        setChannel(event.target.value);
+        props.setChannel(event.target.value);
     };
 
     useEffect(() => {
@@ -23,16 +22,14 @@ export default function SelectChannel() {
     }, [])
 
 
-
-
     return (
         <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
+            <FormControl sx={{ marginBottom: 2}} fullWidth>
                 <InputLabel id="channel-select-label">Выберите канал</InputLabel>
                 <Select
                     labelId="channel-simple-select-label"
                     id="channel-simple-select"
-                    value={channel}
+                    value={props.channel}
                     label="Age"
                     onChange={handleChange}
                 >   

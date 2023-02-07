@@ -9,6 +9,7 @@ import ComponentDateTimePicker from '../service/DataTime';
 import Tags from '../service/TagsForm';
 import { Card } from '@mui/material';
 import { useState, useEffect } from "react";
+import dayjs, { Dayjs } from 'dayjs';
 import axios from "axios";
 import { BASE_URL } from '../../../api/api';
 import PostTextInput from './PostTextInput'
@@ -24,6 +25,10 @@ export default function CreatePost() {
     const [textPost, setTextPost] = useState('');
     const [idPost, setIdPost] = useState(null)
     const [loadPost, setLoadPost] = useState(false)
+
+    const [datePosts, setDatePosts] = useState(dayjs('2022-01-02T18:54'));
+
+    const [dateRemovePost, setDateRemovePost] = useState(dayjs('2022-01-01T18:54'));
 
 
     useEffect(() => {
@@ -92,7 +97,10 @@ export default function CreatePost() {
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
                     <Card sx={{ maxWidth: 345 }}>
-                        <ComponentDateTimePicker />
+                        <ComponentDateTimePicker datePosts={datePosts} 
+                                                setDatePosts={setDatePosts} 
+                                                dateRemovePost={dateRemovePost} 
+                                                setDateRemovePost={setDateRemovePost}/>
                         <Button variant="contained"
                             sx={{ margin: 1, width: "155px" }}>Опубликовать</Button>
                     </Card>
