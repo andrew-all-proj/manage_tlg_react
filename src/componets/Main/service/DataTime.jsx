@@ -21,7 +21,7 @@ export default function ComponentDateTimePicker(props) {
 
     useEffect(() => {
         if (checked){
-            props.setDateRemovePost(props.datePosts)}
+            props.setDateRemovePost(props.datePublishPost)}
         if (!checked){
             props.setDateRemovePost(null)}
     }, [checked]);
@@ -31,9 +31,9 @@ export default function ComponentDateTimePicker(props) {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Stack spacing={3} sx={{ marginTop: 1 }}>
                     <MobileDateTimePicker
-                        value={props.datePosts}
+                        value={props.datePublishPost}
                         onChange={(newValue) => {
-                            props.setDatePosts(newValue);
+                            props.setDatePublishPost(newValue);
                         }}
                         label="Опубликовать:"
                         onError={console.log}
@@ -59,7 +59,7 @@ export default function ComponentDateTimePicker(props) {
                         }}
                         label="Удалить:"
                         onError={console.log}
-                        minDate={dayjs(props.datePosts)}
+                        minDate={dayjs(props.datePublishPost)}
                         inputFormat="YYYY/MM/DD hh:mm a"
                         mask="____/__/__ __:__ _M"
                         renderInput={(params) => <TextField {...params} />}

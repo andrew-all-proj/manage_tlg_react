@@ -10,8 +10,8 @@ import {get_list_channels} from "../../../api/channels"
 export default function SelectChannel(props) {
     const [listChannels, setListChannels] = useState([]);
 
-    const handleChange = (event) => {
-        props.setChannel(event.target.value);
+    const selectChannel = (event) => {
+        props.setIdChannel(event.target.value);
     };
 
     useEffect(() => {
@@ -29,9 +29,9 @@ export default function SelectChannel(props) {
                 <Select
                     labelId="channel-simple-select-label"
                     id="channel-simple-select"
-                    value={props.channel}
-                    label="Age"
-                    onChange={handleChange}
+                    value={props.idChannel}
+                    label="Channels"
+                    onChange={selectChannel}
                 >   
                     {listChannels.map((channel) => (
                         <MenuItem key={channel.id_channel} value={channel.id_channel}>{channel.name_channel}</MenuItem>
