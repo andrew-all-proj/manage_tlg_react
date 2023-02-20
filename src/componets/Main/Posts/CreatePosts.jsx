@@ -19,7 +19,6 @@ import { post_create, get_post, update_post, unset_media_to_post, post_media, se
 
 
 export default function CreatePost() {
-    const token = localStorage.getItem('manage_jwt')
     const navigate = useNavigate();
     const [selectedImage, setSelectedImage] = useState(null);
     const [textPost, setTextPost] = useState('');

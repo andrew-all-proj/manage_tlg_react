@@ -43,7 +43,7 @@ export default function Navbar() {
                         <ContentCopy fontSize="small" />
                     </ListItemIcon>
                     <ListItemText>
-                        <Link to="/savedposts" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                        <Link to="/schedule_channel" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                             Расписание канала
                         </Link>
                     </ListItemText>

@@ -13,11 +13,11 @@ import TableRow from '@mui/material/TableRow';
 
 import { BASE_URL } from '../../../api/api';
 import { NavLink } from 'react-router-dom';
-import { get_list_posts, get_post, update_post, unset_media_to_post, post_media, set_media_to_post } from '../../../api/posts'
+import { get_list_posts } from '../../../api/posts'
 
 
 
-export default function DataTable() {
+export default function SavedPosts() {
     const [listPosts, setListPosts] = useState([]);
     const [page, setPage] = React.useState(1);
     const [totalPage, setTotalPage] = React.useState(1);

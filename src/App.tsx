@@ -23,6 +23,7 @@ import RequireAuth from './componets/hoc/RequireAuth';
 import { AuthProvider } from './componets/hoc/AuthProvider';
 import EditChannel from './componets/Main/MyChanels/Channel';
 import EditPost from './componets/Main/Posts/EditPost';
+import ScheduleChannel from './componets/Main/ScheduleChannel/ScheduleChannel';
 
 
 
@@ -54,7 +55,7 @@ const App: React.FC = () => {
                 <SavedPosts />
               </RequireAuth>} />
 
-            <Route path='createschedule' element={<CreateSchedule />} />
+            <Route path='createschedule' element={<CreatePosts />} />
             <Route path='addmedia' element={<AddMedia />} />
 
             <Route path='channels' element={
@@ -71,6 +72,12 @@ const App: React.FC = () => {
             <RequireAuth>
               <AddNewChannel />
             </RequireAuth>} />
+
+            <Route path='schedule_channel' element={
+            <RequireAuth>
+              <ScheduleChannel />
+            </RequireAuth>} />
+
             <Route path='tags' element={<Tags />} />
             <Route path='*' element={<h3>NOT FOUND PAGE</h3>} />
           </Route>
@@ -81,3 +88,4 @@ const App: React.FC = () => {
 }
 
 export default App
+

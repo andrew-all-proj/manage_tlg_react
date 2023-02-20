@@ -7,9 +7,9 @@ import { BASE_URL } from "./api";
 
 
 // GET LIST EVENTS FOR CHANNEL AND SORT BY FILTER
-export const get_list_events = async (id_channel) => {
+export const get_list_events = async (id_channel, page=1, per_page=100) => {
     return await axios
-        .get(`${BASE_URL}events/channels/${id_channel}`, headers)
+        .get(`${BASE_URL}events/channels/${id_channel}?page=${page}&per_page=${per_page}`, headers)
         .then((response) => {
             return response.data;
         })
