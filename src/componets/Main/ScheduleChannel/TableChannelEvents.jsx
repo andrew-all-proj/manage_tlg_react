@@ -7,14 +7,14 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useLocation, useNavigate } from "react-router-dom";
 
-export function TableChannel({listEvents, ...props}) {
+export function TableChannel({listEvents, idChannel, ...props}) {
     const navigate = useNavigate();
 
     const click = (id) => {
         if (id === null){
             navigate('/createpost', {replace: false})
         }else{
-            navigate('/post/' + id, {replace: false})
+            navigate(`/post/${id}/${idChannel}`, {replace: false})
         }
     }
 

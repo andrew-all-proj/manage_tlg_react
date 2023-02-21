@@ -10,12 +10,10 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
-import { BASE_URL } from '../../api/api';
+import { get_jwt } from '../../api/api';
 
 import { useState } from "react";
 
-import axios from "axios";
-import { getJWT } from "../../api/api";
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -29,13 +27,15 @@ const LoginPage = () => {
     const fromPage = location.state?.from?.pathname || '/'; // path redirect
 
     const auth_user = () => {
-        axios.post(`${BASE_URL}auth`, { email, password })
+        get_jwt(email, password)
             .then(function (res) {
-                const token = res.data.auth_token;
+                const token = res.auth_token;
                 setAlertShow(true)
+                localStorage.setItem('manage_jwt', token)                     //change!!!!!
                 signin(token, () => navigate(fromPage, { replace: true }))
             })
             .catch(function (err) {
+                console.log(err)
                 setAlertShow(false)
             });
     }

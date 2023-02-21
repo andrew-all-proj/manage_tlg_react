@@ -24,7 +24,7 @@ import { BlockTimePublish } from './BlockTimePublish'
 export default function EditPost() {
     const navigate = useNavigate();
     const [dataPost, setDataPost] = useState(null);
-    const { id } = useParams()
+    const { id, id_channel } = useParams()
 
     const [idMedia, setIdMedia] = useState(null)
     const [update, setUpdate] = useState(false)
@@ -34,7 +34,7 @@ export default function EditPost() {
 
     const [textPost, setTextPost] = useState('');
 
-    const [idChannel, setIdChannel] = useState('');
+    const [idChannel, setIdChannel] = useState(id_channel);
 
     const [datePublishPost, setDatePublishPost] = useState(dayjs('2022-01-02T18:54'));
     const [dateRemovePost, setDateRemovePost] = useState(dayjs(null));
@@ -47,6 +47,7 @@ export default function EditPost() {
 
     // GET POST
     useEffect(() => {
+        console.log(id_channel)
         if (id) {
             get_post(id, setDataPost, setIdMedia, setTextPost)
                 .then(function (data) {

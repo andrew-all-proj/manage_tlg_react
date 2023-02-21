@@ -16,4 +16,17 @@ export const headers = {
 };
 
 
+export const no_auth_rederect = () => {
+    console.log("ERROR AUTH")
+    localStorage.setItem('manage_jwt', '')
+    window.location = "/login"
+};
 
+// GET JWT TOKEN 
+export const get_jwt = async (email, password) => {
+    return await axios
+        .post(`${BASE_URL}auth`, { email, password })
+        .then((response) => {
+            return response.data;
+        });
+}

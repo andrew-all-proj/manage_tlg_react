@@ -1,15 +1,9 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
-import { useAuth } from "../../hook/useAuth";
-import axios from "axios";
 import { useState, useEffect } from "react";
 import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
 import Pagination from '@mui/material/Pagination';
 
-import TableRow from '@mui/material/TableRow';
 
 import { BASE_URL } from '../../../api/api';
 import { NavLink } from 'react-router-dom';
@@ -59,7 +53,7 @@ export default function SavedPosts() {
                         ,
                     </span>) : '' }
                     <p>
-                        <NavLink to={`/post/${iteam.id_post}`} style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                        <NavLink to={`/post/${iteam.id_post}/`} style={{ color: 'inherit', textDecoration: 'inherit'}}>
                         id поста {iteam.id_post}<br/>
                         дата создания {iteam.date_create}<br/>
                         дата обновления {iteam.data_update}<br/>

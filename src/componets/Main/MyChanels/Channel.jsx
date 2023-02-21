@@ -11,6 +11,7 @@ import Stack from '@mui/material/Stack';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
+import { get_channel_by_id, put_channel_by_id } from '../../../api/channels'
 
 
 export default function Channel() {
@@ -26,13 +27,9 @@ export default function Channel() {
 
     const { id } = useParams()
 
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
 
     useEffect(() => {
-        axios
-            .get(`${BASE_URL}channels/${id}`, config)
+        get_channel_by_id
             .then((response) => {
                 const data = response.data;
                 if (Object.keys(data).length === 0) {
@@ -46,14 +43,8 @@ export default function Channel() {
             });
     }, [errorMsg]);
 
-
     const change_channel = () => {
-        const data = {
-            "id_telegram": inputID,
-            "link_channel": inputLink,
-            "name_channel": inputName
-        }
-        axios.put(`${BASE_URL}channels/${id}`, data, config)
+        put_channel_by_id(inputID, inputLink, inputName, id)
             .then(function (res) {
                 const data = res.data;
                 setTypeMsg('success')

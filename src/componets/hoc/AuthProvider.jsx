@@ -7,8 +7,8 @@ export const AuthProvider = ({children}) => {
     const [token, setUser] = useState(null);
 
     const signin = (newtoken, cb) => {
-        setUser(newtoken)
         localStorage.setItem('manage_jwt', newtoken)
+        setUser(newtoken)
         cb();
     }
 

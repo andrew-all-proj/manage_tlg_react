@@ -36,7 +36,7 @@ export default function MyChanels() {
     }, []);
     
     const click = (id) => {
-        navigate('/channel/' + id, {replace: false})
+        navigate(`/channel/${id}`, {replace: false})
     }
 
     return (

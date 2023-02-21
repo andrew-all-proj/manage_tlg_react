@@ -44,7 +44,7 @@ const App: React.FC = () => {
               </RequireAuth>
               } />
 
-            <Route path='post/:id' element={
+            <Route path='post/:id/:id_channel?' element={
               <RequireAuth>
                 <EditPost /> 
               </RequireAuth>

@@ -6,7 +6,6 @@ import Pagination from '@mui/material/Pagination';
 
 
 import SelectChannel from "../service/SelectChannel"
-import { get_list_posts, get_post, update_post, unset_media_to_post, post_media, set_media_to_post } from '../../../api/posts'
 import { get_list_events } from '../../../api/events'
 import { TableChannel } from './TableChannelEvents';
 
@@ -51,7 +50,7 @@ export default function ScheduleChannel() {
                 </Grid>
                 <Grid md={12}>
                 { 
-                    listEvents && <TableChannel listEvents={listEvents}/>
+                    listEvents && <TableChannel listEvents={listEvents} idChannel={idChannel}/>
                     }
                 </Grid>
                 <Grid md={12}>
