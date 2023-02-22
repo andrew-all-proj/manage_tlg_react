@@ -1,14 +1,13 @@
 import axios from "axios";
 import { headers, no_auth_rederect } from "./api";
 
-//import { headers } from "./NoAuth";
 import { BASE_URL } from "./api";
 
 
 // GET LIST CHANNELS
 export const get_list_channels = async () => {
     return await axios
-        .get(`${BASE_URL}channels`, headers)
+        .get(`${BASE_URL}channels`, headers())
         .then((response) => {
             return response.data;
         })
@@ -20,10 +19,11 @@ export const get_list_channels = async () => {
         });
 }
 
-// GET LIST CHANNELS
+// GET CHANNEL
 export const get_channel_by_id = async (id) => {
+    console.log(id)
     return await axios
-        .get(`${BASE_URL}channels/${id}`, headers)
+        .get(`${BASE_URL}channels/${id}`, headers())
         .then((response) => {
             return response.data;
         })
@@ -44,7 +44,7 @@ export const put_channel_by_id = async (inputID, inputLink, inputName, id) => {
         "name_channel": inputName
     }
     return await axios
-        .put(`${BASE_URL}channels/${id}`, data, headers)
+        .put(`${BASE_URL}channels/${id}`, data, headers())
         .then((response) => {
             return response.data;
         })

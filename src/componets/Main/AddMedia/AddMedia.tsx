@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
-import FotoCard from '../service/FotoCard';
-import TagsForm from '../service/TagsForm';
-import EditText from '../service/EditText';
+import FotoCard from '../../service/FotoCard';
+import TagsForm from '../../service/TagsForm';
+import EditText from '../../service/EditText';
 import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
 
 

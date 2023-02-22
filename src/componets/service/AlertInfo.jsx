@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 
 
 
-export const AlertInfo = ({showAlert, setAlertShow, severity, value, ...props}) => {
+export const AlertInfo = ({showAlert, setAlertShow, severity, value, time=5000, ...props}) => {
+
     useEffect(() => {
         if(showAlert){
         const timeout = setTimeout(() => {
             setAlertShow({show: false})
-        }, 5000)
+        }, time)
 
         return () => clearTimeout(timeout)
         }

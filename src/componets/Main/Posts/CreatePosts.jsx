@@ -1,17 +1,13 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { useLocation, useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
 import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
-import ComponentDateTimePicker from '../service/DataTime';
-import Tags from '../service/TagsForm';
+import ComponentDateTimePicker from '../../service/DataTime';
+import Tags from '../../service/TagsForm';
 import { Card } from '@mui/material';
 import { useState, useEffect } from "react";
 import dayjs, { Dayjs } from 'dayjs';
-import axios from "axios";
-import { BASE_URL } from '../../../api/api';
 import PostTextInput from './PostTextInput'
 import PhotoInput from './PhotoInput'
 import { post_create, get_post, update_post, unset_media_to_post, post_media, set_media_to_post } from '../../../api/posts'

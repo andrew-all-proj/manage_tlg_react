@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useState, useEffect } from "react";
-import {get_list_channels} from "../../../api/channels"
+import {get_list_channels} from "../../api/channels"
 
 export default function SelectChannel(props) {
     const [listChannels, setListChannels] = useState([]);

@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Button, Card, CardContent, CardMedia, Chip, Paper, Stack } from "@mui/material"
 import Box from "@mui/material/Box"
 import TextField from "@mui/material/TextField"
-import example_images from "../../../assets/images/example.jpg"
+import example_images from "../../assets/images/example.jpg"
 
 
 const FotoCard: React.FC = () => {

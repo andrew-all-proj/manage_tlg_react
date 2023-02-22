@@ -5,7 +5,7 @@ import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
 import Pagination from '@mui/material/Pagination';
 
 
-import SelectChannel from "../service/SelectChannel"
+import SelectChannel from "../../service/SelectChannel"
 import { get_list_events } from '../../../api/events'
 import { TableChannel } from './TableChannelEvents';
 

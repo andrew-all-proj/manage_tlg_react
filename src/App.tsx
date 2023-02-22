@@ -1,17 +1,9 @@
 import React from 'react';
-import style from './App.module.css'
-import Header from './componets/Heder/Header';
-import Navbar from './componets/Navbar/Navbar';
+
 import CreatePosts from './componets/Main/Posts/CreatePosts';
 import SavedPosts from './componets/Main/SavedPosts/SavedPosts';
-import Footer from './componets/Footer/Footer';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Unstable_Grid2';
 import { Routes, Route, Link } from 'react-router-dom';
 import Layout from './componets/Layout';
-import CreateSchedule from './componets/Main/CreateSchedule/CreateSchedule';
 import AddMedia from './componets/Main/AddMedia/AddMedia';
 import MyChanels from './componets/Main/MyChanels/MyChanels';
 import AddNewChannel from './componets/Main/MyChanels/AddNewChannel';
@@ -24,6 +16,7 @@ import { AuthProvider } from './componets/hoc/AuthProvider';
 import EditChannel from './componets/Main/MyChanels/Channel';
 import EditPost from './componets/Main/Posts/EditPost';
 import ScheduleChannel from './componets/Main/ScheduleChannel/ScheduleChannel';
+import UserRegistration from './componets/UserRegistration/UserRegistration';
 
 
 
@@ -33,6 +26,10 @@ const App: React.FC = () => {
         <Routes>
           <Route>
             <Route path='login' element={<LoginPage />} />
+          </Route>
+
+          <Route>
+            <Route path='user_reg' element={<UserRegistration />} />
           </Route>
 
           <Route path='/' element={<Layout />}>

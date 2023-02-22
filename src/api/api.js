@@ -11,9 +11,17 @@ const ErrorAuth = () => {
 }
 
 
-export const headers = {
-    headers: { Authorization: `Bearer ${token}`, }
-};
+export const headers = () => {
+    let headers = {
+        headers: { Authorization: `Bearer ${localStorage.getItem('manage_jwt')}`, }
+    }
+    return headers
+}
+
+//export let headers = {
+//    headers: { Authorization: `Bearer ${localStorage.getItem('manage_jwt')}`, }
+//}
+
 
 
 export const no_auth_rederect = () => {

@@ -1,7 +1,7 @@
-import { AlertInfo } from '../service/AlertInfo';
+import { AlertInfo } from '../../service/AlertInfo';
 import { Card } from '@mui/material';
-import SelectChannel from '../service/SelectChannel'
-import ComponentDateTimePicker from '../service/DataTime';
+import SelectChannel from '../../service/SelectChannel'
+import ComponentDateTimePicker from '../../service/DataTime';
 import Button from '@mui/material/Button';
 
 export const BlockTimePublish = ({setIdChannel, idChannel, datePublishPost, 

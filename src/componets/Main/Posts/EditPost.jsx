@@ -1,20 +1,15 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import dayjs, { Dayjs } from 'dayjs';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
 import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
-import Tags from '../service/TagsForm';
+import Tags from '../../service/TagsForm';
 import { Card } from '@mui/material';
-import { useAuth } from "../../hook/useAuth";
 import { useState, useEffect } from "react";
-import TextField from "@mui/material/TextField"
 import { BASE_URL } from '../../../api/api';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PostTextInput from './PostTextInput'
 
-import { AlertInfo } from '../service/AlertInfo';
+import { AlertInfo } from '../../service/AlertInfo';
 
 import { get_post, update_post, unset_media_to_post, post_media, set_media_to_post, delete_post } from '../../../api/posts'
 import { post_event, update_event } from '../../../api/events'

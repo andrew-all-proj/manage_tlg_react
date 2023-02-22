@@ -9,7 +9,7 @@ import { BASE_URL } from "./api";
 // GET LIST EVENTS FOR CHANNEL AND SORT BY FILTER
 export const get_list_events = async (id_channel, page=1, per_page=100) => {
     return await axios
-        .get(`${BASE_URL}events/channels/${id_channel}?page=${page}&per_page=${per_page}`, headers)
+        .get(`${BASE_URL}events/channels/${id_channel}?page=${page}&per_page=${per_page}`, headers())
         .then((response) => {
             return response.data;
         })
@@ -25,7 +25,7 @@ export const get_list_events = async (id_channel, page=1, per_page=100) => {
 // GET EVENT BY ID
 export const get_event = async (id_event) => {
     return await axios
-        .get(`${BASE_URL}events/${id_event}`, headers)
+        .get(`${BASE_URL}events/${id_event}`, headers())
         .then((response) => {
             return response.data;
         })
@@ -47,7 +47,7 @@ export const post_event = async (date_start, date_stop, id_channel, id_post) => 
         "id_post": id_post
         }
     return await axios
-        .post(`${BASE_URL}events`, data, headers)
+        .post(`${BASE_URL}events`, data, headers())
         .then((response) => {
             return response.data;
         })
@@ -63,7 +63,7 @@ export const post_event = async (date_start, date_stop, id_channel, id_post) => 
 // DELETE EVENT
 export const delete_event = async (id_event) => {
     return await axios
-        .delete(`${BASE_URL}events/{id_event}`, headers)
+        .delete(`${BASE_URL}events/{id_event}`, headers())
         .then((response) => {
             return response.data;
         })
@@ -84,7 +84,7 @@ export const update_event = async (id_event, date_start, date_stop, id_post) => 
         "id_post": id_post
         }
     return await axios
-        .put(`${BASE_URL}events/${id_event}`, data, headers)
+        .put(`${BASE_URL}events/${id_event}`, data, headers())
         .then((response) => {
             return response.data;
         })

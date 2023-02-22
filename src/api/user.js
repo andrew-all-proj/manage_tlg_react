@@ -1,23 +1,26 @@
 import axios from "axios";
 import { useLocation, Navigate } from 'react-router-dom'
 
-import { headers } from "./api";
+import { headers, no_auth_rederect } from "./api";
 import { BASE_URL } from "./api";
 
 
 
-// GET LIST POSTS
-export const get_list_posts = async (page, per_page = 3) => {
+// CREATE NEW USER
+export const create_new_user = async (username, email, password) => {
+    const data = {
+        "email": email,
+        "password": password,
+        "user_name": username
+        }
     return await axios
-        .get(`${BASE_URL}posts/?page=${page}&per_page=${per_page}`, headers())
+        .post(`${BASE_URL}users`, data, headers())
         .then((response) => {
             return response.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                console.log("ERROR AUTH")
-            }
-            console.log(err)
+            console.log(err.response.data)
+            return err.response.data
         });
 }
 

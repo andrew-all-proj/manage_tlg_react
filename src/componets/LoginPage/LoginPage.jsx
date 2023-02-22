@@ -10,6 +10,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
+import PasswordInput from './PasswordInput'
 import { get_jwt } from '../../api/api';
 
 import { useState } from "react";
@@ -31,13 +32,16 @@ const LoginPage = () => {
             .then(function (res) {
                 const token = res.auth_token;
                 setAlertShow(true)
-                localStorage.setItem('manage_jwt', token)                     //change!!!!!
                 signin(token, () => navigate(fromPage, { replace: true }))
             })
             .catch(function (err) {
                 console.log(err)
                 setAlertShow(false)
             });
+    }
+
+    const reg_user = () => {
+        navigate("/user_reg", { replace: true })
     }
 
     const emailChange = (e) => {
@@ -69,9 +73,13 @@ const LoginPage = () => {
                             Вход
                         </Typography>
                         <TextField value={email} onChange={emailChange} id="outlined-basic" label="Email" variant="outlined" />
-                        <TextField value={password} onChange={passwordChange} id="outlined-basic" label="Password" variant="outlined" />
+                        <PasswordInput onChange={passwordChange} value={password} />
+
                         <Alert icon={false} severity="error" sx={{ display: (alert_show ? 'none' : 'block') }}>Error password or email</Alert>
+
                         <Button onClick={auth_user} variant="contained">Вход</Button>
+                        <Button onClick={reg_user} variant="contained">Регистрация</Button>
+
                     </Stack>
 
                 </Grid>
@@ -85,7 +93,7 @@ const LoginPage = () => {
                             <p>Формирование постов </p>
                             <p>Удаление постов </p>
                             <p>Редактирование постов </p>
-                            <p>Создание расписания на каналах </p>
+                            <p>Создание расписания в телеграмм каналах </p>
                         </div>
                     </Box>
                 </Grid>

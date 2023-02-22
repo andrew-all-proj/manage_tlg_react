@@ -2,11 +2,8 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
-import axios from "axios";
 import { useState, useEffect } from "react";
-import { useAuth } from "../../hook/useAuth";
 import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
-import { BASE_URL } from '../../../api/api';
 import Stack from '@mui/material/Stack';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Typography from '@mui/material/Typography';
@@ -29,9 +26,10 @@ export default function Channel() {
 
 
     useEffect(() => {
-        get_channel_by_id
+        get_channel_by_id(id)
             .then((response) => {
-                const data = response.data;
+                console.log(response)
+                const data = response;
                 if (Object.keys(data).length === 0) {
                     setCheckChannel(false)
                 }else{
