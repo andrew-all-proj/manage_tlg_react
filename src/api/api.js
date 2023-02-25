@@ -38,3 +38,13 @@ export const get_jwt = async (email, password) => {
             return response.data;
         });
 }
+
+
+// RESEND EMAIL FOR CONFIRM
+export const send_email_confirm = async (id_user) => {
+    return await axios
+        .get(`${BASE_URL}email/${id_user}`)
+        .then((response) => {
+            return response.data;
+        });
+}

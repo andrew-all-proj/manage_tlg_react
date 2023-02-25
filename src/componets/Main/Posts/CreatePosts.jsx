@@ -9,14 +9,14 @@ import { Card } from '@mui/material';
 import { useState, useEffect } from "react";
 import dayjs, { Dayjs } from 'dayjs';
 import PostTextInput from './PostTextInput'
-import PhotoInput from './PhotoInput'
+import PhotoInput from './InputFile'
 import { post_create, get_post, update_post, unset_media_to_post, post_media, set_media_to_post } from '../../../api/posts'
 
 
 
 export default function CreatePost() {
     const navigate = useNavigate();
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
     const [textPost, setTextPost] = useState('');
     const [idPost, setIdPost] = useState(null)
     const [loadPost, setLoadPost] = useState(false)
@@ -39,8 +39,8 @@ export default function CreatePost() {
 
 
     useEffect(() => {
-        if (idPost && selectedImage) {
-            post_media(selectedImage).
+        if (idPost && selectedFile) {
+            post_media(selectedFile).
             then(function(data) {
                 console.log(data.id_media)
                 set_media_to_post(data.id_media, idPost)
@@ -58,17 +58,8 @@ export default function CreatePost() {
     }, [idPost]);
 
 
-
-    const deleteMedia = () => {
-        setSelectedImage(null)
-    }
-
     const createPost = () => {
         setLoadPost(true)
-    }
-
-    const selectMedia = (event) => {
-        setSelectedImage(event.target.files[0])
     }
 
 
@@ -79,7 +70,7 @@ export default function CreatePost() {
                     СОЗДАТЬ НОВЫЙ ПОСТ
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
-                    <PhotoInput deleteMedia={deleteMedia} selectedImage={selectedImage} selectMedia={selectMedia} />
+                    <PhotoInput selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
                     <Tags />
@@ -91,14 +82,7 @@ export default function CreatePost() {
                         onClick={createPost}>Сохранить</Button>
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
-                    <Card sx={{ maxWidth: 345 }}>
-                        <ComponentDateTimePicker datePosts={datePosts} 
-                                                setDatePosts={setDatePosts} 
-                                                dateRemovePost={dateRemovePost} 
-                                                setDateRemovePost={setDateRemovePost}/>
-                        <Button variant="contained"
-                            sx={{ margin: 1, width: "155px" }}>Опубликовать</Button>
-                    </Card>
+                    
                 </Grid>
             </Grid>
         </Box>

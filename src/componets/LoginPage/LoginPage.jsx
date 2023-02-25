@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import PasswordInput from './PasswordInput'
-import { get_jwt } from '../../api/api';
+import { get_jwt, send_email_confirm } from '../../api/api';
 
 import { useState } from "react";
 
@@ -22,7 +22,9 @@ const LoginPage = () => {
     const { signin } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [idUser, setIdUser] = useState('');
     const [alert_show, setAlertShow] = useState(true);
+    const [showConfirmMail, setShowConfirmMail] = useState(false);
 
 
     const fromPage = location.state?.from?.pathname || '/'; // path redirect
@@ -30,11 +32,16 @@ const LoginPage = () => {
     const auth_user = () => {
         get_jwt(email, password)
             .then(function (res) {
+                console.log(res)
                 const token = res.auth_token;
                 setAlertShow(true)
                 signin(token, () => navigate(fromPage, { replace: true }))
             })
             .catch(function (err) {
+                if (err.response.data.confirm){
+                    setIdUser(err.response.data.confirm)
+                    return setShowConfirmMail(true)
+                }
                 console.log(err)
                 setAlertShow(false)
             });
@@ -60,27 +67,29 @@ const LoginPage = () => {
                     <Header />
                 </Grid>
                 <Grid md={12} display="flex" justifyContent="center" alignItems="center">
-                    <Stack
-                        component="form"
-                        sx={{
-                            width: '40ch',
-                        }}
-                        spacing={2}
-                        noValidate
-                        autoComplete="off"
-                    >
-                        <Typography  variant="h3">
-                            Вход
-                        </Typography>
-                        <TextField value={email} onChange={emailChange} id="outlined-basic" label="Email" variant="outlined" />
-                        <PasswordInput onChange={passwordChange} value={password} />
+                    {showConfirmMail ? <ConfirmMail setShowConfirmMail={setShowConfirmMail} email={email} idUser={idUser}/> :
+                        <Stack
+                            component="form"
+                            sx={{
+                                width: '40ch',
+                            }}
+                            spacing={2}
+                            noValidate
+                            autoComplete="off"
+                        >
+                            <Typography variant="h4">
+                                Вход
+                            </Typography>
+                            <TextField value={email} onChange={emailChange} id="outlined-basic" label="Email" variant="outlined" />
+                            <PasswordInput onChange={passwordChange} value={password} />
 
-                        <Alert icon={false} severity="error" sx={{ display: (alert_show ? 'none' : 'block') }}>Error password or email</Alert>
+                            <Alert icon={false} severity="error" sx={{ display: (alert_show ? 'none' : 'block') }}>Error password or email</Alert>
 
-                        <Button onClick={auth_user} variant="contained">Вход</Button>
-                        <Button onClick={reg_user} variant="contained">Регистрация</Button>
+                            <Button onClick={auth_user} variant="contained">Вход</Button>
+                            <Button onClick={reg_user} variant="contained">Регистрация</Button>
 
-                    </Stack>
+                        </Stack>
+                    }
 
                 </Grid>
                 <Grid md={12} display="flex" justifyContent="center" alignItems="center">
@@ -106,3 +115,47 @@ const LoginPage = () => {
 }
 
 export default LoginPage
+
+
+const ConfirmMail = ({setShowConfirmMail, email, idUser}) => {
+
+    const send_email = () => {
+        send_email_confirm(idUser)
+            .then(function (res) {
+                console.log(res)
+            })
+            .catch(function (err) {
+                console.log(err)
+            });
+    }
+
+    const exitConfirmMail = () => {
+        setShowConfirmMail(false)
+    }
+
+    return (
+        <div>
+            <Stack
+                component="form"
+                sx={{
+                    width: '40ch',
+                }}
+                spacing={2}
+                noValidate
+                autoComplete="off"
+            >
+                <Typography variant="h5">
+                    Потверждение почты
+                </Typography>
+                <Box sx={{ border: "solid", borderColor: "blue", borderWidth: 1, borderRadius: 2, padding: 1 }}>
+                    <p>Для входа потвердите свою электронную почту: {email}.</p> 
+                    <p>Пройдите по сылке в отправленом письме. </p>
+                    <p>Для повторной отправки нажмите кнопку отправить ссылку.</p>
+                </Box>
+                <Button onClick={send_email} variant="contained">Отправить ссылку</Button>
+                <Button onClick={exitConfirmMail} variant="contained">Выход</Button>
+
+            </Stack>
+        </div>
+    )
+}

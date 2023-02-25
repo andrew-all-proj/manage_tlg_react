@@ -26,6 +26,11 @@ export function TableChannel({listEvents, idChannel, ...props}) {
         return id_media
     }
 
+    const cut_string = (str) => {
+        if (str.length < 50) return str
+        return str.slice(0, 100)
+    }
+
     return(
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -50,7 +55,7 @@ export function TableChannel({listEvents, idChannel, ...props}) {
                             <TableCell align="center">{row.date_start}</TableCell>
                             <TableCell align="center">{row.date_stop && row.date_stop}</TableCell>
                             <TableCell align="center">{row.post && row.post.id_post}</TableCell>
-                            <TableCell align="center">{row.post && row.post.text}</TableCell>
+                            <TableCell align="center">{row.post && cut_string(row.post.text)}</TableCell>
                             <TableCell align="center">{row.post && check_media(row.post) }</TableCell>
                         </TableRow>
                     ))}

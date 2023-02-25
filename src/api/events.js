@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useLocation, Navigate } from 'react-router-dom'
 
-import { headers } from "./api";
+import { headers, no_auth_rederect } from "./api";
 import { BASE_URL } from "./api";
 
 
@@ -15,7 +15,7 @@ export const get_list_events = async (id_channel, page=1, per_page=100) => {
         })
         .catch(function (err) {
             if (err.response.status === 401) {
-                console.log("ERROR AUTH")
+                no_auth_rederect()
             }
             console.log(err)
         });
@@ -31,7 +31,7 @@ export const get_event = async (id_event) => {
         })
         .catch(function (err) {
             if (err.response.status === 401) {
-                console.log("ERROR AUTH")
+                no_auth_rederect()
             }
             console.log(err)
         });
@@ -53,7 +53,7 @@ export const post_event = async (date_start, date_stop, id_channel, id_post) => 
         })
         .catch(function (err) {
             if (err.response.status === 401) {
-                console.log("ERROR AUTH")
+                no_auth_rederect()
             }
             console.log(err)
         });
@@ -69,7 +69,7 @@ export const delete_event = async (id_event) => {
         })
         .catch(function (err) {
             if (err.response.status === 401) {
-                console.log("ERROR AUTH")
+                no_auth_rederect()
             }
             console.log(err)
         });
@@ -90,8 +90,7 @@ export const update_event = async (id_event, date_start, date_stop, id_post) => 
         })
         .catch(function (err) {
             if (err.response.status === 401) {
-                console.log("ERROR AUTH")
+                no_auth_rederect()
             }
-            console.log(err)
         });
 }

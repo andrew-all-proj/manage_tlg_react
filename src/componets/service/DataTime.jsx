@@ -12,7 +12,15 @@ import Button from '@mui/material/Button';
 import { useState, useEffect } from "react";
 import Switch from '@mui/material/Switch';
 
+const formatDateTime = () => {
+    let d = new Date();
+    var datestring = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+    ("0" + d.getDate()).slice(-2) + "T" + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+    return datestring
+}
+
 export default function ComponentDateTimePicker(props) {
+
     const [checked, setChecked] = useState(false);
 
     const setFlagRemoveDatePost = (event) => {
@@ -20,29 +28,37 @@ export default function ComponentDateTimePicker(props) {
     };
 
     useEffect(() => {
-        if (checked){
-            props.setDateRemovePost(props.datePublishPost)}
-        if (!checked){
-            props.setDateRemovePost(null)}
+        if (checked) {
+            props.setDateRemovePost(props.datePublishPost)
+        }
+        if (!checked) {
+            props.setDateRemovePost(null)
+        }
     }, [checked]);
+
+    const changeDateTime = (e) => {
+        props.setDatePublishPosts(e.target.value)
+    }
+
+    const changeRemoveDateTime = (e) => {
+        props.setDateRemovePost(e.target.value)
+    }
 
     return (
         <>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Stack spacing={3} sx={{ marginTop: 1 }}>
-                    <MobileDateTimePicker
-                        value={props.datePublishPost}
-                        onChange={(newValue) => {
-                            props.setDatePublishPost(newValue);
+                    <TextField
+                        id="datetime-local"
+                        label="Время публикации"
+                        type="datetime-local"
+                        value = {props.datePublishPost}
+                        sx={{ width: 350 }}
+                        onChange={(e) => changeDateTime(e)}
+                        InputLabelProps={{
+                            shrink: true,
                         }}
-                        label="Опубликовать:"
-                        onError={console.log}
-                        minDate={dayjs('2022-01-01T00:00')}
-                        inputFormat="YYYY/MM/DD hh:mm a"
-                        mask="____/__/__ __:__ _M"
-                        renderInput={(params) => <TextField {...params} />}
                     />
-
                     <div>
                         <Switch
                             checked={checked}
@@ -52,17 +68,16 @@ export default function ComponentDateTimePicker(props) {
                         <label>Удалить</label>
                     </div>
                     {checked &&
-                    <MobileDateTimePicker
-                        value={props.dateRemovePost}
-                        onChange={(newValue) => {
-                            props.setDateRemovePost(newValue);
+                        <TextField
+                        id="datetime-local"
+                        label="Время публикации"
+                        type="datetime-local"
+                        value = {props.dateRemovePost}
+                        onChange={(e) => changeRemoveDateTime(e)}
+                        sx={{ width: 350 }}
+                        InputLabelProps={{
+                            shrink: true,
                         }}
-                        label="Удалить:"
-                        onError={console.log}
-                        minDate={dayjs(props.datePublishPost)}
-                        inputFormat="YYYY/MM/DD hh:mm a"
-                        mask="____/__/__ __:__ _M"
-                        renderInput={(params) => <TextField {...params} />}
                     />}
                 </Stack>
             </LocalizationProvider>

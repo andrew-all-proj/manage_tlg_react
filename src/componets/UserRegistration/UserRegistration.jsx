@@ -14,6 +14,7 @@ import PasswordInput from "../LoginPage/PasswordInput"
 import { AlertInfo } from '../service/AlertInfo';
 import { useState } from "react";
 import { create_new_user } from '../../api/user'
+import { send_email_confirm } from '../../api/api'
 
 
 const check_valid_create_user = (username, email, password, repeatPassword) => {
@@ -57,10 +58,23 @@ const UserRegistration = () => {
                 if (data.error){
                     return setAlertShow({ show: true, msgInfo: 'Пользователь с таким email существует', severity: "error" })
                 }
+                console.log(data.id_user)
+                send_email(data.id_user)
                 setAlertShow({ show: true, msgInfo: 'Создан пользователь! На ваш email было отправлено письмо для потверждения почты.', severity: "success" })
                 navigate('/login', { replace: false })
             })
         }
+    }
+
+
+    const send_email = (id_user) => {
+        send_email_confirm(id_user)
+            .then(function (res) {
+                console.log(res)
+            })
+            .catch(function (err) {
+                console.log(err)
+            });
     }
 
     

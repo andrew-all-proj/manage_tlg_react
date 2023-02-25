@@ -42,6 +42,11 @@ export default function SavedPosts() {
         setPage(value);
     }
 
+    const cut_string = (str) => {
+        if (str.length < 50) return str
+        return str.slice(0, 50)
+    }
+
     return (
         <Box sx={{border: 1, borderColor: '#DCDCDC', borderRadius: 2}}>
             <Grid container spacing={1}>
@@ -54,9 +59,10 @@ export default function SavedPosts() {
                     </span>) : '' }
                     <p>
                         <NavLink to={`/post/${iteam.id_post}/`} style={{ color: 'inherit', textDecoration: 'inherit'}}>
-                        id поста {iteam.id_post}<br/>
-                        дата создания {iteam.date_create}<br/>
-                        дата обновления {iteam.data_update}<br/>
+                        id поста: {iteam.id_post}<br/>
+                        текст поста: {cut_string(iteam.text)}<br/>
+                        дата создания: {iteam.date_create}<br/>
+                        дата обновления: {iteam.data_update}<br/>
                         </NavLink> 
                     </p> 
                 </Grid>)}

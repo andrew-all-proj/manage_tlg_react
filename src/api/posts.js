@@ -110,7 +110,7 @@ export const post_create = async (textPost) => {
     const data = {
         "text": textPost
     }
-    return axios.post(`${BASE_URL}posts`, data, headers)
+    return axios.post(`${BASE_URL}posts`, data, headers())
         .then(function (res) {
             return res.data;
         })
@@ -124,7 +124,7 @@ export const post_create = async (textPost) => {
 
 
 export const delete_post = async (id) => {
-    return await axios.delete(`${BASE_URL}posts/${id}`, { headers })
+    return await axios.delete(`${BASE_URL}posts/${id}`, headers() ) //{}
         .then(function (res) {
             return res.data;
         })

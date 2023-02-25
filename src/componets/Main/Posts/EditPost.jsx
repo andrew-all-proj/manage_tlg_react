@@ -14,6 +14,14 @@ import { AlertInfo } from '../../service/AlertInfo';
 import { get_post, update_post, unset_media_to_post, post_media, set_media_to_post, delete_post } from '../../../api/posts'
 import { post_event, update_event } from '../../../api/events'
 import { BlockTimePublish } from './BlockTimePublish'
+import PhotoInput from './InputFile'
+
+const formatDateTime = () => {
+    let d = new Date();
+    var datestring = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+    ("0" + d.getDate()).slice(-2) + "T" + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+    return datestring
+}
 
 
 export default function EditPost() {
@@ -23,34 +31,36 @@ export default function EditPost() {
 
     const [idMedia, setIdMedia] = useState(null)
     const [update, setUpdate] = useState(false)
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [isExistMedia, setIsExistMedia] = useState(false)
-    const [downloadMedia, setDownloadMedia] = useState(false)
+    const [typeMedia, setTypeMedia] = useState(null)
 
     const [textPost, setTextPost] = useState('');
 
     const [idChannel, setIdChannel] = useState(id_channel);
 
-    const [datePublishPost, setDatePublishPost] = useState(dayjs('2022-01-02T18:54'));
+    const [datePublishPost, setDatePublishPost] = useState(formatDateTime());
     const [dateRemovePost, setDateRemovePost] = useState(dayjs(null));
 
     const [idEvent, setIdEvent] = useState(null);
 
     const [showAlert, setAlertShow] = useState({ show: false, msgInfo: '', severity: "error" })
     const [showAlertPublish, setAlertPublish] = useState({ show: false, msgInfo: '', severity: "error" })
+    const [selectedFile, setSelectedFile] = useState(null);
 
+    const set_type_media = (file) => {
+        if (file === "video") { setTypeMedia('video') }
+        else if (file === "image") { setTypeMedia('img') }
+    }
 
     // GET POST
     useEffect(() => {
-        console.log(id_channel)
         if (id) {
             get_post(id, setDataPost, setIdMedia, setTextPost)
                 .then(function (data) {
                     if (Object.keys(data).length !== 0) {
                         if (data.media.length != 0) {
+                            set_type_media(data.media[0].type_media.type_media)
                             setIdMedia(data.media[0].id_media)
-                            setIsExistMedia(true)
-                            setDownloadMedia(true)
+                            setSelectedFile(`${BASE_URL}media/download/${data.media[0].id_media}`)
                         }
                         setTextPost(data.text)
                         setDataPost(data)
@@ -73,30 +83,39 @@ export default function EditPost() {
     }, [update]);
 
 
+    const upload_media = () => {
+        post_media(selectedFile, setIdMedia).
+            then(function (data) {
+                set_media_to_post(data.id_media, dataPost.id_post) // set media to post
+                    .then(function (data) {
+                        setIdMedia(null)
+                        setIdMedia(data.media[0].id_media)
+                    })
+            })
+    }
+
+    const check_url = (selectedFile) => {  // check link or object
+        let r = /^(ftp|http|https):\/\/[^ "]+$/;
+        if (r.test(selectedFile)) {
+            return false
+        }
+        return selectedFile
+    }
+
     // GET UPDATE MEDIA
     useEffect(() => {
-        if (update && selectedImage && !downloadMedia) {
+        if (update && check_url(selectedFile)) {   // LOAD NEW MEDIA
             console.log("SET")
             if (idMedia) {
                 unset_media_to_post(idMedia, dataPost.id_post)
-            }
-            post_media(selectedImage, setIdMedia).
-                then(function (data) {
-                    set_media_to_post(data.id_media, dataPost.id_post) // set media to post
-                        .then(function (data) {
-                            setIdMedia(null)
-                            setIdMedia(data.media[0].id_media)
-                            setDownloadMedia(true)
-                            setIsExistMedia(true)
-                        })
-                })
-        } else if (update && !selectedImage && idMedia && !downloadMedia) { // unset media to post
+            }   
+            upload_media()
+        }
+        if (!selectedFile && update) { // unset media to post   (DELETE MEDIA)
             console.log("UNSET")
             unset_media_to_post(idMedia, dataPost.id_post).
                 then(() => {
                     setIdMedia(null)
-                    setDownloadMedia(false)
-                    setIsExistMedia(false)
                     setAlertShow({ show: true, msgInfo: 'Медиа обновлено', severity: "success" })
                 })
         }
@@ -114,7 +133,6 @@ export default function EditPost() {
 
     // CREATE EVENT
     const publishPost = (event) => {
-        console.log(idChannel)
         setUpdate(true)
         if (idChannel) {
             post_event(datePublishPost, dateRemovePost, idChannel, id).
@@ -129,43 +147,18 @@ export default function EditPost() {
 
 
     const changePublishPost = (event) => {
-        console.log(idChannel)
         setUpdate(true)
         if (idChannel && idEvent) {
             update_event(idEvent, datePublishPost, dateRemovePost, id).
                 then((data) => {
-                    console.log(data)
                 })
         }
-    }
-
-
-    // RENDER NEW MEDIA
-    useEffect(() => {
-    }, [idMedia, selectedImage, idEvent]);
-
-
-    const deleteMedia = () => {
-        setDownloadMedia(false)
-        setIsExistMedia(false)
-        setSelectedImage(null)
-    }
-
-    const selectMedia = (event) => {
-        setIsExistMedia(true)
-        setSelectedImage(event.target.files[0])
-    }
-
-
-    const Pass = (event) => {
-        console.log(event)
     }
 
 
     const updatePost = (event) => {
         setUpdate(true)
     }
-
 
 
     return (<>
@@ -175,31 +168,7 @@ export default function EditPost() {
                 <Grid xs={12}>
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
-                    <Card sx={{ maxWidth: 345, minHeight: 200 }}>
-                        {isExistMedia ?
-                            downloadMedia ?
-                                <div>
-                                    <img alt="not fount" width={"350px"} src={`${BASE_URL}media/download/${idMedia}`} />
-                                </div>
-                                :
-                                <div>
-                                    <img alt="not fount" width={"350px"} src={URL.createObjectURL(selectedImage)} />
-                                </div>
-                            :
-                            <>Добавить фото</>
-                        }
-                    </Card>
-                    <Button variant="contained" component="label" sx={{ margin: 1, width: "155px" }}>
-                        Загрузить
-                        <input
-                            hidden
-                            type="file"
-                            name="myImage"
-                            onChange={selectMedia}
-                        />
-                    </Button>
-                    <Button onClick={deleteMedia}
-                        variant="contained" component="label" sx={{ margin: 1, width: "155px" }}>Удалить</Button>
+                    <PhotoInput selectedFile={selectedFile} setSelectedFile={setSelectedFile} typeMedia={typeMedia} />
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
                     <Tags />
@@ -219,8 +188,8 @@ export default function EditPost() {
                 <Grid xs={12} md={6} mdOffset={0}>
 
                     <BlockTimePublish setIdChannel={setIdChannel} idChannel={idChannel} datePublishPost={datePublishPost}
-                        setDatePublishPost={setDatePublishPost} dateRemovePost={dateRemovePost} setDateRemovePost={setDateRemovePost} showAlertPublish={showAlertPublish} 
-                        setAlertPublish={setAlertPublish} changePublishPost={changePublishPost} idEvent={idEvent} publishPost={publishPost}/>    
+                        setDatePublishPost={setDatePublishPost} dateRemovePost={dateRemovePost} setDateRemovePost={setDateRemovePost} showAlertPublish={showAlertPublish}
+                        setAlertPublish={setAlertPublish} changePublishPost={changePublishPost} idEvent={idEvent} publishPost={publishPost} />
 
                 </Grid>
             </Grid>
