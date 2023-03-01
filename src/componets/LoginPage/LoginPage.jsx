@@ -12,6 +12,7 @@ import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import PasswordInput from './PasswordInput'
 import { get_jwt, send_email_confirm } from '../../api/api';
+import ConfirmMail from "./ConfirmMail"
 
 import { useState } from "react";
 
@@ -30,7 +31,7 @@ const LoginPage = () => {
     const fromPage = location.state?.from?.pathname || '/'; // path redirect
 
     const auth_user = () => {
-        get_jwt(email, password)
+        get_jwt(email.trim(), password.trim())
             .then(function (res) {
                 console.log(res)
                 const token = res.auth_token;
@@ -52,7 +53,7 @@ const LoginPage = () => {
     }
 
     const emailChange = (e) => {
-        setEmail(e.target.value);
+        setEmail(e.target.value.toLowerCase());
     }
 
     const passwordChange = (e) => {
@@ -115,47 +116,3 @@ const LoginPage = () => {
 }
 
 export default LoginPage
-
-
-const ConfirmMail = ({setShowConfirmMail, email, idUser}) => {
-
-    const send_email = () => {
-        send_email_confirm(idUser)
-            .then(function (res) {
-                console.log(res)
-            })
-            .catch(function (err) {
-                console.log(err)
-            });
-    }
-
-    const exitConfirmMail = () => {
-        setShowConfirmMail(false)
-    }
-
-    return (
-        <div>
-            <Stack
-                component="form"
-                sx={{
-                    width: '40ch',
-                }}
-                spacing={2}
-                noValidate
-                autoComplete="off"
-            >
-                <Typography variant="h5">
-                    Потверждение почты
-                </Typography>
-                <Box sx={{ border: "solid", borderColor: "blue", borderWidth: 1, borderRadius: 2, padding: 1 }}>
-                    <p>Для входа потвердите свою электронную почту: {email}.</p> 
-                    <p>Пройдите по сылке в отправленом письме. </p>
-                    <p>Для повторной отправки нажмите кнопку отправить ссылку.</p>
-                </Box>
-                <Button onClick={send_email} variant="contained">Отправить ссылку</Button>
-                <Button onClick={exitConfirmMail} variant="contained">Выход</Button>
-
-            </Stack>
-        </div>
-    )
-}

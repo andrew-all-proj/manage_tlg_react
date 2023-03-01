@@ -19,8 +19,7 @@ export const create_new_user = async (username, email, password) => {
             return response.data;
         })
         .catch(function (err) {
-            console.log(err.response.data)
-            return err.response.data
+            return err.response
         });
 }
 

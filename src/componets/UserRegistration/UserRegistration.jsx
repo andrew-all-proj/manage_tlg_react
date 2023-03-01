@@ -18,9 +18,9 @@ import { send_email_confirm } from '../../api/api'
 
 
 const check_valid_create_user = (username, email, password, repeatPassword) => {
-    const usernameRegex = /^[a-z0-9_-яА-ЯёЁ']{3,16}$/ 
+    const usernameRegex = /^[a-zA-Z0-9_-яА-ЯёЁ']{3,16}$/ 
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i  
-    const pswRegex = /^[a-z0-9_-{!@#$&*}]{6,18}$/
+    const pswRegex = /^[A-Za-z0-9_-{!@#$&*}]{6,18}$/
 
     if (!usernameRegex.test(username)){
         return 'Имя пользователя не может быть пустым и должно содержать только буквы или цифры не меньше трех знаков.'
@@ -39,8 +39,6 @@ const check_valid_create_user = (username, email, password, repeatPassword) => {
 
 const UserRegistration = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const { signin } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
@@ -49,19 +47,21 @@ const UserRegistration = () => {
     
 
     const reg_user = () => {
-        const res = check_valid_create_user(username, email, password, repeatPassword)
+        const res = check_valid_create_user(username.trim(), email.trim(), password.trim(), repeatPassword.trim())
         if (res){
             setAlertShow({ show: true, msgInfo: res, severity: "error" })
         }else{
-            create_new_user(username, email, password).
-            then((data) => {
-                if (data.error){
-                    return setAlertShow({ show: true, msgInfo: 'Пользователь с таким email существует', severity: "error" })
+            create_new_user(username.trim(), email.trim(), password.trim())
+            .then((data) => {
+                if (data.status === 400 || data.status === 422 ){
+                    return setAlertShow({ show: true, msgInfo: 'Пользователь с таким email существует или не коретно введен', severity: "error" })
                 }
-                console.log(data.id_user)
                 send_email(data.id_user)
                 setAlertShow({ show: true, msgInfo: 'Создан пользователь! На ваш email было отправлено письмо для потверждения почты.', severity: "success" })
-                navigate('/login', { replace: false })
+                navigate('/login', { replace: false })})
+            .catch(function (err) {
+                console.log(err)
+                setAlertShow({ show: true, msgInfo: 'Неверно введены данные', severity: "error" })
             })
         }
     }

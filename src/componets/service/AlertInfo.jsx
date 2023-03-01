@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 
 
-export const AlertInfo = ({showAlert, setAlertShow, severity, value, time=5000, ...props}) => {
+export const AlertInfo = ({showAlert, setAlertShow, severity, value, time=10000, ...props}) => {
 
     useEffect(() => {
         if(showAlert){

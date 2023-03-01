@@ -12,7 +12,7 @@ import PostTextInput from './PostTextInput'
 import { AlertInfo } from '../../service/AlertInfo';
 
 import { get_post, update_post, unset_media_to_post, post_media, set_media_to_post, delete_post } from '../../../api/posts'
-import { post_event, update_event } from '../../../api/events'
+import { post_event, update_event, get_event } from '../../../api/events'
 import { BlockTimePublish } from './BlockTimePublish'
 import PhotoInput from './InputFile'
 
@@ -27,7 +27,7 @@ const formatDateTime = () => {
 export default function EditPost() {
     const navigate = useNavigate();
     const [dataPost, setDataPost] = useState(null);
-    const { id, id_channel } = useParams()
+    const { id, id_event} = useParams()
 
     const [idMedia, setIdMedia] = useState(null)
     const [update, setUpdate] = useState(false)
@@ -35,12 +35,12 @@ export default function EditPost() {
 
     const [textPost, setTextPost] = useState('');
 
-    const [idChannel, setIdChannel] = useState(id_channel);
+    const [idChannel, setIdChannel] = useState('');
 
     const [datePublishPost, setDatePublishPost] = useState(formatDateTime());
     const [dateRemovePost, setDateRemovePost] = useState(dayjs(null));
 
-    const [idEvent, setIdEvent] = useState(null);
+    const [idEvent, setIdEvent] = useState(id_event);
 
     const [showAlert, setAlertShow] = useState({ show: false, msgInfo: '', severity: "error" })
     const [showAlertPublish, setAlertPublish] = useState({ show: false, msgInfo: '', severity: "error" })
@@ -66,6 +66,13 @@ export default function EditPost() {
                         setDataPost(data)
                     }
                 })
+        }
+        if (id_event) {
+            get_event(id_event)
+            .then((data) => {
+                setIdChannel(data.id_channel)
+                console.log(data.id_channel)
+            })
         }
     }, [id]);
 

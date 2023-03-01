@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useLocation, Navigate } from 'react-router-dom'
 
-import { headers } from "./api";
+import { headers, no_auth_rederect } from "./api";
 import { BASE_URL } from "./api";
 
 
@@ -15,7 +15,7 @@ export const get_list_posts = async (page, per_page = 3) => {
         })
         .catch(function (err) {
             if (err.response.status === 401) {
-                console.log("ERROR AUTH")
+                no_auth_rederect()
             }
             console.log(err)
         });
@@ -30,7 +30,7 @@ export const get_post = async (id) => {
         })
         .catch(function (err) {
             if (err.response.status === 401) {
-                console.log("ERROR AUTH")
+                no_auth_rederect()
             }
             console.log(err)
         });
@@ -48,7 +48,7 @@ export const update_post = async (id, textPost) => {
         })
         .catch(function (err) {
             if (err.response.status === 401) {
-                console.log("ERROR AUTH")
+                no_auth_rederect()
             }
             console.log(err)
         });
@@ -65,7 +65,9 @@ export const set_media_to_post = async (idMedia, idPost) => {
             return res.data;
         })
         .catch(function (err) {
-            console.log(err)
+            if (err.response.status === 401) {
+                no_auth_rederect()
+            }
         });
 }
 
@@ -84,6 +86,9 @@ export const unset_media_to_post = async (idMedia, idPost) => {
             return res.data;
         })
         .catch(function (err) {
+            if (err.response.status === 401) {
+                no_auth_rederect()
+            }
             console.log(err)
         });
 }
@@ -91,15 +96,26 @@ export const unset_media_to_post = async (idMedia, idPost) => {
 
 // UPLOAD MEDIA
 export const post_media = async (selectedImage) => {
+    console.log(selectedImage)
     let formData = new FormData();
     formData.append("file", selectedImage);
-    headers["Content-Type"] = 'multipart/form-data'
-    return await axios.post(`${BASE_URL}media`, formData, headers())
+    let Newheaders = headers()
+    Newheaders.headers["Content-Type"] = 'multipart/form-data'
+    console.log(Newheaders)
+    return await axios.post(`${BASE_URL}media`, formData, {
+        headers: {
+            'Authorization': Newheaders.headers.Authorization,
+            'Content-Type': 'multipart/form-data',
+            'Access-Control-Allow-Credentials': "true"
+        }})
         .then(function (res) {
             const data = res.data;
             return data
         })
         .catch(function (err) {
+            if (err.response.status === 401) {
+                no_auth_rederect()
+            }
             console.log(err)
         });
 }
@@ -116,7 +132,7 @@ export const post_create = async (textPost) => {
         })
         .catch(function (err) {
             if (err.response.status === 401) {
-                console.log("ERROR AUTH")
+                no_auth_rederect()
             }
             console.log(err)
         });
@@ -130,7 +146,7 @@ export const delete_post = async (id) => {
         })
         .catch(function (err) {
             if (err.response.status === 401) {
-                console.log("ERROR AUTH")
+                no_auth_rederect()
             }
             console.log(err)
         });

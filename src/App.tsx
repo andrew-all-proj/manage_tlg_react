@@ -33,7 +33,10 @@ const App: React.FC = () => {
           </Route>
 
           <Route path='/' element={<Layout />}>
-            <Route index element={<CreatePosts />} />
+            <Route index element={
+              <RequireAuth>
+                <CreatePosts />
+              </RequireAuth>} />
 
             <Route path='createpost' element={
               <RequireAuth>
@@ -41,7 +44,7 @@ const App: React.FC = () => {
               </RequireAuth>
               } />
 
-            <Route path='post/:id/:id_channel?' element={
+            <Route path='post/:id/:id_event?' element={
               <RequireAuth>
                 <EditPost /> 
               </RequireAuth>

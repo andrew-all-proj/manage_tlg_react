@@ -10,7 +10,8 @@ import { useState, useEffect } from "react";
 import dayjs, { Dayjs } from 'dayjs';
 import PostTextInput from './PostTextInput'
 import PhotoInput from './InputFile'
-import { post_create, get_post, update_post, unset_media_to_post, post_media, set_media_to_post } from '../../../api/posts'
+import { post_create, post_media, set_media_to_post } from '../../../api/posts'
+import { AlertInfo } from '../../service/AlertInfo';
 
 
 
@@ -20,6 +21,7 @@ export default function CreatePost() {
     const [textPost, setTextPost] = useState('');
     const [idPost, setIdPost] = useState(null)
     const [loadPost, setLoadPost] = useState(false)
+    const [showAlertPublish, setAlertPublish] = useState({ show: false, msgInfo: '', severity: "error" })
 
     const [datePosts, setDatePosts] = useState(dayjs('2022-01-02T18:54'));
 
@@ -32,6 +34,9 @@ export default function CreatePost() {
         .then(function(data){
             setTextPost(data.text)
             setIdPost(data.id_post)
+        }).catch((err) => {
+            setLoadPost(false)
+            setAlertPublish({ show: true, msgInfo: 'Ошибка сохранения', severity: "error" })
         })
         }   
     }, [loadPost]);
@@ -42,13 +47,20 @@ export default function CreatePost() {
         if (idPost && selectedFile) {
             post_media(selectedFile).
             then(function(data) {
-                console.log(data.id_media)
+                console.log(1)
+                if (data.id_media) {return false}
                 set_media_to_post(data.id_media, idPost)
             }).
             then(function(data) {
+                console.log(2)
                 const id = idPost
                 setIdPost(null)
                 navigate('/post/' + id, { replace: false })
+            }).catch((err) => {
+                console.log(3)
+                setLoadPost(false)
+                setAlertPublish({ show: true, msgInfo: 'Ошибка сохранения медиа', severity: "error" })
+                navigate('/post/' + idPost, { replace: false })
             })
         }else if(idPost){
             const id = idPost
@@ -77,6 +89,7 @@ export default function CreatePost() {
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
                     <PostTextInput textPost={textPost} setTextPost={setTextPost} />
+                    <AlertInfo showAlert={showAlertPublish.show} setAlertShow={setAlertPublish} severity={showAlertPublish.severity} value={showAlertPublish.msgInfo} />
                     <Button variant="contained"
                         sx={{ margin: 1, width: "155px" }}
                         onClick={createPost}>Сохранить</Button>

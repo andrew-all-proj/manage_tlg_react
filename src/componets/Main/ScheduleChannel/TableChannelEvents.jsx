@@ -14,7 +14,7 @@ export function TableChannel({listEvents, idChannel, ...props}) {
         if (id === null){
             navigate('/createpost', {replace: false})
         }else{
-            navigate(`/post/${id}/${idChannel}`, {replace: false})
+            navigate(`/post/${id[0]}/${id[1]}`, {replace: false})
         }
     }
 
@@ -46,7 +46,7 @@ export function TableChannel({listEvents, idChannel, ...props}) {
                 </TableHead>
                 <TableBody>
                     {listEvents.items.map((row) => (
-                        <TableRow onClick={() => click(row.post ? row.post.id_post : null)}
+                        <TableRow onClick={() => click(row.post ? [row.post.id_post, row.id_event] : null)}
                             hover={true}
                             key={row.id_event}
                             sx={{ }}

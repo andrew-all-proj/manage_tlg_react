@@ -9,7 +9,7 @@ import {get_list_channels} from "../../api/channels"
 
 export default function SelectChannel(props) {
     const [listChannels, setListChannels] = useState([]);
-    const [Channel, setChannel] = useState(props.channel);
+    const [Channel, setChannel] = useState('');
 
     const selectChannel = (event) => {
         props.setIdChannel(event.target.value);
@@ -21,8 +21,10 @@ export default function SelectChannel(props) {
         then((data) => {
             setListChannels(data)
         })
-    }, [])
-
+        if (props.channel) {
+            setChannel(props.channel);
+        }
+    }, [props.channel])
 
     return (
         <Box sx={{ minWidth: 120 }}>
