@@ -55,7 +55,7 @@ export const post_event = async (date_start, date_stop, id_channel, id_post) => 
             if (err.response.status === 401) {
                 no_auth_rederect()
             }
-            console.log(err)
+            return err.response
         });
 }
 

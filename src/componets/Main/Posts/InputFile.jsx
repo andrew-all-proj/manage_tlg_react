@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { CardMedia } from '@mui/material';
 import { CardActionArea } from '@mui/material';
 import { CardContent } from '@mui/material';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 
 
@@ -33,7 +33,7 @@ const FileInput = ({setSelectedFile, selectedFile, typeMedia, ...props}) => {
         if (file === "video") { setTypeFile('video') }
         else if (file === "image") { setTypeFile('img') }
     }
-    
+
 
     return(
         <Card sx={{ maxWidth: 345, minHeight: 100}}>
@@ -41,6 +41,7 @@ const FileInput = ({setSelectedFile, selectedFile, typeMedia, ...props}) => {
             <CardActionArea>
             <CardMedia
                 component= {typeFile}
+                preload="auto"
                 controls
                 image={createURL(selectedFile)}
             />
@@ -62,6 +63,7 @@ const FileInput = ({setSelectedFile, selectedFile, typeMedia, ...props}) => {
         variant="contained" component="label" sx={{ margin: 1, width: "155px"}}>Удалить</Button>
     </Card>
 )}
+
 
 export default FileInput;
 

@@ -38,12 +38,11 @@ export default function SavedPosts() {
     }
 
     const pageChange = (event, value) => {
-        console.log(value)
         setPage(value);
     }
 
     const cut_string = (str) => {
-        if (str.length < 50) return str
+        if (!str || str.length < 50) return str
         return str.slice(0, 50)
     }
 

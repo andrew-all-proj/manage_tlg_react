@@ -20,6 +20,7 @@
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.2.6",
     "dayjs": "^1.11.7",
+    "emoji-picker-react": "^4.4.7",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",

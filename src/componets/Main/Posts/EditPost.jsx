@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
 import Tags from '../../service/TagsForm';
 import { Card } from '@mui/material';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { BASE_URL } from '../../../api/api';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PostTextInput from './PostTextInput'
@@ -14,7 +14,7 @@ import { AlertInfo } from '../../service/AlertInfo';
 import { get_post, update_post, unset_media_to_post, post_media, set_media_to_post, delete_post } from '../../../api/posts'
 import { post_event, update_event, get_event } from '../../../api/events'
 import { BlockTimePublish } from './BlockTimePublish'
-import PhotoInput from './InputFile'
+import FileInput from './InputFile'
 
 const formatDateTime = () => {
     let d = new Date();
@@ -144,6 +144,8 @@ export default function EditPost() {
         if (idChannel) {
             post_event(datePublishPost, dateRemovePost, idChannel, id).
                 then((data) => {
+                    console.log(data)
+                    if(data.status === 400 ) return setAlertPublish({ show: true, msgInfo: 'Этот пост добавлен на это время', severity: "error" })
                     setIdEvent(data.id_event)
                     setAlertPublish({ show: true, msgInfo: 'Пост добавлен в расписание канала', severity: "success" })
                 })
@@ -167,6 +169,10 @@ export default function EditPost() {
         setUpdate(true)
     }
 
+    const renderVideo = useMemo(() => (
+        <FileInput selectedFile={selectedFile} setSelectedFile={setSelectedFile} typeMedia={typeMedia}/>
+    ), [selectedFile])
+
 
     return (<>
         {!dataPost ? <ChannelError value="POST NOT FOUND" /> :
@@ -175,7 +181,7 @@ export default function EditPost() {
                 <Grid xs={12}>
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
-                    <PhotoInput selectedFile={selectedFile} setSelectedFile={setSelectedFile} typeMedia={typeMedia} />
+                    {renderVideo}
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
                     <Tags />
