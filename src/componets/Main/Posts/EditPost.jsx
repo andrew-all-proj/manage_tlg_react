@@ -15,13 +15,7 @@ import { get_post, update_post, unset_media_to_post, post_media, set_media_to_po
 import { post_event, update_event, get_event } from '../../../api/events'
 import { BlockTimePublish } from './BlockTimePublish'
 import FileInput from './InputFile'
-
-const formatDateTime = () => {
-    let d = new Date();
-    var datestring = d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-    ("0" + d.getDate()).slice(-2) + "T" + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
-    return datestring
-}
+import { formatDateTime } from '../../service/localDateTime'
 
 
 export default function EditPost() {
@@ -118,8 +112,9 @@ export default function EditPost() {
             }   
             upload_media()
         }
-        if (!selectedFile && update) { // unset media to post   (DELETE MEDIA)
+        if (!selectedFile && update  && idMedia) { // unset media to post   (DELETE MEDIA)
             console.log("UNSET")
+            console.log(idMedia)
             unset_media_to_post(idMedia, dataPost.id_post).
                 then(() => {
                     setIdMedia(null)
@@ -146,6 +141,7 @@ export default function EditPost() {
                 then((data) => {
                     console.log(data)
                     if(data.status === 400 ) return setAlertPublish({ show: true, msgInfo: 'Этот пост добавлен на это время', severity: "error" })
+                    if(data.status === 422 ) return setAlertPublish({ show: true, msgInfo: 'Ошибка сохранения', severity: "error" })
                     setIdEvent(data.id_event)
                     setAlertPublish({ show: true, msgInfo: 'Пост добавлен в расписание канала', severity: "success" })
                 })

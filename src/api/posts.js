@@ -96,12 +96,10 @@ export const unset_media_to_post = async (idMedia, idPost) => {
 
 // UPLOAD MEDIA
 export const post_media = async (selectedImage) => {
-    console.log(selectedImage)
     let formData = new FormData();
     formData.append("file", selectedImage);
     let Newheaders = headers()
     Newheaders.headers["Content-Type"] = 'multipart/form-data'
-    console.log(Newheaders)
     return await axios.post(`${BASE_URL}media`, formData, {
         headers: {
             'Authorization': Newheaders.headers.Authorization,

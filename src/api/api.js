@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useLocation, Navigate } from 'react-router-dom'
 
-export const BASE_URL = "http://www.managetlg.com/api/v1/" // http://127.0.0.1:5000/api/v1/ http://www.managetlg.com/api/v1/
+export const BASE_URL = "http://127.0.0.1:5000/api/v1/" // http://127.0.0.1:5000/api/v1/ http://www.managetlg.com/api/v1/
 
 export const token = localStorage.getItem('manage_jwt')
 
@@ -28,7 +28,6 @@ export const no_auth_rederect = () => {
 
 // GET JWT TOKEN 
 export const get_jwt = async (email, password) => {
-    console.log(window.location.href)
     return await axios
         ({method: 'post',
         url:`${BASE_URL}auth`,

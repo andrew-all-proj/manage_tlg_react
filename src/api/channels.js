@@ -21,7 +21,6 @@ export const get_list_channels = async () => {
 
 // GET CHANNEL
 export const get_channel_by_id = async (id) => {
-    console.log(id)
     return await axios
         .get(`${BASE_URL}channels/${id}`, headers())
         .then((response) => {
