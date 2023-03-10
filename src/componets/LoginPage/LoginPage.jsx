@@ -13,38 +13,56 @@ import Typography from '@mui/material/Typography';
 import PasswordInput from './PasswordInput'
 import { get_jwt, send_email_confirm } from '../../api/api';
 import ConfirmMail from "./ConfirmMail"
+import { AlertInfo } from "../service/AlertInfo"
 
 import { useState } from "react";
+
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { authUser, logOutUser } from '../../store/userSlice';
 
 
 const LoginPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { signin } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [idUser, setIdUser] = useState('');
-    const [alert_show, setAlertShow] = useState(true);
     const [showConfirmMail, setShowConfirmMail] = useState(false);
+    const [showAlert, setShowAlert] = useState({ show: false, msgInfo: '', severity: "error" })
+    const user = useSelector(state => state.user.user)
+    const dispatch = useDispatch()
+
+    const signin = (newtoken) => {
+        localStorage.setItem('manage_jwt', newtoken)
+        navigate(fromPage, { replace: true });
+    }
 
 
     const fromPage = location.state?.from?.pathname || '/'; // path redirect
 
     const auth_user = () => {
+        if (!email || !password){
+            return setShowAlert({ show: true, msgInfo: 'Поля ввода не могут быть пустыми', severity: "error" })
+        }
         get_jwt(email.trim(), password.trim())
             .then(function (res) {
                 console.log(res)
-                const token = res.auth_token;
-                setAlertShow(true)
-                signin(token, () => navigate(fromPage, { replace: true }))
+                dispatch(authUser({user_name: res.user_name, id_user: res.id_user}))
+                setShowAlert({ show: true, msgInfo: 'Успешно', severity: "success" })
+                signin(res.auth_token)
             })
             .catch(function (err) {
+                console.log(err)
+                if (err.code === "ERR_NETWORK"){
+                    setShowAlert({ show: true, msgInfo: 'Нет связи сервером', severity: "error" })
+                }
                 if (err.response.data.confirm){
                     setIdUser(err.response.data.confirm)
                     return setShowConfirmMail(true)
                 }
                 console.log(err)
-                setAlertShow(false)
+                setShowAlert({ show: true, msgInfo: 'Ошибка ввода пароля или email', severity: "error" })
             });
     }
 
@@ -84,7 +102,7 @@ const LoginPage = () => {
                             <TextField value={email} onChange={emailChange} id="outlined-basic" label="Email" variant="outlined" />
                             <PasswordInput onChange={passwordChange} value={password} />
 
-                            <Alert icon={false} severity="error" sx={{ display: (alert_show ? 'none' : 'block') }}>Error password or email</Alert>
+                            <AlertInfo showAlert={showAlert.show} setShowAlert={setShowAlert} severity={showAlert.severity} value={showAlert.msgInfo} />
 
                             <Button onClick={auth_user} variant="contained">Вход</Button>
                             <Button onClick={reg_user} variant="contained">Регистрация</Button>

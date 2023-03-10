@@ -15,7 +15,7 @@ import { get_post, update_post, unset_media_to_post, post_media, set_media_to_po
 import { post_event, update_event, get_event } from '../../../api/events'
 import { BlockTimePublish } from './BlockTimePublish'
 import FileInput from './InputFile'
-import { formatDateTime } from '../../service/localDateTime'
+import { formatDateTime, localDate } from '../../service/localDateTime'
 
 
 export default function EditPost() {
@@ -64,8 +64,9 @@ export default function EditPost() {
         if (id_event) {
             get_event(id_event)
             .then((data) => {
-                setIdChannel(data.id_channel)
-                console.log(data.id_channel)
+                setIdChannel(data.id_channel) 
+                setDatePublishPost(localDate(data.date_start)) 
+                console.log(data)
             })
         }
     }, [id]);

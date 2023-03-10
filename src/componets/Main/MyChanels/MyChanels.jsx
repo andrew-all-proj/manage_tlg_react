@@ -42,10 +42,10 @@ export default function MyChanels() {
     return (
         <Box sx={{border: 1, borderColor: '#DCDCDC', borderRadius: 2}}>
         <Grid container spacing={2}>
-                <Grid xs={12}>
+                <Grid xs={12} >
                     <TableChannel  listChanels={listChanels} click={click} />
                 </Grid>
-                <Grid xs={12}>
+                <Grid xs={12} >
                 <NavLink to="/addnewchannel" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                     <Button>Добавить канал</Button>
                 </NavLink>

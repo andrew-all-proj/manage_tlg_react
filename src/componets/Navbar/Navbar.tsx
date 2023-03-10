@@ -22,11 +22,11 @@ export default function Navbar() {
                     <ListItemIcon>
                         <ContentCut fontSize="small" />
                     </ListItemIcon>
-                    <ListItemText>
                     <NavLink to="/createpost" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                    <ListItemText>
                         Создать пост
-                    </NavLink>
                     </ListItemText>
+                    </NavLink>
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>

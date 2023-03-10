@@ -1,10 +1,11 @@
 import { createContext, useState } from "react";
-
+//REMOVE THIS HOC!!!!!!!!!!
 
 export const AuthContext = createContext(null)
 
 export const AuthProvider = ({children}) => {
     const [token, setUser] = useState(null);
+
 
     const signin = (newtoken, cb) => {
         localStorage.setItem('manage_jwt', newtoken)
@@ -19,7 +20,7 @@ export const AuthProvider = ({children}) => {
     }
 
     const value = {token, signin, signout}
-
+    console.log("REMOVE AUTH PROVIDER")
     return (<AuthContext.Provider value={value}>
         {children}
     </AuthContext.Provider>)

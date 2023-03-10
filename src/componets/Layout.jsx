@@ -5,16 +5,20 @@ import { Link, Outlet } from 'react-router-dom'
 import Footer from './Footer/Footer'
 import Header from './Heder/Header'
 import Navbar from './Navbar/Navbar'
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 
-const Layout: React.FC = () => {
+const Layout = () => {
+    const mobileMode = useSelector(state => state.mobileMode)
+
     return (
         <>  <Container maxWidth="lg">
             <Grid container spacing={2}>
                 <Grid md={12}>
                     <Header />
                 </Grid>
-                <Grid md={3}>
-                    <Navbar />
+                <Grid xs={12}  md={3}>
+                    {mobileMode.showNavBar && <Navbar />}
                 </Grid>
                 <Grid md={9} xs={12}>
                     <Outlet />

@@ -17,12 +17,35 @@ import EditChannel from './componets/Main/MyChanels/Channel';
 import EditPost from './componets/Main/Posts/EditPost';
 import ScheduleChannel from './componets/Main/ScheduleChannel/ScheduleChannel';
 import UserRegistration from './componets/UserRegistration/UserRegistration';
+import { useState, useEffect } from "react";
+import { useResize } from "./componets/hook/useResize"
+import { useSelector, useDispatch } from 'react-redux';
+import { setMobile, setShowNavBar } from './store/mobileSlice';
 
 
+const App = () => {
+  const dispatch = useDispatch()
+  const size = useResize()
 
-const App: React.FC = () => {
+    useEffect(() => {
+      if(!size.isScreenMd){
+        dispatch(setMobile({mobileMode: true}))
+        dispatch(setShowNavBar({showNavBar: false}))
+        console.log(0)
+      }else{
+        dispatch(setMobile({mobileMode: false}))
+        dispatch(setShowNavBar({showNavBar: true}))
+        console.log(1)
+      }
+    
+  }, [size.isScreenMd]);
+
+  const a = () => {
+    console.log('rect route')
+  }
+
+
   return (
-    <AuthProvider>
         <Routes>
           <Route>
             <Route path='login' element={<LoginPage />} />
@@ -32,34 +55,37 @@ const App: React.FC = () => {
             <Route path='user_reg' element={<UserRegistration />} />
           </Route>
 
-          <Route path='/' element={<Layout />}>
-            <Route index element={
-              <RequireAuth>
+          <Route  path='/' element={<Layout />} >
+            <Route  index element={
+              <RequireAuth >
                 <CreatePosts />
               </RequireAuth>} />
 
             <Route path='createpost' element={
-              <RequireAuth>
+              <RequireAuth >
                 <CreatePosts /> 
               </RequireAuth>
               } />
 
             <Route path='post/:id/:id_event?' element={
-              <RequireAuth>
+              <RequireAuth >
                 <EditPost /> 
               </RequireAuth>
               } />
 
             <Route path='savedposts' element={
-              <RequireAuth>
+              <RequireAuth >
                 <SavedPosts />
               </RequireAuth>} />
 
-            <Route path='createschedule' element={<CreatePosts />} />
+            <Route path='createschedule' element={
+              <RequireAuth>
+                <CreatePosts/>
+              </RequireAuth>} />
             <Route path='addmedia' element={<AddMedia />} />
 
             <Route path='channels' element={
-              <RequireAuth>
+              <RequireAuth >
                 <MyChanels />
               </RequireAuth>} />
 
@@ -69,21 +95,23 @@ const App: React.FC = () => {
               </RequireAuth>} />
             
             <Route path='addnewchannel' element={
-            <RequireAuth>
+            <RequireAuth >
               <AddNewChannel />
             </RequireAuth>} />
 
             <Route path='schedule_channel' element={
-            <RequireAuth>
+            <RequireAuth >
               <ScheduleChannel />
             </RequireAuth>} />
 
-            <Route path='tags' element={<Tags />} />
+            <Route path='tags' element={
+              <RequireAuth >
+                <Tags />
+              </RequireAuth>} />
             <Route path='*' element={<h3>NOT FOUND PAGE</h3>} />
           </Route>
 
         </Routes>
-    </AuthProvider>
   )
 }
 

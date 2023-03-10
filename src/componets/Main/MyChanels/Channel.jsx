@@ -62,14 +62,14 @@ export default function Channel() {
         {!checkChannel ? <ChannelError /> : 
 
         <Box sx={{border: 1, borderColor: '#DCDCDC', borderRadius: 2}}>
-        <Grid container spacing={2}>
-        <Grid xs={3}>
+        <Grid container spacing={1} justifyContent="center">
+        <Grid xs={12} md={4}>
             <Box sx={{p:5, bgcolor: '#cfe8fc', height: '190px',  maxWidth: '140px', textAlign: 'center'}} >
                 ФОТО
             </Box>
         </Grid>
-        <Grid xs={9}>
-            <Paper sx={{p:2, border: 1, borderColor: '#DCDCDC', borderRadius: 2}}>
+        <Grid xs={12} md={4}>
+            <Paper sx={{p:2, border: 1, borderColor: '#DCDCDC', borderRadius: 2, maxWidth: '280px'}}>
             <Stack
                 component="form"
                 sx={{
@@ -90,6 +90,7 @@ export default function Channel() {
             </Stack>
             </Paper>
         </Grid>
+        <Grid xs={0} md={4}></Grid>
         </Grid>
         </Box>
 
