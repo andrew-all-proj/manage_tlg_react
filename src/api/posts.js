@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useLocation, Navigate } from 'react-router-dom'
 
-import { headers, no_auth_rederect } from "./api";
+import { headers, no_auth_rederect, error_response } from "./api";
 import { BASE_URL } from "./api";
 
 
@@ -14,10 +14,7 @@ export const get_list_posts = async (page, per_page = 3) => {
             return response.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
-            console.log(err)
+            error_response(err)
         });
 }
 
@@ -29,10 +26,7 @@ export const get_post = async (id) => {
             return res.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
-            console.log(err)
+            error_response(err)
         });
 }
 
@@ -47,10 +41,7 @@ export const update_post = async (id, textPost) => {
             return res.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
-            console.log(err)
+            error_response(err)
         });
 }
 
@@ -65,9 +56,7 @@ export const set_media_to_post = async (idMedia, idPost) => {
             return res.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
+            error_response(err)
         });
 }
 
@@ -86,10 +75,7 @@ export const unset_media_to_post = async (idMedia, idPost) => {
             return res.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
-            console.log(err)
+            error_response(err)
         });
 }
 
@@ -111,10 +97,7 @@ export const post_media = async (selectedImage) => {
             return data
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
-            console.log(err)
+            error_response(err)
         });
 }
 
@@ -129,10 +112,7 @@ export const post_create = async (textPost) => {
             return res.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
-            console.log(err)
+            error_response(err)
         });
 }
 
@@ -143,10 +123,7 @@ export const delete_post = async (id) => {
             return res.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
-            console.log(err)
+            error_response(err)
         });
 }
 

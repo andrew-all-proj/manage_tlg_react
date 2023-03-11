@@ -2,21 +2,17 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
-import axios from "axios";
 import { useState, useEffect } from "react";
-import { useAuth } from "../../hook/useAuth";
 import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
-import { BASE_URL } from '../../../api/api';
-import { Link, NavLink } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import { useLocation, useNavigate } from "react-router-dom";
+import {post_new_channel} from "../../../api/channels"
 
 
 export default function AddNewChannel() {
     const token = localStorage.getItem('manage_jwt')
-    const {signout} = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [nameChanel, setNameChanel] = useState(null);
@@ -27,15 +23,7 @@ export default function AddNewChannel() {
     const [typeMsg, setTypeMsg] = useState("error")
 
     const post_channel = () => {
-        const data = {
-            "id_telegram": idChanel,
-            "link_channel": linkChanel,
-            "name_channel": nameChanel
-        }
-        const config = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
-        axios.post(`${BASE_URL}channels`, data, config)
+        post_new_channel(idChanel, linkChanel, nameChanel)
             .then(function (res) {
                 setAlertShow(false)
                 setNameChanel('')
@@ -45,9 +33,6 @@ export default function AddNewChannel() {
                 setErrorMsg('Канал сохранен')
             })
             .catch(function (err) {
-                if (err.response.status === 401){
-                    signout(() => navigate('/login', {replace: true}))
-                }
                 if (err.response.status === 422){
                     setErrorMsg('Ошибка ввода')
                 }
@@ -81,7 +66,7 @@ export default function AddNewChannel() {
                     <Stack
                         component="form"
                         sx={{
-                            width: '35ch',
+                            width: '30ch',
                         }}
                         spacing={2}
                         noValidate

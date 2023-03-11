@@ -26,6 +26,13 @@ export const no_auth_rederect = () => {
     window.location = "/login"
 };
 
+export const error_response = (err) => {
+    console.log(err)
+    if (err.response.status === 401) {
+        no_auth_rederect()
+    } 
+}
+
 // GET JWT TOKEN 
 export const get_jwt = async (email, password) => {
     return await axios

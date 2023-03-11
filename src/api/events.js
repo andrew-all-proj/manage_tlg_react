@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useLocation, Navigate } from 'react-router-dom'
 
-import { headers, no_auth_rederect } from "./api";
+import { headers, no_auth_rederect, error_response } from "./api";
 import { BASE_URL } from "./api";
 
 
@@ -17,10 +17,7 @@ export const get_list_events = async (id_channel, page=1, per_page=100) => {
             return response.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
-            console.log(err)
+            error_response(err)
         });
 }
 
@@ -33,10 +30,7 @@ export const get_event = async (id_event) => {
             return response.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
-            console.log(err)
+            error_response(err)
         });
 }
 
@@ -55,10 +49,7 @@ export const post_event = async (date_start, date_stop, id_channel, id_post) => 
             return response.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
-            return err.response
+            error_response(err)
         });
 }
 
@@ -71,10 +62,7 @@ export const delete_event = async (id_event) => {
             return response.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
-            console.log(err)
+            error_response(err)
         });
 }
 
@@ -92,8 +80,6 @@ export const update_event = async (id_event, date_start, date_stop, id_post) => 
             return response.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
+            error_response(err)
         });
 }

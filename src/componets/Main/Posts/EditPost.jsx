@@ -8,6 +8,10 @@ import { useState, useEffect, useMemo } from "react";
 import { BASE_URL } from '../../../api/api';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PostTextInput from './PostTextInput'
+import Stack from '@mui/material/Stack';
+import SaveIcon from '@mui/icons-material/Save';
+import LoadingButton from '@mui/lab/LoadingButton';
+
 
 import { AlertInfo } from '../../service/AlertInfo';
 
@@ -16,6 +20,8 @@ import { post_event, update_event, get_event } from '../../../api/events'
 import { BlockTimePublish } from './BlockTimePublish'
 import FileInput from './InputFile'
 import { formatDateTime, localDate } from '../../service/localDateTime'
+
+import ProgressLoad from "../../service/ProgressLoad"
 
 
 export default function EditPost() {
@@ -39,14 +45,17 @@ export default function EditPost() {
     const [showAlert, setAlertShow] = useState({ show: false, msgInfo: '', severity: "error" })
     const [showAlertPublish, setAlertPublish] = useState({ show: false, msgInfo: '', severity: "error" })
     const [selectedFile, setSelectedFile] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const set_type_media = (file) => {
         if (file === "video") { setTypeMedia('video') }
         else if (file === "image") { setTypeMedia('img') }
     }
 
+    
     // GET POST
     useEffect(() => {
+        setLoading(true)
         if (id) {
             get_post(id, setDataPost, setIdMedia, setTextPost)
                 .then(function (data) {
@@ -69,6 +78,7 @@ export default function EditPost() {
                 console.log(data)
             })
         }
+        setLoading(false)
     }, [id]);
 
 
@@ -86,12 +96,14 @@ export default function EditPost() {
 
 
     const upload_media = () => {
+        setLoading(true)
         post_media(selectedFile, setIdMedia).
             then(function (data) {
                 set_media_to_post(data.id_media, dataPost.id_post) // set media to post
                     .then(function (data) {
                         setIdMedia(null)
                         setIdMedia(data.media[0].id_media)
+                        setLoading(false)
                     })
             })
     }
@@ -107,7 +119,6 @@ export default function EditPost() {
     // GET UPDATE MEDIA
     useEffect(() => {
         if (update && check_url(selectedFile)) {   // LOAD NEW MEDIA
-            console.log("SET")
             if (idMedia) {
                 unset_media_to_post(idMedia, dataPost.id_post)
             }   
@@ -172,7 +183,7 @@ export default function EditPost() {
 
 
     return (<>
-        {!dataPost ? <ChannelError value="POST NOT FOUND" /> :
+        {!dataPost ? <ProgressLoad /> :
 
             <Grid container spacing={1}>
                 <Grid xs={12}>
@@ -187,13 +198,24 @@ export default function EditPost() {
                     <PostTextInput textPost={textPost} setTextPost={setTextPost} />
 
                     <AlertInfo showAlert={showAlert.show} setAlertShow={setAlertShow} severity={showAlert.severity} value={showAlert.msgInfo} />
-
-                    <Button variant="contained"
-                        sx={{ margin: 1, width: "155px" }}
-                        onClick={updatePost}>Сохранить</Button>
-                    <Button variant="contained"
-                        sx={{ margin: 1, width: "155px" }}
-                        onClick={del_post}>Удалить</Button>
+                    <Stack direction="row"
+                            justifyContent="center"
+                            alignItems="center"
+                            sx={{ width: "330px" }}>
+                        <LoadingButton
+                            onClick={updatePost}
+                            loading={loading}
+                            loadingPosition="start"
+                            startIcon={<SaveIcon />}
+                            variant="contained"
+                            sx={{ margin: 1, width: "130px" }}
+                        >
+                            <span>Сохранить</span>
+                        </LoadingButton>
+                        <Button variant="contained"
+                            sx={{ margin: 1, width: "100px" }}
+                            onClick={del_post}>Удалить</Button>
+                    </Stack >
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
 

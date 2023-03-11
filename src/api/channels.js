@@ -1,5 +1,5 @@
 import axios from "axios";
-import { headers, no_auth_rederect } from "./api";
+import { headers, error_response } from "./api";
 
 import { BASE_URL } from "./api";
 
@@ -12,10 +12,7 @@ export const get_list_channels = async () => {
             return response.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
-            console.log(err)
+            error_response(err)
         });
 }
 
@@ -27,10 +24,7 @@ export const get_channel_by_id = async (id) => {
             return response.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
-            console.log(err)
+            error_response(err)
         });
 }
 
@@ -48,9 +42,23 @@ export const put_channel_by_id = async (inputID, inputLink, inputName, id) => {
             return response.data;
         })
         .catch(function (err) {
-            if (err.response.status === 401) {
-                no_auth_rederect()
-            }
-            console.log(err)
+            error_response(err)
+        });
+}
+
+//CREATE NEW CHANNEL
+export const post_new_channel = async (idChanel, linkChanel, nameChanel) => {
+    const data = {
+        "id_telegram": idChanel,
+        "link_channel": linkChanel,
+        "name_channel": nameChanel
+    }
+    return await axios
+        .post(`${BASE_URL}channels`, data, headers())
+        .then((response) => {
+            return response.data;
+        })
+        .catch(function (err) {
+            error_response(err)
         });
 }

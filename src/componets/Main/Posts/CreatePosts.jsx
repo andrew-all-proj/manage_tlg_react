@@ -9,7 +9,8 @@ import PostTextInput from './PostTextInput'
 import FileInput from './InputFile'
 import { post_create, post_media, set_media_to_post } from '../../../api/posts'
 import { AlertInfo } from '../../service/AlertInfo';
-
+import SaveIcon from '@mui/icons-material/Save';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 
 export default function CreatePost() {
@@ -20,39 +21,44 @@ export default function CreatePost() {
     const [loadPost, setLoadPost] = useState(false)
     const [showAlertPublish, setAlertPublish] = useState({ show: false, msgInfo: '', severity: "error" })
 
+    const [loading, setLoading] = useState(false);
+
+
 
     useEffect(() => {
-        if(loadPost){
-        post_create(textPost)
-        .then(function(data){
-            setTextPost(data.text)
-            setIdPost(data.id_post)
-        }).catch((err) => {
-            setLoadPost(false)
-            setAlertPublish({ show: true, msgInfo: 'Ошибка сохранения', severity: "error" })
-        })
-        }   
+        if (loadPost) {
+            post_create(textPost)
+                .then(function (data) {
+                    setTextPost(data.text)
+                    setIdPost(data.id_post)
+                }).catch((err) => {
+                    setLoadPost(false)
+                    setAlertPublish({ show: true, msgInfo: 'Ошибка сохранения', severity: "error" })
+                })
+        }
     }, [loadPost]);
 
 
 
     useEffect(() => {
         if (idPost && selectedFile) {
+            setLoading(true)
             post_media(selectedFile).
-            then(function(data) {
-                if (!data.id_media) {return false}
-                set_media_to_post(data.id_media, idPost)
-            }).
-            then(function(data) {
-                const id = idPost
-                setIdPost(null)
-                navigate('/post/' + id, { replace: false })
-            }).catch((err) => {
-                setLoadPost(false)
-                setAlertPublish({ show: true, msgInfo: 'Ошибка сохранения медиа', severity: "error" })
-                navigate('/post/' + idPost, { replace: false })
-            })
-        }else if(idPost){
+                then(function (data) {
+                    if (!data.id_media) { return false }
+                    set_media_to_post(data.id_media, idPost)
+                }).
+                then(function (data) {
+                    const id = idPost
+                    setIdPost(null)
+                    navigate('/post/' + id, { replace: false })
+                }).catch((err) => {
+                    setLoading(false)
+                    setLoadPost(false)
+                    setAlertPublish({ show: true, msgInfo: 'Ошибка сохранения медиа', severity: "error" })
+                    navigate('/post/' + idPost, { replace: false })
+                })
+        } else if (idPost) {
             const id = idPost
             setIdPost(null)
             navigate('/post/' + id, { replace: false })
@@ -65,7 +71,7 @@ export default function CreatePost() {
     }
 
     const renderVideo = useMemo(() => (
-        <FileInput selectedFile={selectedFile} setSelectedFile={setSelectedFile}/>
+        <FileInput selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
     ), [selectedFile])
 
     return (
@@ -82,15 +88,22 @@ export default function CreatePost() {
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
                     <div>
-                    <PostTextInput textPost={textPost} setTextPost={setTextPost} />
+                        <PostTextInput textPost={textPost} setTextPost={setTextPost} />
                     </div>
                     <AlertInfo showAlert={showAlertPublish.show} setAlertShow={setAlertPublish} severity={showAlertPublish.severity} value={showAlertPublish.msgInfo} />
-                    <Button variant="contained"
-                        sx={{ margin: 1, width: "155px" }}
-                        onClick={createPost}>Сохранить</Button>
+                    <LoadingButton
+                        onClick={createPost}
+                        loading={loading}
+                        loadingPosition="start"
+                        startIcon={<SaveIcon />}
+                        variant="contained"
+                        sx={{ margin: 1, width: "150px" }}
+                    >
+                        <span>Сохранить</span>
+                    </LoadingButton>
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
-                    
+
                 </Grid>
             </Grid>
         </Box>
