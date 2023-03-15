@@ -7,20 +7,20 @@ import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/material/Stack';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Typography from '@mui/material/Typography';
-import Alert from '@mui/material/Alert';
+import { AlertInfo } from '../../service/AlertInfo';
 import { get_channel_by_id, put_channel_by_id } from '../../../api/channels'
+import { TextChangeDoubleClick } from '../../service/TextChangeDoubleClick'
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 
 export default function Channel() {
-    const token = localStorage.getItem('manage_jwt')
-    const navigate = useNavigate();;
     const [checkChannel, setCheckChannel] = useState(false);
     const [inputID, setInputID] = useState('');
-    const [inputName, setInputName] = useState(''); 
+    const [inputName, setInputName] = useState('');
     const [inputLink, setInputLink] = useState('');
-    const [alertShow, setAlertShow] = useState(true);
-    const [errorMsg, setErrorMsg] = useState('ERROR');
-    const [typeMsg, setTypeMsg] = useState("error")
+    const [showAlert, setAlertShow] = useState({ show: false, msgInfo: '', severity: "error" })
 
     const { id } = useParams()
 
@@ -28,105 +28,86 @@ export default function Channel() {
     useEffect(() => {
         get_channel_by_id(id)
             .then((response) => {
-                console.log(response)
                 const data = response;
                 if (Object.keys(data).length === 0) {
                     setCheckChannel(false)
-                }else{
+                } else {
                     setCheckChannel(true)
                     setInputID(data.id_telegram)
                     setInputName(data.name_channel)
                     setInputLink(data.link_channel)
                 }
             });
-    }, [errorMsg]);
+    }, [showAlert]);
 
     const change_channel = () => {
         put_channel_by_id(inputID, inputLink, inputName, id)
-            .then(function (res) {
-                const data = res.data;
-                setTypeMsg('success')
-                setErrorMsg("Изменения сохранены")
-                setAlertShow(false)
-            })
-            .catch(function (err) {
-                setTypeMsg("error")
-                setErrorMsg("Ошибка сохранения")
-                setAlertShow(false)
+            .then(function (data) {
+                if(data.error) return setAlertShow({ show: true, msgInfo: "Ошибка сохранения", severity: "error" })
+                setAlertShow({ show: true, msgInfo: "Изменения сохранены", severity: "success" })
             });
     }
 
-
-    return(
+    return (
         <>
-        {!checkChannel ? <ChannelError /> : 
+            {!checkChannel ? <ChannelError /> :
 
-        <Box sx={{border: 1, borderColor: '#DCDCDC', borderRadius: 2}}>
-        <Grid container spacing={1} justifyContent="center">
-        <Grid xs={12} md={4}>
-            <Box sx={{p:5, bgcolor: '#cfe8fc', height: '190px',  maxWidth: '140px', textAlign: 'center'}} >
-                ФОТО
-            </Box>
-        </Grid>
-        <Grid xs={12} md={4}>
-            <Paper sx={{p:2, border: 1, borderColor: '#DCDCDC', borderRadius: 2, maxWidth: '280px'}}>
-            <Stack
-                component="form"
-                sx={{
-                }}
-                spacing={2}
-                noValidate
-                autoComplete="off"
-            >   
-                <Typography variant="h6" gutterBottom>
-                    Информация о канале
-                </Typography>
+                <Box sx={{ border: 1, borderColor: '#DCDCDC', borderRadius: 2 }}>
+                    <Grid container spacing={0.5} justifyContent="center">
+                        <Grid xs={12} md={4}>
+                            <Box sx={{ p: 5, bgcolor: '#cfe8fc', height: '190px', maxWidth: '140px', textAlign: 'center' }} >
+                                ФОТО
+                            </Box>
+                        </Grid>
+                        <Grid xs={12} md={4}>
+                            <Paper sx={{ p: 2, border: 1, borderColor: '#DCDCDC', borderRadius: 2, maxWidth: '800px', minWidth: '230px' }}>
+                                <Box>
+                                    <Typography variant="h6" gutterBottom>
+                                        Информация о канале
+                                    </Typography>
+                                    <IteamInfo label="Название канала:" inputData={inputName} setInputData={setInputName} />
+                                    <IteamInfo label="ID телеграм:" inputData={inputID} setInputData={setInputID} />
+                                    <IteamInfo label="Сылка на канал" inputData={inputLink} setInputData={setInputLink} />
+                                    <AlertInfo showAlert={showAlert.show} setAlertShow={setAlertShow} severity={showAlert.severity} value={showAlert.msgInfo} />
+                                    <Button onClick={change_channel} variant="outlined">Сохранить</Button>
+                                </Box>
+                            </Paper>
+                        </Grid>
+                        <Grid xs={0} md={4}></Grid>
+                    </Grid>
+                </Box>
 
-                <TextInfo text='ID телеграм:' inputData={inputID}  setInputData={setInputID}/>
-                <TextInfo text='Название канала:' inputData={inputName} setInputData={setInputName}/>
-                <TextInfo text='Сылка на канал:' inputData={inputLink} setInputData={setInputLink}/>
-                <Alert icon={false} severity={typeMsg} sx={{ display: (alertShow ? 'none' : 'block') }}>{errorMsg}</Alert>
-                <Button onClick={change_channel} variant="outlined">Сохранить</Button>
-            </Stack>
-            </Paper>
-        </Grid>
-        <Grid xs={0} md={4}></Grid>
-        </Grid>
-        </Box>
-
-        }
+            }
         </>
     )
 }
 
 
-export function ChannelError() {
-    return(
-        <div>
-            <h3>CHANNEL NOT FOUND</h3>
-        </div>
+const IteamInfo = ({ label, inputData, setInputData }) => {
+    const [inputText, setInputText] = useState(true);
+    const modeInputText = () => {
+        setInputText(false)
+    }
+
+    return (<>
+        <Stack direction="row"
+            justifyContent="flex-start"
+            alignItems="center"
+            spacing={0.5} >
+        <TextChangeDoubleClick label={label} inputData={inputData} setInputData={setInputData} inputText={inputText} setInputText={setInputText} />
+        <IconButton onClick={modeInputText} aria-label="delete" size="large">
+            <BorderColorIcon fontSize="default" color="primary" />
+        </IconButton>
+        </Stack>
+    </>
     )
+
 }
 
-export function TextInfo(props) {
-    const [inputText, setInputText] = useState(true);
-    const handleChange = (cb, value) => {
-        cb(value)
-    }
-    return(
+export function ChannelError() {
+    return (
         <div>
-            <Typography variant="subtitle1" gutterBottom>
-                {props.text} {inputText ?  
-                <span onDoubleClick={() => handleChange(setInputText, false)}>{props.inputData}</span>
-                :
-                <input 
-                    type="text"
-                    value={props.inputData}
-                    onChange={(e) => handleChange(props.setInputData, e.target.value)}
-                    onBlur={() => handleChange(setInputText, true)}
-                    autoFocus
-                />}
-            </Typography>
+            <h3>CHANNEL NOT FOUND</h3>
         </div>
     )
 }

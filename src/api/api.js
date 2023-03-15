@@ -28,9 +28,21 @@ export const no_auth_rederect = () => {
 
 export const error_response = (err) => {
     console.log(err)
+    if (err.code === 'ERR_NETWORK') {
+        return {error: true, msg: 'Не найден'}
+    } 
+    if (err.response.status === 404) {
+        return {error: true, msg: 'Не найден'}
+    } 
     if (err.response.status === 401) {
         no_auth_rederect()
-    } 
+    }
+    if (err.response.status === 400) {
+        return {error: true, msg: 'Этот пост добавлен на это время'}
+    }
+    if (err.response.status === 422) {
+        return {error: true, msg: 'Ошибка сохранения'}
+    }   
 }
 
 // GET JWT TOKEN 

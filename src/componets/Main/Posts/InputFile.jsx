@@ -5,7 +5,7 @@ import { CardMedia } from '@mui/material';
 import { CardActionArea } from '@mui/material';
 import { CardContent } from '@mui/material';
 import Stack from '@mui/material/Stack';
-import { useState, useEffect, useMemo } from "react";
+import { useState } from "react";
 
 
 
@@ -23,8 +23,7 @@ const FileInput = ({ setSelectedFile, selectedFile, typeMedia, ...props }) => {
 
 
     const createURL = (selectedFile) => {
-        let r = /^(ftp|http|https):\/\/[^ "]+$/;
-        if (r.test(selectedFile)) {
+        if (typeof selectedFile === 'string') {
             return selectedFile
         }
         return URL.createObjectURL(selectedFile)
@@ -52,7 +51,7 @@ const FileInput = ({ setSelectedFile, selectedFile, typeMedia, ...props }) => {
                 </CardActionArea>
             )}
             <Stack direction="row"
-                justifyContent="space-around"
+                justifyContent="center"
                 alignItems="flex-start">
                 <Button variant="contained" component="label" sx={{ margin: 1, width: "120px" }}>
                     Выбрать
@@ -73,3 +72,4 @@ const FileInput = ({ setSelectedFile, selectedFile, typeMedia, ...props }) => {
 
 export default FileInput;
 
+//let r = /^(ftp|http|https):\/\/[^ "]+$/;

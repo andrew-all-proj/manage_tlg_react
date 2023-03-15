@@ -87,9 +87,11 @@ export default function EditPost() {
         if (update) {
             update_post(id, textPost).
                 then(function (data) {
+                    if(data.error) setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })
+                    else{
                     setTextPost(data.text)
                     setUpdate(false)
-                    setAlertShow({ show: true, msgInfo: 'Пост сохранен', severity: "success" })
+                    setAlertShow({ show: true, msgInfo: 'Пост сохранен', severity: "success" })}
                 })
         }
     }, [update]);
@@ -101,16 +103,17 @@ export default function EditPost() {
             then(function (data) {
                 set_media_to_post(data.id_media, dataPost.id_post) // set media to post
                     .then(function (data) {
+                        if(data.error) 
+                            {setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })}
+                        else{setIdMedia(data.media[0].id_media)}
                         setIdMedia(null)
-                        setIdMedia(data.media[0].id_media)
                         setLoading(false)
                     })
             })
     }
 
     const check_url = (selectedFile) => {  // check link or object
-        let r = /^(ftp|http|https):\/\/[^ "]+$/;
-        if (r.test(selectedFile)) {
+        if (typeof selectedFile === 'string') {
             return false
         }
         return selectedFile
@@ -125,12 +128,13 @@ export default function EditPost() {
             upload_media()
         }
         if (!selectedFile && update  && idMedia) { // unset media to post   (DELETE MEDIA)
-            console.log("UNSET")
-            console.log(idMedia)
             unset_media_to_post(idMedia, dataPost.id_post).
-                then(() => {
+                then((data) => {
+                    if(data.error) 
+                            {setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })}
+                    else{
                     setIdMedia(null)
-                    setAlertShow({ show: true, msgInfo: 'Медиа обновлено', severity: "success" })
+                    setAlertShow({ show: true, msgInfo: 'Медиа обновлено', severity: "success" })}
                 })
         }
     }, [update]);
@@ -152,8 +156,7 @@ export default function EditPost() {
             post_event(datePublishPost, dateRemovePost, idChannel, id).
                 then((data) => {
                     console.log(data)
-                    if(data.status === 400 ) return setAlertPublish({ show: true, msgInfo: 'Этот пост добавлен на это время', severity: "error" })
-                    if(data.status === 422 ) return setAlertPublish({ show: true, msgInfo: 'Ошибка сохранения', severity: "error" })
+                    if(data.error) return setAlertPublish({ show: true, msgInfo: data.msg, severity: "error" })
                     setIdEvent(data.id_event)
                     setAlertPublish({ show: true, msgInfo: 'Пост добавлен в расписание канала', severity: "success" })
                 })

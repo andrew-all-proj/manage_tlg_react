@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useLocation, Navigate } from 'react-router-dom'
 
-import { headers, no_auth_rederect, error_response } from "./api";
+import { headers, error_response } from "./api";
 import { BASE_URL } from "./api";
 
 
@@ -17,7 +17,7 @@ export const get_list_events = async (id_channel, page=1, per_page=100) => {
             return response.data;
         })
         .catch(function (err) {
-            error_response(err)
+            return error_response(err)
         });
 }
 
@@ -30,7 +30,7 @@ export const get_event = async (id_event) => {
             return response.data;
         })
         .catch(function (err) {
-            error_response(err)
+            return error_response(err)
         });
 }
 
@@ -49,7 +49,7 @@ export const post_event = async (date_start, date_stop, id_channel, id_post) => 
             return response.data;
         })
         .catch(function (err) {
-            error_response(err)
+            return error_response(err)
         });
 }
 
@@ -62,7 +62,7 @@ export const delete_event = async (id_event) => {
             return response.data;
         })
         .catch(function (err) {
-            error_response(err)
+            return error_response(err)
         });
 }
 

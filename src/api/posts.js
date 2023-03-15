@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useLocation, Navigate } from 'react-router-dom'
 
 import { headers, no_auth_rederect, error_response } from "./api";
 import { BASE_URL } from "./api";
@@ -41,7 +40,7 @@ export const update_post = async (id, textPost) => {
             return res.data;
         })
         .catch(function (err) {
-            error_response(err)
+            return error_response(err)
         });
 }
 
@@ -56,7 +55,7 @@ export const set_media_to_post = async (idMedia, idPost) => {
             return res.data;
         })
         .catch(function (err) {
-            error_response(err)
+            return error_response(err)
         });
 }
 
@@ -75,7 +74,7 @@ export const unset_media_to_post = async (idMedia, idPost) => {
             return res.data;
         })
         .catch(function (err) {
-            error_response(err)
+            return error_response(err)
         });
 }
 
@@ -97,7 +96,7 @@ export const post_media = async (selectedImage) => {
             return data
         })
         .catch(function (err) {
-            error_response(err)
+            return error_response(err)
         });
 }
 

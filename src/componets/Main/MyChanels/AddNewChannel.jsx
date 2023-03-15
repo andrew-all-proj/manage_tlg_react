@@ -12,7 +12,6 @@ import {post_new_channel} from "../../../api/channels"
 
 
 export default function AddNewChannel() {
-    const token = localStorage.getItem('manage_jwt')
     const navigate = useNavigate();
     const location = useLocation();
     const [nameChanel, setNameChanel] = useState(null);
@@ -31,6 +30,7 @@ export default function AddNewChannel() {
                 setLinkChanel('')
                 setTypeMsg('success')
                 setErrorMsg('Канал сохранен')
+                navigate('/channel/' + res.id_channel, { replace: false })
             })
             .catch(function (err) {
                 if (err.response.status === 422){
