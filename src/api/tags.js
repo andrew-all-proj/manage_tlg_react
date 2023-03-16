@@ -33,7 +33,7 @@ export const add_tag = async (id_channel, tag_name) => {
 //(DELETE)  REMOVE TAG
 export const remove_tag = async (id_tag) => {
     return await axios
-        .delete(`${BASE_URL}tags/${id_tag}`,  headers())
+        .delete(`${BASE_URL}tags/${id_tag}`, headers())
         .then((response) => {
             return response.data;
         })
@@ -47,9 +47,25 @@ export const remove_tag = async (id_tag) => {
 export const update_tag = async (id_tag, tag_name) => {
     const data = {
         "tag_name": tag_name
-        }
+    }
     return await axios
         .put(`${BASE_URL}tags/${id_tag}`, data, headers())
+        .then((response) => {
+            return response.data;
+        })
+        .catch(function (err) {
+            return error_response(err)
+        });
+}
+
+
+//(PUT)  SET TAG TO MEDIA
+export const set_tags_to_media = async (id_media, list_tag) => {
+    const data ={
+        "tags": list_tag
+    }
+    return await axios
+        .put(`${BASE_URL}media/${id_media}/settags`, data, headers())
         .then((response) => {
             return response.data;
         })

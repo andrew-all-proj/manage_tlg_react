@@ -3,14 +3,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
-import Tags from '../../service/TagsForm';
+import SelectTags from '../../service/TagsForm';
 import { useState, useEffect, useMemo } from "react";
 import PostTextInput from './PostTextInput'
-import FileInput from './InputFile'
-import { post_create, post_media, set_media_to_post } from '../../../api/posts'
+import FileInput from '../../service/InputFile'
+import { post_create } from '../../../api/posts'
+import { set_tags_to_media } from '../../../api/tags'
+import { post_media, set_media_to_post } from '../../../api/media'
 import { AlertInfo } from '../../service/AlertInfo';
 import SaveIcon from '@mui/icons-material/Save';
 import LoadingButton from '@mui/lab/LoadingButton';
+import SelectChannel from '../../service/SelectChannel'
 
 
 export default function CreatePost() {
@@ -20,6 +23,8 @@ export default function CreatePost() {
     const [idPost, setIdPost] = useState(null)
     const [loadPost, setLoadPost] = useState(false)
     const [showAlertPublish, setAlertPublish] = useState({ show: false, msgInfo: '', severity: "error" })
+    const [selectedTag, setSelectedTag] = useState([]);
+    const [idChannel, setIdChannel] = useState('');
 
     const [loading, setLoading] = useState(false);
 
@@ -47,6 +52,7 @@ export default function CreatePost() {
                 then(function (data) {
                     if (!data.id_media) { return false }
                     set_media_to_post(data.id_media, idPost)
+                    set_tags_to_media(data.id_media, selectedTag)
                 }).
                 then(function (data) {
                     const id = idPost
@@ -84,7 +90,10 @@ export default function CreatePost() {
                     {renderVideo}
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
-                    <Tags />
+                    <Box sx={{ border: "solid", borderColor: "LightGray", borderWidth: 1, borderRadius: 2 }}>
+                        <SelectChannel setIdChannel={setIdChannel} channel={idChannel} />
+                        <SelectTags selectedTag={selectedTag} setSelectedTag={setSelectedTag} idChannel={idChannel}/>
+                    </Box>
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
                     <div>

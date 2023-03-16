@@ -2,7 +2,7 @@ import * as React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import Button from '@mui/material/Button';
 import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
-import Tags from '../../service/TagsForm';
+import SelectTags from '../../service/TagsForm';
 import { Card } from '@mui/material';
 import { useState, useEffect, useMemo } from "react";
 import { BASE_URL } from '../../../api/api';
@@ -15,10 +15,12 @@ import LoadingButton from '@mui/lab/LoadingButton';
 
 import { AlertInfo } from '../../service/AlertInfo';
 
-import { get_post, update_post, unset_media_to_post, post_media, set_media_to_post, delete_post } from '../../../api/posts'
+import { get_post, update_post,  delete_post } from '../../../api/posts'
+import { post_media, set_media_to_post, unset_media_to_post } from '../../../api/media'
 import { post_event, update_event, get_event } from '../../../api/events'
+import {set_tags_to_media} from '../../../api/tags'
 import { BlockTimePublish } from './BlockTimePublish'
-import FileInput from './InputFile'
+import FileInput from '../../service/InputFile'
 import { formatDateTime, localDate } from '../../service/localDateTime'
 
 import ProgressLoad from "../../service/ProgressLoad"
@@ -46,6 +48,8 @@ export default function EditPost() {
     const [showAlertPublish, setAlertPublish] = useState({ show: false, msgInfo: '', severity: "error" })
     const [selectedFile, setSelectedFile] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [selectedTag, setSelectedTag] = useState([]);
+
 
     const set_type_media = (file) => {
         if (file === "video") { setTypeMedia('video') }
@@ -75,7 +79,6 @@ export default function EditPost() {
             .then((data) => {
                 setIdChannel(data.id_channel) 
                 setDatePublishPost(localDate(data.date_start)) 
-                console.log(data)
             })
         }
         setLoading(false)
@@ -87,14 +90,21 @@ export default function EditPost() {
         if (update) {
             update_post(id, textPost).
                 then(function (data) {
-                    if(data.error) setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })
-                    else{
+                    if(data.error) return setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })
                     setTextPost(data.text)
                     setUpdate(false)
-                    setAlertShow({ show: true, msgInfo: 'Пост сохранен', severity: "success" })}
+                    setAlertShow({ show: true, msgInfo: 'Пост сохранен', severity: "success" })
                 })
         }
     }, [update]);
+
+
+    const setTags = (id_media) => {
+        set_tags_to_media(id_media, selectedTag).
+        then((data) => {
+            if(data.error) return setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })
+        })
+    }
 
 
     const upload_media = () => {
@@ -103,9 +113,9 @@ export default function EditPost() {
             then(function (data) {
                 set_media_to_post(data.id_media, dataPost.id_post) // set media to post
                     .then(function (data) {
-                        if(data.error) 
-                            {setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })}
-                        else{setIdMedia(data.media[0].id_media)}
+                        if(data.error) {return setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })}
+                        setIdMedia(data.media[0].id_media)
+                        setTags(data.media[0].id_media)
                         setIdMedia(null)
                         setLoading(false)
                     })
@@ -195,11 +205,15 @@ export default function EditPost() {
                     {renderVideo}
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
-                    <Tags />
+
+                    <BlockTimePublish setIdChannel={setIdChannel} idChannel={idChannel} datePublishPost={datePublishPost}
+                        setDatePublishPost={setDatePublishPost} dateRemovePost={dateRemovePost} setDateRemovePost={setDateRemovePost} showAlertPublish={showAlertPublish}
+                        setAlertPublish={setAlertPublish} changePublishPost={changePublishPost} idEvent={idEvent} publishPost={publishPost} 
+                        selectedTag={selectedTag} setSelectedTag={setSelectedTag}/>
+
                 </Grid>
                 <Grid xs={12} md={6} mdOffset={0}>
                     <PostTextInput textPost={textPost} setTextPost={setTextPost} />
-
                     <AlertInfo showAlert={showAlert.show} setAlertShow={setAlertShow} severity={showAlert.severity} value={showAlert.msgInfo} />
                     <Stack direction="row"
                             justifyContent="center"
@@ -219,13 +233,6 @@ export default function EditPost() {
                             sx={{ margin: 1, width: "100px" }}
                             onClick={del_post}>Удалить</Button>
                     </Stack >
-                </Grid>
-                <Grid xs={12} md={6} mdOffset={0}>
-
-                    <BlockTimePublish setIdChannel={setIdChannel} idChannel={idChannel} datePublishPost={datePublishPost}
-                        setDatePublishPost={setDatePublishPost} dateRemovePost={dateRemovePost} setDateRemovePost={setDateRemovePost} showAlertPublish={showAlertPublish}
-                        setAlertPublish={setAlertPublish} changePublishPost={changePublishPost} idEvent={idEvent} publishPost={publishPost} />
-
                 </Grid>
             </Grid>
         }</>

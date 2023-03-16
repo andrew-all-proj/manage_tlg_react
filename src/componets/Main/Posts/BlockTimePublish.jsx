@@ -4,14 +4,16 @@ import SelectChannel from '../../service/SelectChannel'
 import ComponentDateTimePicker from '../../service/DataTime';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import SelectTags from '../../service/TagsForm'
 
 export const BlockTimePublish = ({setIdChannel, idChannel, datePublishPost, 
     setDatePublishPost, dateRemovePost, setDateRemovePost, showAlertPublish, 
-    setAlertPublish, changePublishPost, idEvent, publishPost, ...props }) => {
+    setAlertPublish, changePublishPost, idEvent, publishPost, selectedTag, setSelectedTag, ...props }) => {
 
     return (
-        <Card sx={{ maxWidth: 345, p: 1 }}>
+        <Card sx={{ maxWidth: 450, p: 1 }}>
             <SelectChannel setIdChannel={setIdChannel} channel={idChannel} />
+            <SelectTags selectedTag={selectedTag} setSelectedTag={setSelectedTag} idChannel={idChannel}/>
             <ComponentDateTimePicker sx={{ margin: 2 }} datePublishPost={datePublishPost}
                 setDatePublishPosts={setDatePublishPost}
                 dateRemovePost={dateRemovePost}

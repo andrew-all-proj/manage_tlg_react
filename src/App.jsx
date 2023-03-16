@@ -4,7 +4,7 @@ import CreatePosts from './componets/Main/Posts/CreatePosts';
 import SavedPosts from './componets/Main/SavedPosts/SavedPosts';
 import { Routes, Route, Link } from 'react-router-dom';
 import Layout from './componets/Layout';
-import AddMedia from './componets/Main/AddMedia/AddMedia';
+import AddMedia from './componets/Main/Media/AddMedia';
 import MyChanels from './componets/Main/MyChanels/MyChanels';
 import AddNewChannel from './componets/Main/MyChanels/AddNewChannel';
 import Tags from './componets/Main/Tags/Tags';

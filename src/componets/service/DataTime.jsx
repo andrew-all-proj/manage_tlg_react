@@ -45,9 +45,9 @@ export default function ComponentDateTimePicker(props) {
     }
 
     return (
-        <>
+        <Box sx={{maxWidth: 500}}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Stack spacing={3} sx={{ marginTop: 1 }}>
+                <Stack spacing={3} sx={{ marginTop: 1, maxWidth: 450}} >
                     <TextField
                         id="datetime-local"
                         label="Время публикации"
@@ -81,7 +81,7 @@ export default function ComponentDateTimePicker(props) {
                     />}
                 </Stack>
             </LocalizationProvider>
-        </>
+        </Box>
 
     );
 }

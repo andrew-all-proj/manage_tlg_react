@@ -6,7 +6,7 @@ import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 const EditText: React.FC = () => {
     return (
         <>
-        <Card sx={{ maxWidth: 345, minHeight: 300 }}>
+        <Card sx={{ maxWidth: 360, minHeight: 300 }}>
             <TextField
                 placeholder="Текст поста"
                 fullWidth

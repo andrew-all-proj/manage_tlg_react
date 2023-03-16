@@ -19,7 +19,7 @@ const PostTextInput = ({textPost, setTextPost}) => {
     }
     
     return(
-    <Card sx={{ maxWidth: 345, minHeight: 100}}>
+    <Card sx={{ maxWidth: 360, minHeight: 100}}>
         <TextField
             onChange={(event) => setTextPost(event.target.value)}
             value={textPost}

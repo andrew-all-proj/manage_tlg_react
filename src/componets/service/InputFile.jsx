@@ -6,15 +6,21 @@ import { CardActionArea } from '@mui/material';
 import { CardContent } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { useState } from "react";
+import {useCallback} from 'react'
+import { useDropzone } from 'react-dropzone';
 
 
 
-const FileInput = ({ setSelectedFile, selectedFile, typeMedia, ...props }) => {
+const FileInput = ({ setSelectedFile, selectedFile, typeMedia = null, ...props }) => {
     const [typeFile, setTypeFile] = useState(typeMedia);
+    const onDrop = useCallback(acceptedFiles => {
+        selectMedia(acceptedFiles)
+    }, [])
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
-    const selectMedia = (event) => {
-        setSelectedFile(event.target.files[0])
-        set_type_media(event.target.files[0].type.split('/')[0])
+    const selectMedia = (files) => {
+        setSelectedFile(files[0])
+        set_type_media(files[0].type.split('/')[0])
     }
 
     const deleteMedia = () => {
@@ -35,9 +41,11 @@ const FileInput = ({ setSelectedFile, selectedFile, typeMedia, ...props }) => {
     }
 
 
+
     return (
-        <Card sx={{ maxWidth: 345, minHeight: 100 }}>
-            {selectedFile && (
+        <Card sx={{ maxWidth: 350, minHeight: 30}}>
+        <Card {...getRootProps()} sx={{ minHeight: 100}}>
+            {selectedFile ? 
                 <CardActionArea>
                     <CardMedia
                         component={typeFile}
@@ -49,8 +57,9 @@ const FileInput = ({ setSelectedFile, selectedFile, typeMedia, ...props }) => {
 
                     </CardContent>
                 </CardActionArea>
-            )}
-            <Stack direction="row"
+                : <p>Перенесите сюда файл...</p>}
+        </Card>
+        <Stack direction="row"
                 justifyContent="center"
                 alignItems="flex-start">
                 <Button variant="contained" component="label" sx={{ margin: 1, width: "120px" }}>
@@ -59,17 +68,15 @@ const FileInput = ({ setSelectedFile, selectedFile, typeMedia, ...props }) => {
                         hidden
                         type="file"
                         name="myFile"
-                        onChange={selectMedia}
+                        onChange={(e) => selectMedia(e.target.files)}
                     />
                 </Button>
                 <Button onClick={deleteMedia}
                     variant="contained" component="label" sx={{ margin: 1, width: "120px" }}>Удалить</Button>
             </Stack>
-        </Card>
+        </Card >
     )
 }
 
 
 export default FileInput;
-
-//let r = /^(ftp|http|https):\/\/[^ "]+$/;
