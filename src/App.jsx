@@ -40,10 +40,6 @@ const App = () => {
     
   }, [size.isScreenMd]);
 
-  const a = () => {
-    console.log('rect route')
-  }
-
 
   return (
         <Routes>
@@ -82,14 +78,18 @@ const App = () => {
               <RequireAuth>
                 <CreatePosts/>
               </RequireAuth>} />
-            <Route path='addmedia' element={<AddMedia />} />
+
+            <Route path='addmedia' element={
+            <RequireAuth>
+              <AddMedia />
+            </RequireAuth>} />
 
             <Route path='channels' element={
               <RequireAuth >
                 <MyChanels />
               </RequireAuth>} />
 
-              <Route path='channel/:id' element={
+            <Route path='channel/:id' element={
               <RequireAuth>
                 <EditChannel />
               </RequireAuth>} />

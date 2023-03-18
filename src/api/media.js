@@ -40,9 +40,10 @@ export const unset_media_to_post = async (idMedia, idPost) => {
 
 
 // UPLOAD MEDIA
-export const post_media = async (selectedImage) => {
+export const post_media = async (selectedFile) => {
+    console.log(selectedFile)
     let formData = new FormData();
-    formData.append("file", selectedImage);
+    formData.append("file", selectedFile);
     let Newheaders = headers()
     Newheaders.headers["Content-Type"] = 'multipart/form-data'
     return await axios.post(`${BASE_URL}media`, formData, {
@@ -54,6 +55,18 @@ export const post_media = async (selectedImage) => {
         .then(function (res) {
             const data = res.data;
             return data
+        })
+        .catch(function (err) {
+            return error_response(err)
+        });
+}
+
+
+// GET MEDIA INFO BY ID MEDIA
+export const get_media_by_id = async (id_media) => {
+    return axios.get(`${BASE_URL}media/${id_media}`, headers())
+        .then(function (res) {
+            return res.data;
         })
         .catch(function (err) {
             return error_response(err)

@@ -73,3 +73,23 @@ export const set_tags_to_media = async (id_media, list_tag) => {
             return error_response(err)
         });
 }
+
+
+//(PUT)  SET TAG TO MEDIA
+export const unset_tags_to_media = async (id_media, list_tag) => {
+    const data ={
+        "tags": list_tag
+    }
+    return await axios
+        .delete(`${BASE_URL}media/${id_media}/settags`, {
+            headers: {
+                Authorization: headers().headers.Authorization
+            },
+            data})
+        .then((response) => {
+            return response.data;
+        })
+        .catch(function (err) {
+            return error_response(err)
+        });
+}

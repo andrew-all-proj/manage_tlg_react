@@ -7,7 +7,6 @@ import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import Typography from '@mui/material/Typography';
 import { useResize } from "../hook/useResize";
 import {get_list_tags, set_tags_to_media} from '../../api/tags'
-import SelectChannel from './SelectChannel'
 import {AlertInfo} from './AlertInfo'
 
 export const TagsForm = ({listTags, selectedTag, setSelectedTag}) => {
@@ -75,7 +74,6 @@ const SelectTags = ({selectedTag, setSelectedTag, idChannel}) => {
     
 
     useEffect(() => {
-        
         if (idChannel) {
             get_list_tags(idChannel).
             then((data) => {

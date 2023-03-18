@@ -13,7 +13,7 @@ export const get_list_posts = async (page, per_page = 3) => {
             return response.data;
         })
         .catch(function (err) {
-            error_response(err)
+            return  error_response(err)
         });
 }
 
@@ -25,7 +25,7 @@ export const get_post = async (id) => {
             return res.data;
         })
         .catch(function (err) {
-            error_response(err)
+            return error_response(err)
         });
 }
 
@@ -55,7 +55,7 @@ export const post_create = async (textPost) => {
             return res.data;
         })
         .catch(function (err) {
-            error_response(err)
+            return  error_response(err)
         });
 }
 
@@ -66,7 +66,7 @@ export const delete_post = async (id) => {
             return res.data;
         })
         .catch(function (err) {
-            error_response(err)
+            return  error_response(err)
         });
 }
 

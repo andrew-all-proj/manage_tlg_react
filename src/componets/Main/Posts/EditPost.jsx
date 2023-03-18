@@ -16,9 +16,9 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { AlertInfo } from '../../service/AlertInfo';
 
 import { get_post, update_post,  delete_post } from '../../../api/posts'
-import { post_media, set_media_to_post, unset_media_to_post } from '../../../api/media'
+import { post_media, set_media_to_post, unset_media_to_post, get_media_by_id } from '../../../api/media'
 import { post_event, update_event, get_event } from '../../../api/events'
-import {set_tags_to_media} from '../../../api/tags'
+import {set_tags_to_media, unset_tags_to_media } from '../../../api/tags'
 import { BlockTimePublish } from './BlockTimePublish'
 import FileInput from '../../service/InputFile'
 import { formatDateTime, localDate } from '../../service/localDateTime'
@@ -48,12 +48,16 @@ export default function EditPost() {
     const [showAlertPublish, setAlertPublish] = useState({ show: false, msgInfo: '', severity: "error" })
     const [selectedFile, setSelectedFile] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [error404, setError404] = useState(true);
+
     const [selectedTag, setSelectedTag] = useState([]);
+    const [listGetTags,  setListGetTags] = useState([]);
 
 
     const set_type_media = (file) => {
         if (file === "video") { setTypeMedia('video') }
         else if (file === "image") { setTypeMedia('img') }
+        else if (file === "audio") { setTypeMedia('audio') }
     }
 
     
@@ -63,10 +67,15 @@ export default function EditPost() {
         if (id) {
             get_post(id, setDataPost, setIdMedia, setTextPost)
                 .then(function (data) {
+                    if(data.error) {
+                        setError404(false)
+                        setLoading(false)
+                        return}
                     if (Object.keys(data).length !== 0) {
                         if (data.media.length != 0) {
                             set_type_media(data.media[0].type_media.type_media)
                             setIdMedia(data.media[0].id_media)
+                            getInfoMediaByID(data.media[0].id_media)
                             setSelectedFile(`${BASE_URL}media/download/${data.media[0].id_media}`)
                         }
                         setTextPost(data.text)
@@ -90,21 +99,13 @@ export default function EditPost() {
         if (update) {
             update_post(id, textPost).
                 then(function (data) {
-                    if(data.error) return setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })
                     setTextPost(data.text)
+                    setTags(idMedia)
                     setUpdate(false)
                     setAlertShow({ show: true, msgInfo: 'Пост сохранен', severity: "success" })
                 })
         }
     }, [update]);
-
-
-    const setTags = (id_media) => {
-        set_tags_to_media(id_media, selectedTag).
-        then((data) => {
-            if(data.error) return setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })
-        })
-    }
 
 
     const upload_media = () => {
@@ -122,6 +123,7 @@ export default function EditPost() {
             })
     }
 
+    // file will be object or link 
     const check_url = (selectedFile) => {  // check link or object
         if (typeof selectedFile === 'string') {
             return false
@@ -150,6 +152,37 @@ export default function EditPost() {
     }, [update]);
 
 
+    // GET LIST TAGS FOR MEDIA
+    const getInfoMediaByID = (id_media) => {
+        setSelectedTag([])
+        let listTags = []
+        get_media_by_id(id_media).
+            then((data) => {
+                if(data.error) return setAlertPublish({ show: true, msgInfo: data.msg, severity: "error" })
+                for (const element of data.tags) {
+                    listTags.push(element.id_tag)
+                }
+                setListGetTags([...listTags])
+                setSelectedTag([...listTags])
+            })
+    }
+
+
+    const setTags = (id_media) => {
+        let difference = listGetTags.filter(x => !selectedTag.includes(x))
+        set_tags_to_media(id_media, selectedTag).
+        then((data) => {
+            if(data.error) return setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })
+        })
+        if(difference){
+            unset_tags_to_media(id_media, difference).
+            then((data) => {
+            if(data.error) return setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })
+            getInfoMediaByID(idMedia)
+        
+        })}
+    }
+
     // DELETE POST
     const del_post = () => {
         delete_post(id).
@@ -165,7 +198,6 @@ export default function EditPost() {
         if (idChannel) {
             post_event(datePublishPost, dateRemovePost, idChannel, id).
                 then((data) => {
-                    console.log(data)
                     if(data.error) return setAlertPublish({ show: true, msgInfo: data.msg, severity: "error" })
                     setIdEvent(data.id_event)
                     setAlertPublish({ show: true, msgInfo: 'Пост добавлен в расписание канала', severity: "success" })
@@ -190,13 +222,14 @@ export default function EditPost() {
         setUpdate(true)
     }
 
+    //removes the error flashing video
     const renderVideo = useMemo(() => (
         <FileInput selectedFile={selectedFile} setSelectedFile={setSelectedFile} typeMedia={typeMedia}/>
     ), [selectedFile])
 
 
     return (<>
-        {!dataPost ? <ProgressLoad /> :
+        {!dataPost ? (error404 ? <ProgressLoad /> : <ChannelError msg="POST NOT FOUND 404"/>)  :
 
             <Grid container spacing={1}>
                 <Grid xs={12}>
@@ -239,10 +272,10 @@ export default function EditPost() {
     )
 }
 
-export function ChannelError(props) {
+export function ChannelError({msg}) {
     return (
         <div>
-            <h3>{props.value}</h3>
+            <h3>{msg}</h3>
         </div>
     )
 }

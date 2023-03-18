@@ -38,8 +38,8 @@ const FileInput = ({ setSelectedFile, selectedFile, typeMedia = null, ...props }
     const set_type_media = (file) => {
         if (file === "video") { setTypeFile('video') }
         else if (file === "image") { setTypeFile('img') }
+        else if (file === "audio") { setTypeFile('audio') }
     }
-
 
 
     return (
@@ -53,9 +53,6 @@ const FileInput = ({ setSelectedFile, selectedFile, typeMedia = null, ...props }
                         controls
                         image={createURL(selectedFile)}
                     />
-                    <CardContent>
-
-                    </CardContent>
                 </CardActionArea>
                 : <p>Перенесите сюда файл...</p>}
         </Card>
