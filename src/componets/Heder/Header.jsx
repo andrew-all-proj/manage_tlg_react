@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import labelImg from "../../assets/images/label.png"
 import style from "./Header.module.css"
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOutUser } from '../../store/userSlice'
 import {setShowNavBar} from '../../store/mobileSlice'

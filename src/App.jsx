@@ -9,6 +9,7 @@ import MyChanels from './componets/Main/MyChanels/MyChanels';
 import AddNewChannel from './componets/Main/MyChanels/AddNewChannel';
 import Tags from './componets/Main/Tags/Tags';
 import LoginPage from './componets/LoginPage/LoginPage';
+import CreateSchedule from './componets/Main/CreateSchedule/CreateSchedule'
 
 
 import RequireAuth from './componets/hoc/RequireAuth';
@@ -76,7 +77,7 @@ const App = () => {
 
             <Route path='createschedule' element={
               <RequireAuth>
-                <CreatePosts/>
+                <CreateSchedule/>
               </RequireAuth>} />
 
             <Route path='addmedia' element={
