@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { useState, useEffect } from "react";
 import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
 import Pagination from '@mui/material/Pagination';
-
+import {ShowFile} from '../../service/InputFile'
 
 import { BASE_URL } from '../../../api/api';
 import { NavLink } from 'react-router-dom';
@@ -52,10 +52,9 @@ export default function SavedPosts() {
                 {listPosts.map((iteam) => 
                 <Grid xs={12} key={iteam.id_post} >
                     {iteam.media ? iteam.media.map((media) =>
-                    <span margin="3px">
-                        <img src={`${BASE_URL}media/download/${media.id_media}`} alt={"Loading..."} width="200 px" height="200px"/>
-                        ,
-                    </span>) : '' }
+                    <Box sx={{maxWidth: "200px"}}>
+                        <ShowFile file={`${BASE_URL}media/download/${media.id_media}`} typeMedia={media.type_media.type_media} />
+                    </Box>) : '' }
                     <p>
                         <NavLink to={`/post/${iteam.id_post}/`} style={{ color: 'inherit', textDecoration: 'inherit'}}>
                         id поста: {iteam.id_post}<br/>

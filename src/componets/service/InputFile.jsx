@@ -6,7 +6,7 @@ import { CardActionArea } from '@mui/material';
 import { CardContent } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { useState } from "react";
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone';
 
 
@@ -43,20 +43,20 @@ const FileInput = ({ setSelectedFile, selectedFile, typeMedia = null, ...props }
 
 
     return (
-        <Card sx={{ maxWidth: 350, minHeight: 30}}>
-        <Card {...getRootProps()} sx={{ minHeight: 100}}>
-            {selectedFile ? 
-                <CardActionArea>
-                    <CardMedia
-                        component={typeFile}
-                        preload="auto"
-                        controls
-                        image={createURL(selectedFile)}
-                    />
-                </CardActionArea>
-                : <p>Перенесите сюда файл...</p>}
-        </Card>
-        <Stack direction="row"
+        <Card sx={{ maxWidth: 350, minHeight: 30 }}>
+            <Card {...getRootProps()} sx={{ minHeight: 100 }}>
+                {selectedFile ?
+                    <CardActionArea>
+                        <CardMedia
+                            component={typeFile}
+                            preload="auto"
+                            controls
+                            image={createURL(selectedFile)}
+                        />
+                    </CardActionArea>
+                    : <p>Перенесите сюда файл...</p>}
+            </Card>
+            <Stack direction="row"
                 justifyContent="center"
                 alignItems="flex-start">
                 <Button variant="contained" component="label" sx={{ margin: 1, width: "120px" }}>
@@ -77,3 +77,20 @@ const FileInput = ({ setSelectedFile, selectedFile, typeMedia = null, ...props }
 
 
 export default FileInput;
+
+export const ShowFile = ({file, typeMedia='img'}) => {
+
+    if (typeMedia === 'image'){
+        typeMedia='img'
+    }
+
+    return(
+        <>
+        <CardMedia 
+            component={typeMedia}
+            preload="auto"
+            controls
+            image={file}
+        />
+        </>
+)}
