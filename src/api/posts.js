@@ -2,13 +2,19 @@ import axios from "axios";
 
 import { headers, no_auth_rederect, error_response } from "./api";
 import { BASE_URL } from "./api";
-
+import { offsetTimeTOUTC } from "../componets/service/localDateTime"
 
 
 // GET LIST POSTS
-export const get_list_posts = async (page, per_page = 3) => {
+export const get_list_posts = async (page, per_page = 3, reverse_sort, date_time_start, date_time_stop) => {
+    let str_query = '?'
+    if(page) { str_query = str_query + '&page=' + page };
+    if(per_page) { str_query = str_query + '&per_page=' + per_page }; 
+    if(reverse_sort) { str_query = str_query + '&reverse_sort=' + reverse_sort };
+    if(date_time_start) { str_query = str_query + '&date_time_start=' + offsetTimeTOUTC(date_time_start) };
+    if(date_time_stop) { str_query = str_query + '&date_time_stop=' + offsetTimeTOUTC(date_time_stop) };
     return await axios
-        .get(`${BASE_URL}posts/?page=${page}&per_page=${per_page}`, headers())
+        .get(`${BASE_URL}posts/${str_query}`, headers())
         .then((response) => {
             return response.data;
         })

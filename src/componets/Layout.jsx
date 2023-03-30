@@ -17,7 +17,7 @@ const Layout = () => {
                 <Grid md={12}>
                     <Header />
                 </Grid>
-                <Grid xs={12}  md={3}>
+                <Grid xs={12}  md={3} sm={3}>
                     {mobileMode.showNavBar && <Navbar />}
                 </Grid>
                 <Grid md={9} xs={12}>

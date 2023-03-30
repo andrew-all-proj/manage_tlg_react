@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { headers, no_auth_rederect, error_response } from "./api";
 import { BASE_URL } from "./api";
-
+import { offsetTimeTOUTC } from "../componets/service/localDateTime"
 
 
 // SET LIST MEDIA TO POST
@@ -81,7 +81,7 @@ export const get_media = async (page=1, per_page=100, published, id_chanel, limi
     if(per_page) { str_query = str_query + '&per_page=' + per_page };
     if(id_chanel) { str_query = str_query + '&id_chanel=' + id_chanel };
     if(published) { str_query = str_query + '&published=' + published };
-    if(last_time_used) { str_query = str_query + '&last_time_used=' + last_time_used };
+    if(last_time_used) { str_query = str_query + '&last_time_used=' + offsetTimeTOUTC(last_time_used) };
     if(limit) { str_query = str_query + '&limit=' + limit };
     if(list_tags) { str_query = str_query + '&list_tags=' + list_tags };
     return axios.get(`${BASE_URL}media${str_query}`, headers())
