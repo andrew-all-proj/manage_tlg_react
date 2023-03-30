@@ -6,36 +6,15 @@ import Footer from '../Footer/Footer'
 import Header from '../Heder/Header'
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
-import { get_jwt } from '../../api/api';
 import TextField from '@mui/material/TextField';
-import PasswordInput from "../LoginPage/PasswordInput"
+import PasswordInput from "../service/PasswordInput"
 import { AlertInfo } from '../service/AlertInfo';
 import { useState } from "react";
 import { create_new_user } from '../../api/user'
 import { send_email_confirm } from '../../api/api'
+import {check_valid_create_user} from '../service/serviceFunctions/checkImputReg'
 
-
-const check_valid_create_user = (username, email, password, repeatPassword) => {
-    const usernameRegex = /^[a-zA-Z0-9_-яА-ЯёЁ']{3,16}$/ 
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i  
-    const pswRegex = /^[A-Za-z0-9_-{!@#$&*}]{6,18}$/
-
-    if (!usernameRegex.test(username)){
-        return 'Имя пользователя не может быть пустым и должно содержать только буквы или цифры не меньше трех знаков.'
-    }
-    if (!emailRegex.test(email)){
-        return 'Не верный формат email.'
-    }
-    if (!pswRegex.test(password)){
-        return 'Пароль должен содержать не менее 6 символов и состоять из цифр и латинский букв'
-    }
-    if (password !== repeatPassword){
-        return 'Пароли не совпадают'
-    }
-    return null
-}
 
 const UserRegistration = () => {
     const navigate = useNavigate();
@@ -115,10 +94,10 @@ const UserRegistration = () => {
                         <Typography variant="h4">
                             Регистрация
                         </Typography>
-                        <TextField value={username} onChange={nameChange} id="outlined-basic" label="Имя" variant="outlined" />
-                        <TextField value={email} onChange={emailChange} id="outlined-basic" label="Email" variant="outlined" />
-                        <PasswordInput onChange={passwordChange} value={password}/>
-                        <PasswordInput onChange={passwordChangeRepeat} value={repeatPassword}/>
+                        <TextField value={username} onChange={nameChange} id="outlined-basic1" label="Имя" variant="outlined" />
+                        <TextField value={email} onChange={emailChange} id="outlined-basic2" label="Email" variant="outlined" />
+                        <PasswordInput id="usr1" label="Новый пароль" onChange={passwordChange} value={password}/>
+                        <PasswordInput id="usr2" label="Новый пароль" onChange={passwordChangeRepeat} value={repeatPassword}/>
                         <AlertInfo showAlert={showAlert.show} setAlertShow={setAlertShow} 
                                     severity={showAlert.severity} value={showAlert.msgInfo}  time={25000} />
                         <Button onClick={reg_user} variant="contained">Сохранить</Button>

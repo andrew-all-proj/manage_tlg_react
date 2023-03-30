@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Button, Card, Chip, Paper, Stack } from "@mui/material"
+import { Button, Card, Chip, Grid, Paper, Stack } from "@mui/material"
 import Box from "@mui/material/Box"
 import { useState, useEffect } from "react";
 import IconButton from '@mui/material/IconButton';
@@ -42,11 +42,11 @@ export const TagsForm = ({listTags, selectedTag, setSelectedTag}) => {
                 <Typography variant="h6">Теги</Typography>
             </IconButton>   
             { showTags && <Box>
-                <Stack direction="row" spacing={1} >
+                <Grid  spacing={2} >
                     {listTags && listTags.map((tag) => 
                         <ItemChip selected={selectedTag} key={tag.id_tag}  label={tag.tag_name} onClick={handleClick}  id={tag.id_tag} />
                     )}
-                </Stack>
+                </Grid>
             </Box>}
         </Card>
     )
@@ -64,7 +64,7 @@ const ItemChip = ({label, onClick, id, selected}) => {
     }, [selected]);
 
     return(
-        <Chip color={selectedChip} key={id}  label={label} onClick={() => {onClick(id)}} /> 
+        <Chip sx={{m: 0.5}} color={selectedChip} key={id}  label={label} onClick={() => {onClick(id)}} /> 
     )
 }
 

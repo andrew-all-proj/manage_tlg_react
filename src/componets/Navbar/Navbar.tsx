@@ -11,6 +11,11 @@ import ContentCopy from '@mui/icons-material/ContentCopy';
 import ContentPaste from '@mui/icons-material/ContentPaste';
 import Cloud from '@mui/icons-material/Cloud';
 import { Link, NavLink } from 'react-router-dom';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import TagIcon from '@mui/icons-material/Tag';
+import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 
 
 
@@ -18,83 +23,95 @@ export default function Navbar() {
     return (
         <Paper sx={{ minWidth: '100%'}}>
             <MenuList>
+                <NavLink to="/createpost" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <MenuItem>
                     <ListItemIcon>
                         <ContentCut fontSize="small" />
                     </ListItemIcon>
-                    <NavLink to="/createpost" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                     <ListItemText>
                         Создать пост
                     </ListItemText>
-                    </NavLink>
                 </MenuItem>
+                </NavLink>
+                <NavLink to="/savedposts" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <MenuItem>
                     <ListItemIcon>
                         <ContentCopy fontSize="small" />
                     </ListItemIcon>
                     <ListItemText>
-                        <Link to="/savedposts" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                             Сохраненые посты
-                        </Link>
                     </ListItemText>
                 </MenuItem>
+                </NavLink>
+                <NavLink to="/schedule_channel" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <MenuItem>
                     <ListItemIcon>
                         <ContentCopy fontSize="small" />
                     </ListItemIcon>
                     <ListItemText>
-                        <Link to="/schedule_channel" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                             Расписание канала
-                        </Link>
                     </ListItemText>
                 </MenuItem>
+                </NavLink>
+                <NavLink to="/createschedule" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <MenuItem>
                     <ListItemIcon>
                         <ContentPaste fontSize="small" />
                     </ListItemIcon>
                     <ListItemText> 
-                    <NavLink to="/createschedule" style={{ color: 'inherit', textDecoration: 'inherit'}}>
-                        Создать расписание
-                    </NavLink>   
+                        Создать расписание  
                     </ListItemText>
                 </MenuItem>
+                </NavLink> 
+                <NavLink to="/addmedia" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <MenuItem>
                     <ListItemIcon>
-                        <ContentPaste fontSize="small" />
+                        <AddPhotoAlternateIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText>
-                    <NavLink to="/addmedia" style={{ color: 'inherit', textDecoration: 'inherit'}}>
-                        Добавить медиа
-                    </NavLink>    
+                        Добавить медиа 
                     </ListItemText>
                 </MenuItem>
+                </NavLink>
+                <NavLink to="/addmedia" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <MenuItem>
                     <ListItemIcon>
-                        <ContentPaste fontSize="small" />
+                        <DocumentScannerIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText>
-                    <NavLink to="/channels" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                        Шаблоны постов
+                    </ListItemText>
+                </MenuItem>
+                </NavLink>     
+                <NavLink to="/channels" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                <MenuItem>
+                    <ListItemIcon>
+                        <PlaylistAddIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>
                         Мои каналы
-                    </NavLink> 
                     </ListItemText>
                 </MenuItem>
+                </NavLink>
                 <Divider />
+                <NavLink to="/tags" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <MenuItem>
                     <ListItemIcon>
-                        <ContentPaste fontSize="small" />
+                        <TagIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText>
-                    <NavLink to="/tags" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                         Метки
-                    </NavLink> 
                     </ListItemText>
                 </MenuItem>
+                </NavLink>
+                <NavLink to="/settings" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <MenuItem>
                     <ListItemIcon>
-                        <Cloud fontSize="small" />
+                        <ManageAccountsIcon fontSize="small" />
                     </ListItemIcon>
-                    <ListItemText>Добавить медиа</ListItemText>
+                    <ListItemText>Настройки</ListItemText>
                 </MenuItem>
+                </NavLink>
             </MenuList>
         </Paper>
     );

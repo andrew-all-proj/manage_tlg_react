@@ -7,7 +7,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { useState } from "react";
 
-const PasswordInput = ({onChange, value}) => {
+const PasswordInput = ({onChange, value, label, id}) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -17,15 +17,16 @@ const PasswordInput = ({onChange, value}) => {
     };
 
     return (
-        <FormControl sx={{ m: 1, width: '40ch' }} variant="outlined">
-            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+        <FormControl key={id+"FormControl"} sx={{ m: 1}} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">{label}</InputLabel>
             <OutlinedInput
-                id="outlined-adornment-password"
+                id={id+"psw"}
                 type={showPassword ? 'text' : 'password'}
                 value={value}
                 onChange={onChange}
+                autoComplete="on"
                 endAdornment={
-                    <InputAdornment position="end">
+                    <InputAdornment id={id+"InputAdornment"} position="end" >
                         <IconButton
                             aria-label="toggle password visibility"
                             onClick={handleClickShowPassword}
@@ -36,7 +37,7 @@ const PasswordInput = ({onChange, value}) => {
                         </IconButton>
                     </InputAdornment>
                 }
-                label="Password"
+                label={label}
             />
         </FormControl>
     )

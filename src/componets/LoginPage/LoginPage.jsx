@@ -10,7 +10,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
-import PasswordInput from './PasswordInput'
+import PasswordInput from '../service/PasswordInput'
 import { get_jwt, send_email_confirm } from '../../api/api';
 import ConfirmMail from "./ConfirmMail"
 import { AlertInfo } from "../service/AlertInfo"
@@ -33,8 +33,9 @@ const LoginPage = () => {
     const user = useSelector(state => state.user.user)
     const dispatch = useDispatch()
 
-    const signin = (newtoken) => {
+    const signin = (newtoken, id_user) => {
         localStorage.setItem('manage_jwt', newtoken)
+        localStorage.setItem('manage_id', id_user)
         navigate(fromPage, { replace: true });
     }
 
@@ -47,10 +48,9 @@ const LoginPage = () => {
         }
         get_jwt(email.trim(), password.trim())
             .then(function (res) {
-                console.log(res)
                 dispatch(authUser({user_name: res.user_name, id_user: res.id_user}))
                 setShowAlert({ show: true, msgInfo: 'Успешно', severity: "success" })
-                signin(res.auth_token)
+                signin(res.auth_token, res.id_user)
             })
             .catch(function (err) {
                 console.log(err)
@@ -100,7 +100,7 @@ const LoginPage = () => {
                                 Вход
                             </Typography>
                             <TextField value={email} onChange={emailChange} id="outlined-basic" label="Email" variant="outlined" />
-                            <PasswordInput onChange={passwordChange} value={password} />
+                            <PasswordInput label="Пароль" onChange={passwordChange} value={password} />
 
                             <AlertInfo showAlert={showAlert.show} setShowAlert={setShowAlert} severity={showAlert.severity} value={showAlert.msgInfo} />
 

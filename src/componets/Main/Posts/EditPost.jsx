@@ -87,7 +87,7 @@ export default function EditPost() {
             get_event(id_event)
             .then((data) => {
                 setIdChannel(data.id_channel) 
-                setDatePublishPost(localDate(data.date_start)) 
+                setDatePublishPost(formatDateTime(localDate(data.date_start))) 
             })
         }
         setLoading(false)

@@ -60,10 +60,9 @@ export default function MyChanels() {
 export function TableChannel(props) {
     return(
         <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Table sx={{ maxWidth: 850 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell align="center">ID-Канала</TableCell>
                         <TableCell align="center">Название канала</TableCell>
                         <TableCell align="center">Сылка на канал</TableCell>
                         <TableCell align="center">ID - телеграмме</TableCell>
@@ -76,7 +75,6 @@ export function TableChannel(props) {
                             key={row.id_channel}
                             sx={{ }}
                         >
-                            <TableCell align="center">{row.id_channel}</TableCell>
                             <TableCell align="center">{row.name_channel}</TableCell>
                             <TableCell align="center">{row.link_channel}</TableCell>
                             <TableCell align="center">{row.id_telegram}</TableCell>  

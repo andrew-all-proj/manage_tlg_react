@@ -12,8 +12,8 @@ const Layout = () => {
     const mobileMode = useSelector(state => state.mobileMode)
 
     return (
-        <>  <Container maxWidth="lg">
-            <Grid container spacing={2}>
+        <Container sx={{paddingLeft: '2px', paddingRight: "2px" }} maxWidth='lg' >
+            <Grid container spacing={1}>
                 <Grid md={12}>
                     <Header />
                 </Grid>
@@ -27,8 +27,7 @@ const Layout = () => {
                     <Footer />
                 </Grid>
             </Grid>
-            </Container>
-        </>
+        </Container>
     )
 }
 

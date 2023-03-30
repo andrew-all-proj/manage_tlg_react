@@ -19,7 +19,7 @@ import { PER_PAGE } from '../../../api/api'
 
 const CreateSchedule = () => {
     const [idChannel, setIdChannel] = useState('');
-    const [selectedTag, setSelectedTag] = useState('');
+    const [selectedTag, setSelectedTag] = useState([]);
     const [timeStart, setTimeStart] = useState(formatDateTime());
     const [timeStop, setTimeStop] = useState(formatDateTime());
     const [intervalTime, setIntervalTime] = useState('01:00');
@@ -29,6 +29,7 @@ const CreateSchedule = () => {
     const [showAlert, setAlertShow] = useState({ show: false, msgInfo: '', severity: "error" })
     const [listMedia, setListMedia] = useState({});
     const [limitrecords, setLimitrecords] = useState(0);
+    const [lastTimeUsed, setLastTimeUsed] = useState(null);
 
 
     const countMediaForTime = () => {
@@ -37,24 +38,31 @@ const CreateSchedule = () => {
         const [hours, minutes] = intervalTime.split(':');
         const secondsInterval = parseInt(hours, 10) * 3600 + parseInt(minutes, 10) * 60;
         if (TimeStart > TimeStop) {
-            setAlertShow({ show: true, msgInfo: "Дата старта должна бвть меньше даты стоп", severity: "error" })
+            setAlertShow({ show: true, msgInfo: "Дата старта должна быть меньше даты конца", severity: "error" })
             return false
         }
+        const res = Math.floor((TimeStop - TimeStart) / secondsInterval / 1000) 
+        if(res === 0){
+            setAlertShow({ show: true, msgInfo: "Маленький промежуток между датами", severity: "error" })
+            return false
+        }  
         return Math.floor((TimeStop - TimeStart) / secondsInterval / 1000)
     }
 
 
     const get_list_media = (page = 1, per_page = PER_PAGE) => {
         if (!idChannel) return setAlertShow({ show: true, msgInfo: "Выберите канал", severity: "error" })
-        setLimitrecords(countMediaForTime())
-        if (limitrecords === 0) return setAlertShow({ show: true, msgInfo: "Укажите время", severity: "error" })
-        get_media(page, limitrecords, published, idChannel, limitrecords).
+        const countMedia = countMediaForTime()
+        if (!countMedia) return 
+        setLimitrecords(countMedia)
+        get_media(page, limitrecords, published, idChannel, limitrecords, lastTimeUsed, selectedTag).
             then((data) => {
-                if (data.error) return setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })
+                if (data.error) return setAlertShow({ show: true, msgInfo: "Ошибка сети", severity: "error" })
                 setListMedia(data)
                 setFormListSchedule(true)
             })
     }
+
 
     return (
         <Box sx={{ border: "solid", borderColor: "LightGray", borderWidth: 1, borderRadius: 2 }}>
@@ -72,13 +80,13 @@ const CreateSchedule = () => {
                         <SelectTags selectedTag={selectedTag} setSelectedTag={setSelectedTag} idChannel={idChannel} />
                     </Grid>
                     <Grid md={6} xs={12}>
-                        <InputDateTime sx={{ minWidth: 300, m: 1 }} label="Время начала" dateTimeValue={timeStart} setdateTimeValue={setTimeStart} />
+                        <InputDateTime sx={{ minWidth: 280, m: 1 }} label="Время начала" dateTimeValue={timeStart} setdateTimeValue={setTimeStart} />
                     </Grid>
                     <Grid md={6} xs={12}>
-                        <InputDateTime sx={{ minWidth: 300, m: 1 }} label="Время конца" dateTimeValue={timeStop} setdateTimeValue={setTimeStop} />
+                        <InputDateTime sx={{ minWidth: 280, m: 1 }} label="Время конца" dateTimeValue={timeStop} setdateTimeValue={setTimeStop} />
                     </Grid>
                     <Grid md={6} xs={12}>
-                        <InputTime sx={{ minWidth: 300, m: 1 }} label="Промежуток" dateTimeValue={intervalTime} setdateTimeValue={setIntervalTime} />
+                        <InputTime sx={{ minWidth: 280, m: 1 }} label="Промежуток" dateTimeValue={intervalTime} setdateTimeValue={setIntervalTime} />
                     </Grid>
                     <Grid md={6} xs={12}>
                         <SetTimeRemove setTimeRemove={setTimeRemove} timeRemove={timeRemove}/>
@@ -87,7 +95,7 @@ const CreateSchedule = () => {
                         <SwitchLabels setPublished={setPublished} published={published} />
                     </Grid>
                     <Grid md={6} xs={12}>
-                        <Button onClick={() => get_list_media(1, PER_PAGE)} variant="contained">Создать</Button>
+                        <Button onClick={() => get_list_media()} variant="contained">Создать</Button>
                     </Grid>
                 </Grid>
             }

@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { offsetTimeTOUTC, localDate } from "../../service/localDateTime"
+import { offsetTimeTOUTC, localDate, formatDateTimeShow } from "../../service/localDateTime"
 
 export function TableChannel({listEvents, idChannel, ...props}) {
     const navigate = useNavigate();
@@ -36,13 +36,11 @@ export function TableChannel({listEvents, idChannel, ...props}) {
 
     return(
         <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Table sx={{ maxWidth: 850 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell align="center">ID-события</TableCell>
                         <TableCell align="center">Дата публикации</TableCell>
                         <TableCell align="center">Дата удаления</TableCell>
-                        <TableCell align="center">ID-поста</TableCell>
                         <TableCell align="center">Текст поста</TableCell>
                         <TableCell align="center">ID-медиа</TableCell>
                     </TableRow>
@@ -54,10 +52,8 @@ export function TableChannel({listEvents, idChannel, ...props}) {
                             key={row.id_event}
                             sx={{ }}
                         >
-                            <TableCell align="center">{row.id_event}</TableCell>
-                            <TableCell align="center">{localDate(row.date_start)}</TableCell>
-                            <TableCell align="center">{row.date_stop && localDate(row.date_stop)}</TableCell>
-                            <TableCell align="center">{row.post && row.post.id_post}</TableCell>
+                            <TableCell align="center">{formatDateTimeShow(localDate(row.date_start))}</TableCell>
+                            <TableCell align="center">{row.date_stop && formatDateTimeShow(localDate(row.date_stop))}</TableCell>
                             <TableCell align="center">{row.post && cut_string(row.post.text)}</TableCell>
                             <TableCell align="center">{row.post && check_media(row.post) }</TableCell>
                         </TableRow>

@@ -16,7 +16,7 @@ export default function ScheduleChannel() {
 
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
-    const per_page = 3
+    const per_page = 10
 
 
     useEffect(() => {
@@ -35,7 +35,6 @@ export default function ScheduleChannel() {
     }, [listEvents]);
 
     const pageChange = (event, value) => {
-        console.log(value)
         setPage(value);
     }
 

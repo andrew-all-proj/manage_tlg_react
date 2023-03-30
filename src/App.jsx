@@ -18,101 +18,107 @@ import EditChannel from './componets/Main/MyChanels/Channel';
 import EditPost from './componets/Main/Posts/EditPost';
 import ScheduleChannel from './componets/Main/ScheduleChannel/ScheduleChannel';
 import UserRegistration from './componets/UserRegistration/UserRegistration';
+import Settings from './componets/Main/Settings/Settings';
 import { useState, useEffect } from "react";
 import { useResize } from "./componets/hook/useResize"
 import { useSelector, useDispatch } from 'react-redux';
 import { setMobile, setShowNavBar } from './store/mobileSlice';
 
 
+
 const App = () => {
   const dispatch = useDispatch()
   const size = useResize()
 
-    useEffect(() => {
-      if(!size.isScreenMd){
-        dispatch(setMobile({mobileMode: true}))
-        dispatch(setShowNavBar({showNavBar: false}))
-        console.log(0)
-      }else{
-        dispatch(setMobile({mobileMode: false}))
-        dispatch(setShowNavBar({showNavBar: true}))
-        console.log(1)
-      }
-    
+  useEffect(() => {
+    if (!size.isScreenMd) {
+      dispatch(setMobile({ mobileMode: true }))
+      dispatch(setShowNavBar({ showNavBar: false }))
+    } else {
+      dispatch(setMobile({ mobileMode: false }))
+      dispatch(setShowNavBar({ showNavBar: true }))
+    }
+
   }, [size.isScreenMd]);
 
 
   return (
-        <Routes>
-          <Route>
-            <Route path='login' element={<LoginPage />} />
-          </Route>
+    <Routes>
+      <Route>
+        <Route path='login' element={<LoginPage />} />
+      </Route>
 
-          <Route>
-            <Route path='user_reg' element={<UserRegistration />} />
-          </Route>
+      <Route>
+        <Route path='user_reg' element={<UserRegistration />} />
+      </Route>
 
-          <Route  path='/' element={<Layout />} >
-            <Route  index element={
-              <RequireAuth >
-                <CreatePosts />
-              </RequireAuth>} />
+      <Route path='/' element={<Layout />} >
+        <Route index element={
+          <RequireAuth >
+            <CreatePosts />
+          </RequireAuth>} />
 
-            <Route path='createpost' element={
-              <RequireAuth >
-                <CreatePosts /> 
-              </RequireAuth>
-              } />
+        <Route path='createpost' element={
+          <RequireAuth >
+            <CreatePosts />
+          </RequireAuth>
+        } />
 
-            <Route path='post/:id/:id_event?' element={
-              <RequireAuth >
-                <EditPost /> 
-              </RequireAuth>
-              } />
+        <Route path='post/:id/:id_event?' element={
+          <RequireAuth >
+            <EditPost />
+          </RequireAuth>
+        } />
 
-            <Route path='savedposts' element={
-              <RequireAuth >
-                <SavedPosts />
-              </RequireAuth>} />
+        <Route path='savedposts' element={
+          <RequireAuth >
+            <SavedPosts />
+          </RequireAuth>} />
 
-            <Route path='createschedule' element={
-              <RequireAuth>
-                <CreateSchedule/>
-              </RequireAuth>} />
+        <Route path='createschedule' element={
+          <RequireAuth>
+            <CreateSchedule />
+          </RequireAuth>} />
 
-            <Route path='addmedia' element={
-            <RequireAuth>
-              <AddMedia />
-            </RequireAuth>} />
+        <Route path='addmedia' element={
+          <RequireAuth>
+            <AddMedia />
+          </RequireAuth>} />
 
-            <Route path='channels' element={
-              <RequireAuth >
-                <MyChanels />
-              </RequireAuth>} />
+        <Route path='channels' element={
+          <RequireAuth >
+            <MyChanels />
+          </RequireAuth>} />
 
-            <Route path='channel/:id' element={
-              <RequireAuth>
-                <EditChannel />
-              </RequireAuth>} />
-            
-            <Route path='addnewchannel' element={
-            <RequireAuth >
-              <AddNewChannel />
-            </RequireAuth>} />
+        <Route path='channel/:id' element={
+          <RequireAuth>
+            <EditChannel />
+          </RequireAuth>} />
 
-            <Route path='schedule_channel' element={
-            <RequireAuth >
-              <ScheduleChannel />
-            </RequireAuth>} />
+        <Route path='addnewchannel' element={
+          <RequireAuth >
+            <AddNewChannel />
+          </RequireAuth>} />
 
-            <Route path='tags' element={
-              <RequireAuth >
-                <Tags />
-              </RequireAuth>} />
-            <Route path='*' element={<h3>NOT FOUND PAGE</h3>} />
-          </Route>
+        <Route path='schedule_channel' element={
+          <RequireAuth >
+            <ScheduleChannel />
+          </RequireAuth>} />
 
-        </Routes>
+        <Route path='tags' element={
+          <RequireAuth >
+            <Tags />
+          </RequireAuth>} />
+
+        <Route path='settings' element={
+          <RequireAuth >
+            <Settings />
+          </RequireAuth>} />
+
+        <Route path='*' element={<h3>NOT FOUND PAGE</h3>} />
+      </Route>
+
+    </Routes>
   )
 }
 

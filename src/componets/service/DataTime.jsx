@@ -58,7 +58,6 @@ export default function ComponentDateTimePicker({ setDateRemovePost, dateRemoveP
 export const InputDateTime = ({ sx, dateTimeValue, setdateTimeValue, label }) => {
     const changeDateTime = (e) => {
         setdateTimeValue(e.target.value)
-        console.log(e.target.value)
     }
 
     return (

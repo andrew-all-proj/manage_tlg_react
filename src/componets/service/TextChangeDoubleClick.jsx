@@ -1,10 +1,17 @@
 import { useState } from "react";
 import Typography from '@mui/material/Typography';
 import Input from '@mui/material/Input';
+import { useEffect } from "react";
 
 
 export const TextChangeDoubleClick = ({label, inputData, setInputData, inputText, setInputText, id='0', getId=()=>{} }) => {
-    const [text, setText] = useState(inputData);
+    const [text, setText] = useState('');
+
+    useEffect(() => {
+        if(inputData){
+            setText(inputData)
+        }
+    }, [inputData])
 
     const handleChange = (e) => {
         setText(e.target.value)
