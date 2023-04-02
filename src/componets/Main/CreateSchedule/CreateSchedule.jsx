@@ -30,6 +30,7 @@ const CreateSchedule = () => {
     const [listMedia, setListMedia] = useState({});
     const [limitrecords, setLimitrecords] = useState(0);
     const [lastTimeUsed, setLastTimeUsed] = useState(null);
+    const [totalPage, setTotalPage] = useState(1);
 
 
     const countMediaForTime = () => {
@@ -60,6 +61,7 @@ const CreateSchedule = () => {
                 if (data.error) return setAlertShow({ show: true, msgInfo: "Ошибка сети", severity: "error" })
                 setListMedia(data)
                 setFormListSchedule(true)
+                setTotalPage(data.total_count)
             })
     }
 
@@ -67,7 +69,8 @@ const CreateSchedule = () => {
     return (
         <Box sx={{ border: "solid", borderColor: "LightGray", borderWidth: 1, borderRadius: 2 }}>
             {formListSchedule ? <FormListNewSchedule setFormListSchedule={setFormListSchedule} listMedia={listMedia}
-                limitrecords={limitrecords} timeStart={timeStart} timeStop={timeStop} intervalTime={intervalTime} idChannel={idChannel} timeRemove={timeRemove}/> :
+                limitrecords={limitrecords} timeStart={timeStart} timeStop={timeStop} intervalTime={intervalTime} idChannel={idChannel} timeRemove={timeRemove}
+                totalPage={totalPage} /> :
                 <Grid container spacing={0.5} >
                     <Grid md={12} xs={12}>
                         <h3>Создать расписание</h3>
@@ -106,16 +109,10 @@ const CreateSchedule = () => {
 export default CreateSchedule
 
 export function SwitchLabels({ setPublished, published }) {
-    const clickPublished = (e) => {
-        setPublished(e.target.checked)
-    }
-
 
     return (
         <FormGroup>
-            <FormControlLabel control={<Switch value={published} defaultChecked={published} onClick={clickPublished} />} label="Не опобуликованное Медиа" />
-            <FormControlLabel disabled={true} control={<Switch />} label="Удаленное медиа за период" />
-            <FormControlLabel disabled={true} control={<Switch />} label="Посты за период" />
+            <FormControlLabel control={<Switch defaultChecked={published} onClick={(e) => setPublished(e.target.checked)} />} label="Не опобуликованное Медиа" />
         </FormGroup>
     );
 }

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useLocation, Navigate } from 'react-router-dom'
 
 import { headers, no_auth_rederect } from "./api";
-import { BASE_URL, error_response } from "./api";
+import { BASE_URL, error_response, encodePassword } from "./api";
 
 
 
@@ -10,7 +10,7 @@ import { BASE_URL, error_response } from "./api";
 export const create_new_user = async (username, email, password) => {
     const data = {
         "email": email,
-        "password": password,
+        "password": encodePassword(password),
         "user_name": username
         }
     return await axios

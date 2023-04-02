@@ -16,16 +16,18 @@ import { Button } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {SelectFilterSorte} from '../../service/serviceComponents/SelectFilterSorte'
+import { AlertInfo } from '../../service/AlertInfo';
 
 
 
 export default function SavedPosts() {
+    const [showAlert, setAlertShow] = useState({ show: false, msgInfo: '', severity: "error" })
     const [listPosts, setListPosts] = useState([]);
     const [page, setPage] = React.useState(1);
     const [totalPage, setTotalPage] = React.useState(1);
     const [reverseSort, setReverseSort] = React.useState(false);
-    const [timeStart, setTimeStart] = useState(null);
-    const [timeStop, setTimeStop] = useState(null);
+    const [timeStart, setTimeStart] = useState('');
+    const [timeStop, setTimeStop] = useState('');
     const [filter, setFilter] = useState(false);
 
 
@@ -33,7 +35,7 @@ export default function SavedPosts() {
         setListPosts([])
         get_list_posts(page, PER_PAGE, reverseSort, timeStart, timeStop).
             then(function (data) {
-                console.log(data)
+                if(data.error) return setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })
                 setListPosts([...data.items])
                 setTotalPage(data.total_count)
             })
@@ -82,6 +84,7 @@ export default function SavedPosts() {
                         </Stack>
                     </Grid>
                     <Button sx={{m: 1}} variant="contained" onClick={()=> setFilter(true)}>Применить</Button>
+                    <AlertInfo showAlert={showAlert.show} setAlertShow={setAlertShow} severity={showAlert.severity} value={showAlert.msgInfo} />
                 </Grid>
             </Box>
             {listPosts.map((iteam) =>
@@ -105,7 +108,7 @@ const Item = ({ media, typeMedia, idPost, textPost, dateCreate }) => {
             <Box sx={{ minWidth: "140px", maxWidth: "200px", minHeight: '100px', padding: '3px' }}>
                 <ShowFile file={`${BASE_URL}media/download/${media}`} typeMedia={typeMedia} />
             </Box>
-            <Box sx={{ minWidth: "200px" }}>
+            <Box sx={{ minWidth: "180px" }}>
                 <NavLink to={`/post/${idPost}/`} style={{ color: 'inherit', textDecoration: 'inherit' }}>
                     <Box >
                         Создан: {formatDateTimeShow(localDate(dateCreate))}<br />

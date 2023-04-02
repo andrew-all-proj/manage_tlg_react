@@ -42,7 +42,7 @@ export const TagsForm = ({listTags, selectedTag, setSelectedTag}) => {
                 <Typography variant="h6">Теги</Typography>
             </IconButton>   
             { showTags && <Box>
-                <Grid  spacing={2} >
+                <Grid >
                     {listTags && listTags.map((tag) => 
                         <ItemChip selected={selectedTag} key={tag.id_tag}  label={tag.tag_name} onClick={handleClick}  id={tag.id_tag} />
                     )}

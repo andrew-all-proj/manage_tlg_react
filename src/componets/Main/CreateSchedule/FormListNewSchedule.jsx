@@ -13,7 +13,7 @@ import { PER_PAGE } from '../../../api/api'
 import FormBoxMedia from './FormBoxMedia';
 
 
-const FormListNewSchedule = ({ setFormListSchedule, listMedia, limitrecords, timeStop, timeStart, intervalTime, idChannel, timeRemove}) => {
+const FormListNewSchedule = ({ setFormListSchedule, listMedia, limitrecords, timeStop, timeStart, intervalTime, idChannel, timeRemove, totalPage}) => {
     const [page, setPage] = useState(1);
     const [disableSaveButton, setDisableSaveButton] = useState(false);
     const [listForCreateSchedule, setListForCreateSchedule] = useState([]);
@@ -110,7 +110,7 @@ const FormListNewSchedule = ({ setFormListSchedule, listMedia, limitrecords, tim
                     </Box>
                 </Grid>)}
             <Grid md={6} xs={12}>
-                <Pagination onChange={pageChange} page={page} count={Math.ceil(limitrecords / PER_PAGE)} defaultPage={1} variant="outlined" shape="rounded" />
+                <Pagination onChange={pageChange} page={page} count={Math.ceil(totalPage / PER_PAGE)} defaultPage={1} variant="outlined" shape="rounded" />
             </Grid>
             <Grid md={12} xs={12}>
             <AlertInfo showAlert={showAlert.show} setAlertShow={setAlertShow} severity={showAlert.severity} value={showAlert.msgInfo} />

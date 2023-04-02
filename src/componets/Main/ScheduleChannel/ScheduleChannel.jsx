@@ -9,6 +9,7 @@ import { InputDateTime, InputTime } from '../../service/DataTime'
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Stack } from '@mui/system';
+import { AlertInfo } from '../../service/AlertInfo';
 
 
 import SelectChannel from "../../service/SelectChannel"
@@ -21,18 +22,20 @@ export default function ScheduleChannel() {
     const [listEvents, setListEvents] = useState(null);
     const [reverseSort, setReverseSort] = React.useState(false);
     const [filter, setFilter] = useState(false);
-    const [timeStart, setTimeStart] = useState(null);
-    const [timeStop, setTimeStop] = useState(null);
+    const [timeStart, setTimeStart] = useState('');
+    const [timeStop, setTimeStop] = useState('');
+    const [showAlert, setAlertShow] = useState({ show: false, msgInfo: '', severity: "error" })
 
     const [page, setPage] = useState(1);
     const [totalPage, setTotalPage] = useState(1);
     const per_page = 10
 
-    //export const get_list_events = async (id_channel, page=1, per_page=100, reverse_sort, date_time_start, date_time_stop) => {
+
     useEffect(() => {
         if (idChannel) {
             get_list_events(idChannel, page, per_page, reverseSort, timeStart, timeStop).
                 then((data) => {
+                    if(data.error) return setAlertShow({ show: true, msgInfo: data.msg, severity: "error" })
                     setListEvents(data)
                     setTotalPage(data.total_count)
                 })
@@ -73,6 +76,7 @@ export default function ScheduleChannel() {
                     </Grid>
                     <Button sx={{ m: 1, maxHeight: "35px" }} variant="contained" onClick={() => setFilter(true)}>Применить</Button>
                 </Grid>
+                <AlertInfo showAlert={showAlert.show} setAlertShow={setAlertShow} severity={showAlert.severity} value={showAlert.msgInfo} />
                 </Box>
                     {
                         listEvents && <TableChannel listEvents={listEvents} idChannel={idChannel} />

@@ -82,20 +82,20 @@ export default function CreatePost() {
 
     return (
         <Box sx={{ border: 1, borderColor: '#DCDCDC', borderRadius: 2 }}>
-            <Grid container spacing={1}>
+            <Grid container >
                 <Grid xs={12}>
                     СОЗДАТЬ НОВЫЙ ПОСТ
                 </Grid>
-                <Grid xs={12} md={6} mdOffset={0}>
+                <Grid xs={12} md={6} >
                     {renderVideo}
                 </Grid>
-                <Grid xs={12} md={6} mdOffset={0}>
+                <Grid xs={12} md={6} >
                     <Box sx={{ border: "solid", borderColor: "LightGray", borderWidth: 1, borderRadius: 2 }}>
                         <SelectChannel setIdChannel={setIdChannel} channel={idChannel} />
                         <SelectTags selectedTag={selectedTag} setSelectedTag={setSelectedTag} idChannel={idChannel}/>
                     </Box>
                 </Grid>
-                <Grid xs={12} md={6} mdOffset={0}>
+                <Grid xs={12} md={6}>
                     <div>
                         <PostTextInput textPost={textPost} setTextPost={setTextPost} />
                     </div>
@@ -110,9 +110,6 @@ export default function CreatePost() {
                     >
                         <span>Сохранить</span>
                     </LoadingButton>
-                </Grid>
-                <Grid xs={12} md={6} mdOffset={0}>
-
                 </Grid>
             </Grid>
         </Box>

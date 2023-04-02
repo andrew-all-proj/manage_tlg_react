@@ -3,8 +3,8 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { useState, useEffect } from "react";
-import { InputDateTime, InputTime } from '../../service/DataTime'
-import { formatDateTime, localDate } from '../../service/localDateTime'
+import { InputDateTime, InputTime,  } from '../../service/DataTime'
+import { formatDateTime, localDate,  formatDateTimeShow} from '../../service/localDateTime'
 import Switch from '@mui/material/Switch';
 import { BASE_URL } from '../../../api/api';
 import { ShowFile } from '../../service/InputFile'
@@ -91,7 +91,7 @@ const FormBoxMedia = ({ data, setListForCreateSchedule, listForCreateSchedule })
                 <ShowFile file={`${BASE_URL}media/download/${data.id_media}`} typeMedia={data.type_media} />
             </Box>
             <Stack spacing={2}>
-                <Item> Публиковалось: {listForCreateSchedule[index].last_time_used === listForCreateSchedule[index].date_download ? "никогда" : formatDateTime(listForCreateSchedule[index].last_time_used)} </Item>
+                <Item> Публиковалось: {listForCreateSchedule[index].last_time_used === listForCreateSchedule[index].date_download ? "никогда" : formatDateTimeShow(listForCreateSchedule[index].last_time_used)} </Item>
                 <Item> Описание: {listForCreateSchedule[index].description} </Item>
                 <InputDateTime sx={{ minWidth: 300, m: 1 }} label="Дата публикации:" dateTimeValue={formatDateTime(listForCreateSchedule[index].date_publish)} setdateTimeValue={setTime} />
                 {listForCreateSchedule[index].dateRemovePost && <InputDateTime sx={{ minWidth: 300, m: 1 }} label="Дата удаления:" dateTimeValue={formatDateTime(listForCreateSchedule[index].dateRemovePost)} setdateTimeValue={setRemoveTime} />}

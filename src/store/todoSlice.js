@@ -8,9 +8,6 @@ const todoSlice = createSlice({
     },
     reducers:{
         addTodo(state, action){
-            console.log(state)
-            console.log(1111)
-            console.log(action)
             state.todos.push({
                 key: new Date().toISOString(),
                 text: action.payload.text

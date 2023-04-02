@@ -12,7 +12,7 @@ export const SelectFilterSorte = ({sx, label, setReverseSort, reverseSort}) => {
 
     return (
         <Box sx={sx}>
-        <FormControl sx={sx}>
+        <FormControl >
             <InputLabel id="demo-simple-select-label">{label}</InputLabel>
             <Select
                 labelId="demo-simple-select-label"
