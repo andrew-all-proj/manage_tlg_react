@@ -3,22 +3,13 @@ import { useAuth } from "../../hook/useAuth";
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
-import Divider from '@mui/material/Divider';
-import { padding } from '@mui/system';
-import { addTodo, removeTodo } from '../../../store/todoSlice';
-import { get_list_tags, add_tag, remove_tag, update_tag } from '../../../api/tags'
 import { useState, useEffect } from "react";
 import {TextChangeDoubleClick} from '../../service/TextChangeDoubleClick'
 import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import Stack from '@mui/material/Stack';
 import {get_user_by_id, update_user} from '../../../api/user';
-import { useDispatch, useSelector } from 'react-redux';
-import TextField from '@mui/material/TextField';
 import PasswordInput from '../../service/PasswordInput';
 import { AlertInfo } from '../../service/AlertInfo';
 import { check_valid_create_user } from '../../service/serviceFunctions/checkImputReg';

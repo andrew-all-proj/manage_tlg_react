@@ -18,6 +18,7 @@ import EditChannel from './componets/Main/MyChanels/Channel';
 import EditPost from './componets/Main/Posts/EditPost';
 import ScheduleChannel from './componets/Main/ScheduleChannel/ScheduleChannel';
 import UserRegistration from './componets/UserRegistration/UserRegistration';
+import Bots from './componets/Main/Bots/Bots';
 import Settings from './componets/Main/Settings/Settings';
 import { useState, useEffect } from "react";
 import { useResize } from "./componets/hook/useResize"
@@ -108,6 +109,11 @@ const App = () => {
         <Route path='tags' element={
           <RequireAuth >
             <Tags />
+          </RequireAuth>} />
+        
+          <Route path='bots' element={
+          <RequireAuth >
+            <Bots />
           </RequireAuth>} />
 
         <Route path='settings' element={

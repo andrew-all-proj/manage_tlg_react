@@ -16,7 +16,8 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import TagIcon from '@mui/icons-material/Tag';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
-
+import SmartToyIcon from '@mui/icons-material/SmartToy';
+import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 
 
 export default function Navbar() {
@@ -101,6 +102,26 @@ export default function Navbar() {
                     </ListItemIcon>
                     <ListItemText>
                         Метки
+                    </ListItemText>
+                </MenuItem>
+                </NavLink>
+                <NavLink to="/bots" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                <MenuItem>
+                    <ListItemIcon>
+                        <SmartToyIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>
+                        Боты
+                    </ListItemText>
+                </MenuItem>
+                </NavLink>
+                <NavLink to="/tags" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                <MenuItem>
+                    <ListItemIcon>
+                        <HelpCenterIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>
+                        Документация
                     </ListItemText>
                 </MenuItem>
                 </NavLink>
