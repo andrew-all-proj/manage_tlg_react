@@ -41,7 +41,6 @@ export const unset_media_to_post = async (idMedia, idPost) => {
 
 // UPLOAD MEDIA
 export const post_media = async (selectedFile) => {
-    console.log(selectedFile)
     let formData = new FormData();
     formData.append("file", selectedFile);
     let Newheaders = headers()
@@ -53,8 +52,7 @@ export const post_media = async (selectedFile) => {
             'Access-Control-Allow-Credentials': "true"
         }})
         .then(function (res) {
-            const data = res.data;
-            return data
+            return res.data
         })
         .catch(function (err) {
             return error_response(err)

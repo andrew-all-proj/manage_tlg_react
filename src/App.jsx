@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CreatePosts from './componets/Main/Posts/CreatePosts';
+import Posts from './componets/Main/Posts/Posts';
 import SavedPosts from './componets/Main/SavedPosts/SavedPosts';
 import { Routes, Route, Link } from 'react-router-dom';
 import Layout from './componets/Layout';
@@ -10,12 +10,13 @@ import AddNewChannel from './componets/Main/MyChanels/AddNewChannel';
 import Tags from './componets/Main/Tags/Tags';
 import LoginPage from './componets/LoginPage/LoginPage';
 import CreateSchedule from './componets/Main/CreateSchedule/CreateSchedule'
+import Docs from './componets/Main/Docs/Docs'
 
 
 import RequireAuth from './componets/hoc/RequireAuth';
 import { AuthProvider } from './componets/hoc/AuthProvider';
 import EditChannel from './componets/Main/MyChanels/Channel';
-import EditPost from './componets/Main/Posts/EditPost';
+//import EditPost from './componets/Main/Posts/EditPost';
 import ScheduleChannel from './componets/Main/ScheduleChannel/ScheduleChannel';
 import UserRegistration from './componets/UserRegistration/UserRegistration';
 import Bots from './componets/Main/Bots/Bots';
@@ -56,18 +57,19 @@ const App = () => {
       <Route path='/' element={<Layout />} >
         <Route index element={
           <RequireAuth >
-            <CreatePosts />
+            <Posts />
           </RequireAuth>} />
 
-        <Route path='createpost' element={
+        <Route path='post' element={
           <RequireAuth >
-            <CreatePosts />
+            <Posts />
           </RequireAuth>
         } />
 
-        <Route path='post/:id/:id_event?' element={
+
+        <Route path='post/:id_post/:id_event?' element={
           <RequireAuth >
-            <EditPost />
+            <Posts />
           </RequireAuth>
         } />
 
@@ -110,10 +112,15 @@ const App = () => {
           <RequireAuth >
             <Tags />
           </RequireAuth>} />
-        
-          <Route path='bots' element={
+
+        <Route path='bots' element={
           <RequireAuth >
             <Bots />
+          </RequireAuth>} />
+
+        <Route path='docs' element={
+          <RequireAuth >
+            <Docs />
           </RequireAuth>} />
 
         <Route path='settings' element={

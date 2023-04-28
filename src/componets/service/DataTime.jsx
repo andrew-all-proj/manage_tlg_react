@@ -23,14 +23,19 @@ export default function ComponentDateTimePicker({ setDateRemovePost, dateRemoveP
     };
 
     useEffect(() => {
+        if(dateRemovePost){
+            setChecked(true)
+        }
+    }, [dateRemovePost]);
+
+    useEffect(() => {
         if (checked) {
-            setDateRemovePost(datePublishPost)
+            setDateRemovePost(dateRemovePost)
         }
         if (!checked) {
-            setDateRemovePost(null)
+            setDateRemovePost('')
         }
     }, [checked]);
-
 
     return (
         <Box sx={{ maxWidth: 500 }}>

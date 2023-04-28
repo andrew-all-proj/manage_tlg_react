@@ -24,7 +24,7 @@ export default function Navbar() {
     return (
         <Paper sx={{ minWidth: '100%'}}>
             <MenuList>
-                <NavLink to="/createpost" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                <NavLink to="/post/" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <MenuItem>
                     <ListItemIcon>
                         <ContentCut fontSize="small" />
@@ -115,7 +115,7 @@ export default function Navbar() {
                     </ListItemText>
                 </MenuItem>
                 </NavLink>
-                <NavLink to="/tags" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+                <NavLink to="/docs" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                 <MenuItem>
                     <ListItemIcon>
                         <HelpCenterIcon fontSize="small" />

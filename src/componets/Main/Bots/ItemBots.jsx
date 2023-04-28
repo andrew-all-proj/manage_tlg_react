@@ -81,7 +81,7 @@ export const ItemBots = ({ value, update }) => {
             {value.users_feedback.map((user) =>
                 <ItemUsersBot key={user.id_users_to_feedback_bot} value={user} update={update} />
             )}
-            {showAddUserBot ? <AddBoxNewUserBot label="Добавить пользователя:" idFeedbackBot={value.id_feedback_bot}/> 
+            {showAddUserBot ? <AddBoxNewUserBot label="Добавить пользователя:" update={update} idFeedbackBot={value.id_feedback_bot} setShow={setShowAddUserBot}/> 
                 :
             <IconButton onClick={() => setShowAddUserBot(true)} aria-label="delete" size="large">
                 <PersonAddIcon fontSize="default" color="primary" />
@@ -92,16 +92,23 @@ export const ItemBots = ({ value, update }) => {
 }
 
 
-export const AddBoxNewUserBot = ({ update, label, idFeedbackBot }) => {
+export const AddBoxNewUserBot = ({ update, label, idFeedbackBot, setShow }) => {
     const [nameUserBot, setNameUserBot] = useState('');
-    const [tokenUserBot, setTokenUserBot] = useState('');
+    const [idUserBot, setIdUserBot] = useState('');
     const [showAlert, setAlertShow] = useState({ show: false, msgInfo: '', severity: "error" })
 
     const add_user_feedback_bot = () => {
-        add_new_user_feedback_bot(idFeedbackBot). //, id_user_telegram, name_user
+        if(nameUserBot.length < 3){
+            return setAlertShow({ show: true, msgInfo: "Имя пользователя должно быть больше 4 символов", severity: "error" })
+        }
+        if(idUserBot.length < 6){
+            return setAlertShow({ show: true, msgInfo: "Неверный id", severity: "error" })
+        }
+        add_new_user_feedback_bot(idFeedbackBot, idUserBot, nameUserBot). 
         then((data) => {
             if (data.error) return setAlertShow({ show: true, msgInfo: "Ошибка добавления", severity: "error" })
             update(true)
+            setShow(false)
         })
     }
 
@@ -115,7 +122,7 @@ export const AddBoxNewUserBot = ({ update, label, idFeedbackBot }) => {
                 alignItems="left"
                 spacing={0.5} >
                 <TextField id="outlined-basic0" value={nameUserBot} onChange={(e) =>  setNameUserBot(e.target.value)} label="Имя пользователя" variant="outlined" />
-                <TextField id="outlined-basiс1" value={tokenUserBot} onChange={(e) => setTokenUserBot(e.target.value)} label="Id пользователя" variant="outlined" />
+                <TextField id="outlined-basiс1" value={idUserBot} onChange={(e) => setIdUserBot(e.target.value)} label="Id пользователя" variant="outlined" />
             </Stack>
             <AlertInfo showAlert={showAlert.show} setAlertShow={setAlertShow} severity={showAlert.severity} value={showAlert.msgInfo} />
             <Button onClick={add_user_feedback_bot} variant="contained">Добавить</Button>
@@ -130,6 +137,12 @@ export const AddBoxNewBot = ({ update }) => {
     const [showAlert, setAlertShow] = useState({ show: false, msgInfo: '', severity: "error" })
 
     const create_bot = () => {
+        if(nameBot.length < 3){
+            return setAlertShow({ show: true, msgInfo: "Имя бота должно быть больше 4 символов", severity: "error" })
+        }
+        if(tokenBot.length < 10){
+            return setAlertShow({ show: true, msgInfo: "Неверный токен", severity: "error" })
+        }
         add_new_feedback_bot(nameBot, tokenBot)
             .then((data) => {
                 if (data.error) return setAlertShow({ show: true, msgInfo: "Ошибка добавления", severity: "error" })

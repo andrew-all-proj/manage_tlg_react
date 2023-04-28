@@ -19,6 +19,7 @@ export default function SelectChannel(props) {
     useEffect(() => {
         get_list_channels().
         then((data) => {
+            if (data.error) return 
             setListChannels(data)
         })
         if (props.channel) {
@@ -26,6 +27,7 @@ export default function SelectChannel(props) {
         }
     }, [props.channel])
 
+    
     return (
         <Box sx={{ minWidth: 120 }}>
             <FormControl sx={{ marginBottom: 2}} fullWidth>
@@ -37,7 +39,7 @@ export default function SelectChannel(props) {
                     label="Channels"
                     onChange={selectChannel}
                 >   
-                    {listChannels.map((channel) => (
+                    {listChannels && listChannels.map((channel) => (
                         <MenuItem key={channel.id_channel} value={channel.id_channel}>{channel.name_channel}</MenuItem>
                     ))}
                 </Select>

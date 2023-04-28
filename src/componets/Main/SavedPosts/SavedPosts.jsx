@@ -18,7 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {SelectFilterSorte} from '../../service/serviceComponents/SelectFilterSorte'
 import { AlertInfo } from '../../service/AlertInfo';
 
-
+import NoFile from "../../../assets/images/nofile.jpg"
 
 export default function SavedPosts() {
     const [showAlert, setAlertShow] = useState({ show: false, msgInfo: '', severity: "error" })
@@ -103,10 +103,11 @@ const Item = ({ media, typeMedia, idPost, textPost, dateCreate }) => {
         if (!str || str.length < 70) return str
         return str.slice(0, 70)
     }
+
     return (
         <Stack direction="row" spacing={2}>
             <Box sx={{ minWidth: "140px", maxWidth: "200px", minHeight: '100px', padding: '3px' }}>
-                <ShowFile file={`${BASE_URL}media/download/${media}`} typeMedia={typeMedia} />
+                <ShowFile file= {media ? `${BASE_URL}media/download/${media}` : NoFile} typeMedia={typeMedia} />
             </Box>
             <Box sx={{ minWidth: "180px" }}>
                 <NavLink to={`/post/${idPost}/`} style={{ color: 'inherit', textDecoration: 'inherit' }}>

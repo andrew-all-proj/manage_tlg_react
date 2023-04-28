@@ -11,13 +11,12 @@ import { useDropzone } from 'react-dropzone';
 
 
 
-const FileInput = ({ setSelectedFile, selectedFile, typeMedia = null, ...props }) => {
+const FileInput = ({ setSelectedFile, selectedFile, typeMedia}) => {
     const [typeFile, setTypeFile] = useState(typeMedia);
     const onDrop = useCallback(acceptedFiles => {
         selectMedia(acceptedFiles)
     }, [])
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
-
     const selectMedia = (files) => {
         setSelectedFile(files[0])
         set_type_media(files[0].type.split('/')[0])
@@ -40,15 +39,15 @@ const FileInput = ({ setSelectedFile, selectedFile, typeMedia = null, ...props }
         else if (file === "image") { setTypeFile('img') }
         else if (file === "audio") { setTypeFile('audio') }
     }
-
+    
 
     return (
-        <Card sx={{ maxWidth: 350, minHeight: 30 }}>
+        <Card sx={{ maxWidth: 450, minHeight: 30, m: 1 }}>
             <Card {...getRootProps()} sx={{ minHeight: 100 }}>
                 {selectedFile ?
                     <CardActionArea>
                         <CardMedia
-                            component={typeFile}
+                            component={typeFile ? typeFile : typeMedia}
                             preload="auto"
                             controls
                             image={createURL(selectedFile)}
@@ -88,7 +87,7 @@ export const ShowFile = ({file, typeMedia='img'}) => {
         <>
         <CardMedia 
             component={typeMedia}
-            preload="auto"
+            preload="metadata"
             controls
             image={file}
         />

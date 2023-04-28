@@ -20,10 +20,11 @@ export default function Bots() {
             })
     }, [updateList]);
 
+    
     return (
         <Box sx={{ border: "solid", borderColor: "LightGray", borderWidth: 1, borderRadius: 2, padding: 0.5 }}>
             <Typography variant="h5" gutterBottom >Бот обратной связи:</Typography>
-            {listFeedbackBots.map((bot) =>
+            {listFeedbackBots.length > 0 && listFeedbackBots.map((bot) =>
                 <ItemBots key={bot.id_feedback_bot} value={bot} update={setUpdateList} />
             )}
             <AddBoxNewBot update={setUpdateList} />

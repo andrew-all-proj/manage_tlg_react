@@ -5,6 +5,9 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@lexical/link": "^0.10.0",
+    "@lexical/list": "^0.10.0",
+    "@lexical/react": "^0.10.0",
     "@mui/icons-material": "^5.11.0",
     "@mui/lab": "^5.0.0-alpha.122",
     "@mui/material": "^5.11.12",
@@ -23,6 +26,7 @@
     "axios": "^1.2.6",
     "dayjs": "^1.11.7",
     "emoji-picker-react": "^4.4.7",
+    "lexical": "^0.10.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",
