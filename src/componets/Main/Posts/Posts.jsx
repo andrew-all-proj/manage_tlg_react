@@ -74,10 +74,10 @@ export default function Post() {
                         checkTypeMedia(data.media[0].type_media.type_media)
                         setIdMedia(data.media[0].id_media)
                         getInfoMediaByID(data.media[0].id_media)
-                        setModeEdit(true)
                         setSelectedFile(`${BASE_URL}media/download/${data.media[0].id_media}`)
                         setStateMedia('update')
                     }
+                    setModeEdit(true)
                     setTextPost(data.text)
                 }
                 setShowProgressLoad(false)
@@ -97,63 +97,85 @@ export default function Post() {
         }
     }, []);
 
-
+    // create new post
     useEffect(() => {
+        console.log(1111)
         if(getText){
-            if (idPost) {             // update post
+            if (idPost) {             // update text post
                 updatePost(idPost)
-                setGetText(false)
                 return
-            }  
-            setLoading(true)   
-            post_create(textPost)      // create new post 
-            .then(function (data) {
-                if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка сохранения поста", severity: "error" }) }
-                setTextPost(data.text)
-                setIdPost(data.id_post)
-                if (selectedFile) {
-                    loadMedia(data.id_post)
-                }else{
-                    setModeEdit(true)
-                    setLoading(false)
-                    setAlertSavePostShow({ show: true, msgInfo: "Пост создан", severity: "success" }) 
-                }
-                navigate(`/post/${data.id_post}`)
-            }) 
-            setGetText(false)
+            } 
+            createPost()    
         }   
     }, [textPost]);
 
+    
+    useEffect(() => {
+        if(!idPost && selectedFile){
+            createPost()                             // if don't have text, but have media. Create new post
+        }
+        if(idPost && getText){                              //update media
+            console.log("UPDATE MEDIA")      
+            console.log(stateMedia)
+            if(stateMedia === 'delete'){                      //delete media
+                unsetMediaToPost(id_post)
+            }
+            if(stateMedia === 'new'){
+                unsetMediaToPost(id_post)
+                loadMedia(id_post)
+                console.log("CREATE NEW MEDIA")
+                setAlertSavePostShow({ show: true, msgInfo: "Медиа обновлено", severity: "success" }) 
+            }
+            if(stateMedia === 'update' && selectedFile){
+                setTags(idMedia) 
+            }
+        }
+        setLoading(false)   
+    }, [getText]);
+
+    const waitStateUpdate = async (setState, value) => {
+        new Promise(resolve => setState(value));
+        }
 
     // Save new post or update post
-    const savePost = () => {
+    const savePost = async () => {
+        setLoading(true)
+        if(getText){
+            await waitStateUpdate(setGetText, false);
+        }
         console.log('update')
-        setGetText(true)
-        setTextPost("") 
+        console.log(getText)
+        await waitStateUpdate(setGetText, true);
     };
 
+    const createPost = () => { 
+        post_create(textPost)      // create new post 
+        .then(function (data) {
+            if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка сохранения поста", severity: "error" }) }
+            setTextPost(data.text)
+            setIdPost(data.id_post)
+            if (selectedFile) {
+                loadMedia(data.id_post)
+            }else{
+                setModeEdit(true)
+                setLoading(false)
+                setAlertSavePostShow({ show: true, msgInfo: "Пост создан", severity: "success" }) 
+            }
+            navigate(`/post/${data.id_post}`)
+        }) 
+    }
+
     const updatePost = (id_post) => {
+        console.log('update')
+        console.log(textPost)
         update_post(id_post, textPost).
             then((data) => {
                 if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка обновления поста", severity: "error" }) }
                 setTextPost(data.text)
-                console.log("UPDATE NEW MEDIA")
-                console.log(stateMedia)
-                if(stateMedia === 'delete'){                      //delete media
-                    unsetMediaToPost(id_post)
-                }
-                if(stateMedia === 'new'){
-                    unsetMediaToPost(id_post)
-                    loadMedia(id_post)
-                }else{
-                    setLoading(false)
-                    setAlertSavePostShow({ show: true, msgInfo: "Пост обновлен", severity: "success" }) 
-                }
-                if(stateMedia === 'update'){
-                    setTags(idMedia) 
-                }
+                setAlertSavePostShow({ show: true, msgInfo: "Текст обновлен", severity: "success" }) 
             })
     }
+
 
     const unsetMediaToPost = (id_post) => {
         if(idMedia){
@@ -180,6 +202,7 @@ export default function Post() {
         }  
 
     }, [selectedFile]);
+
 
     // load new media
     const loadMedia = (id_post) => {
@@ -239,13 +262,6 @@ export default function Post() {
                 setSelectedTag([...listTags])
             })
     }
-
-
-    useEffect(() => {
-        if(idPost){
-            //setModeEdit(true)
-        }
-    }, []);
 
 
     // DELETE POST
