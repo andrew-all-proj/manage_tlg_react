@@ -18,12 +18,11 @@ const FileInput = ({ setSelectedFile, selectedFile }) => {
     }, [])
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, noClick: true})
 
-    const [inputText, setInputText] = useState([]);
+    const [column, setColumn] = useState(12);
     const [selectedMedia, setSelectedMedia] = useState([]);
     //const [idSelectedMedia, setIdSelectedMedia] = useState('');
 
     const selectMedia = (files) => {
-        console.log(files)
         const arrayNewFile = []
         for (let i = 0; i < files.length; i++) {
             arrayNewFile.push({"file": files[i], "id_media": uuidv4() ,'local_link': URL.createObjectURL(files[i]), "type_media": { "type_media": files[i].type.split('/')[0] } })
@@ -31,9 +30,17 @@ const FileInput = ({ setSelectedFile, selectedFile }) => {
         setSelectedFile([...selectedFile, ...arrayNewFile])
     }
 
+    useEffect(() => {
+        console.log(selectedFile.length)
+        if(selectedFile.length > 1) {
+            console.log(111111)
+            setColumn(6)
+        }
+    }, [selectedFile]);
+
     const deleteMedia = () => {
         setSelectedFile((selectedFile) =>
-            selectedFile.filter((item) => !selectedMedia.includes(item.id_media.toString())))
+            selectedFile.filter((item) => !selectedMedia.includes(item.id_media)))
     } 
 
     const handlerSelectMedia = (idSelectedMedia, stateSelect) => {
@@ -51,7 +58,7 @@ const FileInput = ({ setSelectedFile, selectedFile }) => {
             <Card {...getRootProps()}  sx={{ minHeight: 100 }}>
                 {selectedFile !== [] ?
                     <Grid container >
-                        {selectedFile.map((item) => <Grid key={item.id_media} xs={6} md={6}>
+                        {selectedFile.map((item) => <Grid key={item.id_media} xs={column} md={column}>
                         <ItemMedia getRootProps={getRootProps} key={item.id_media} keyMedia={item.id_media} localLink={item.local_link}
                             typeFile={item.type_media.type_media} IdFile={item.id_media}
                             callBack={handlerSelectMedia} />
@@ -83,6 +90,7 @@ export default FileInput;
 
 export const ItemMedia = ({ typeFile, IdFile, localLink, keyMedia, callBack }) => {
     const [showBorder, setShowBorder] = useState(null);
+    const [idMedia, setIdMedia] = useState(keyMedia);
 
     const set_type_media = (file) => {
         if (file === "video") { return 'video' }
@@ -90,14 +98,12 @@ export const ItemMedia = ({ typeFile, IdFile, localLink, keyMedia, callBack }) =
         else if (file === "audio") { return 'audio' }
     }
 
-
-
     const handlerOnClick = (e) => {
         if (showBorder) {
-            callBack(e.target.id, false)
+            callBack(idMedia, false)
             setShowBorder(null)
         } else {
-            callBack(e.target.id, true)
+            callBack(idMedia, true)
             setShowBorder({ border: 3, borderColor: 'red' })
         }
     }
