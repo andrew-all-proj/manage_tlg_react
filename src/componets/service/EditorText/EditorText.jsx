@@ -29,7 +29,7 @@ import { style } from './style.css';
 import { $generateHtmlFromNodes } from '@lexical/html';
 import { $getRoot, $getSelection, $insertNodes, $createParagraphNode, $createTextNode } from 'lexical';
 
-export default function LexicalEditor({ getText, setGetText, textPost, setTextPost }) {
+export default function LexicalEditor({ startSavePost, setStartSavePost, textPost, setTextPost }) {
     const config = {
         namespace: 'lexical-editor',
         theme: Theme,
@@ -54,7 +54,7 @@ export default function LexicalEditor({ getText, setGetText, textPost, setTextPo
     return (
         <LexicalComposer initialConfig={config}>
             <Box sx={{ border: 1, borderColor: '#DCDCDC', borderRadius: 2, m: 1 }}>
-                <Toolbar getText={getText} setGetText={setGetText} textPost={textPost} setTextPost={setTextPost} />
+                <Toolbar startSavePost={startSavePost} setStartSavePostt={setStartSavePost} textPost={textPost} setTextPost={setTextPost} />
                 <RichTextPlugin
                     contentEditable={<ContentEditable className="editor-input" />}
                     placeholder={<Placeholder />}
@@ -70,7 +70,7 @@ export default function LexicalEditor({ getText, setGetText, textPost, setTextPo
 }
 
 
-const Toolbar = ({ getText, setGetText, textPost, setTextPost }) => {
+const Toolbar = ({ startSavePost, setStartSavePost, textPost, setTextPost }) => {
     const [showInputLink, setShowInputLink] = useState(false);
     const [showInputBold, setShowInputBold] = useState(false);
     const [showInputItalic, setShowInputItalic] = useState(false);
@@ -107,7 +107,7 @@ const Toolbar = ({ getText, setGetText, textPost, setTextPost }) => {
 
 
     useEffect(() => {
-        if (getText) {
+        if (startSavePost) {
             editor.update(() => {
                 const editorState = editor.getEditorState();
                 const jsonString = JSON.stringify(editorState);
@@ -118,7 +118,7 @@ const Toolbar = ({ getText, setGetText, textPost, setTextPost }) => {
                 setTextPost(removeTags(htmlString))
             });
         }
-    }, [getText]);
+    }, [startSavePost]);
 
     useEffect(() => {
         if (insertLink) {

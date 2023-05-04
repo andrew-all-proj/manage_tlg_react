@@ -6,12 +6,12 @@ import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
 import SaveIcon from '@mui/icons-material/Save';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Stack from '@mui/material/Stack';
-import { useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useState, useEffect, useMemo } from "react";
 //import PostTextInput from './PostTextInput'
-import FileInput from '../../service/InputFile'
-import EditorText  from '../../service/EditorText/EditorText'
+import FileInput from '../../service/ImputShowMedia/InputFile'
+import EditorText from '../../service/EditorText/EditorText'
 
 
 import { set_tags_to_media, unset_tags_to_media } from '../../../api/tags'
@@ -23,31 +23,75 @@ import { AlertInfo } from '../../service/AlertInfo';
 import SelectChannel from '../../service/SelectChannel'
 import { formatDateTime, localDate } from '../../service/localDateTime'
 import { get_event } from '../../../api/events'
-import {BlockTimePublish} from './BlockTimePublish'
+import { BlockTimePublish } from './BlockTimePublish'
 import SelectTags from '../../service/TagsForm';
 import ProgressLoad from "../../service/ProgressLoad"
 
 
+const checkDifferencesDelete = (dataPost, selectedFile) => {
+    let differences = [];
+    console.log(dataPost)
+    for (let i = 0; i < dataPost.media.length; i++) {
+        let id = dataPost.media[i].id_media;
+        let index = selectedFile.findIndex(x => x.id_media === id);
+
+        if (index === -1) {
+            differences.push(id);
+        }
+    }
+
+    if (differences.length > 0) {
+        console.log(`There were ${differences.length} differences:`);
+        console.log(differences);
+        return differences
+    } else {
+        console.log("The objects are identical.");
+        return []
+    }
+}
+
+const checkDifferencesNew = (dataPost, selectedFile) => {
+    let differences = [];
+    for (let i = 0; i < selectedFile.length; i++) {
+        let id = selectedFile[i].id_media;
+        let index = dataPost.media.findIndex(x => x.id_media === id);
+
+        if (index === -1) {
+            if (id !== undefined) {  // Добавляем проверку на undefined
+                differences.push(selectedFile[i].file);
+            }
+        }
+    }
+
+    if (differences.length > 0) {
+        console.log(`There were ${differences.length} differences:`);
+        console.log(differences);
+        return differences
+    } else {
+        console.log("The objects are identical.");
+        return []
+    }
+}
+
+
 export default function Post() {
     const navigate = useNavigate();
-    const { id_post, id_event} = useParams()
-
-    const [getText, setGetText] = useState(false);
-
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [textPost, setTextPost] = useState('');
+    const { id_post, id_event } = useParams()
     const [idPost, setIdPost] = useState(id_post)
+    const [startSavePost, setStartSavePost] = useState(false);
+
+    const [selectedFile, setSelectedFile] = useState([]);
+    const [textPost, setTextPost] = useState('');
+    const [dataPost, setDataPost] = useState(null);
+
     const [idEvent, setIdEvent] = useState(id_event);
     const [idChannel, setIdChannel] = useState('');
-    const [idMedia, setIdMedia] = useState('')
-    const [typeMedia, setTypeMedia] = useState('')
 
     const [modeEdit, setModeEdit] = useState(false)
     const [alertSavePostShow, setAlertSavePostShow] = useState({ show: false, msgInfo: '', severity: "error" })
-    const [loading, setLoading] = useState(false); 
-    const [showProgressLoad, setShowProgressLoad] = useState(false); 
+    const [loading, setLoading] = useState(false);
+    const [showProgressLoad, setShowProgressLoad] = useState(false);
 
-    const [stateMedia, setStateMedia] = useState('new');
     const [selectedTag, setSelectedTag] = useState([]);
     const [listGetTags, setListGetTags] = useState([]);
 
@@ -55,114 +99,123 @@ export default function Post() {
     const [dateRemovePost, setDateRemovePost] = useState('');
 
 
-    const checkTypeMedia = (file) => {
-        if (file === "video") { setTypeMedia('video') }
-        else if (file === "image") { setTypeMedia('img') }
-        else if (file === "audio") { setTypeMedia('audio') }
-    }
-
     // used if rederect from url post/id_posr/id_event
-    useEffect(() => {       
-        if(id_post){            //load by id post
+    useEffect(() => {
+        if (idPost) {            //load by id post
             setShowProgressLoad(true)
-            get_post(id_post)
+            getPost(id_post)
+        }
+        if (id_event) {
+            get_event(id_event)
+                .then((data) => {
+                    setIdChannel(data.id_channel)
+                    setDatePublishPost(formatDateTime(localDate(data.date_start)))
+                    setIdEvent(data.id_event)
+                    if (data.date_stop) {
+                        setDateRemovePost(formatDateTime(localDate(data.date_stop)))
+                    }
+                })
+        }
+    }, []);
+
+
+    const getPost = (id_post) => {
+        get_post(id_post)
             .then((data) => {
-                if(data.error) {
-                    return setAlertSavePostShow({ show: true, msgInfo: "Пост не найден", severity: "error" })}
+                if (data.error) {
+                    return setAlertSavePostShow({ show: true, msgInfo: "Пост не найден", severity: "error" })
+                }
                 if (Object.keys(data).length !== 0) {
                     if (data.media.length != 0) {
-                        checkTypeMedia(data.media[0].type_media.type_media)
-                        setIdMedia(data.media[0].id_media)
+                        setDataPost(data)
+                        setSelectedFile(data.media)
                         getInfoMediaByID(data.media[0].id_media)
-                        setSelectedFile(`${BASE_URL}media/download/${data.media[0].id_media}`)
-                        setStateMedia('update')
                     }
                     setModeEdit(true)
                     setTextPost(data.text)
                 }
                 setShowProgressLoad(false)
             })
-        }
-        if (id_event) {
-            get_event(id_event)
-            .then((data) => {
-                setIdChannel(data.id_channel) 
-                setDatePublishPost(formatDateTime(localDate(data.date_start)))
-                setIdEvent(data.id_event)
-                if(data.date_stop){
-                    setDateRemovePost(formatDateTime(localDate(data.date_stop)))
-                }
-                setStateMedia('update')
-            })
-        }
-    }, []);
+    }
 
     // create new post
     useEffect(() => {
-        console.log(1111)
-        if(getText){
+        if (startSavePost) {
             if (idPost) {             // update text post
                 updatePost(idPost)
                 return
-            } 
-            createPost()    
-        }   
+            }
+            createPost()
+        }
     }, [textPost]);
 
-    
+
     useEffect(() => {
-        if(!idPost && selectedFile){
-            createPost()                             // if don't have text, but have media. Create new post
+        if (!idPost && selectedFile && startSavePost) {
+            createPost()                                            // Create new post! if don't have text, but have media. 
         }
-        if(idPost && getText){                              //update media
-            console.log("UPDATE MEDIA")      
-            console.log(stateMedia)
-            if(stateMedia === 'delete'){                      //delete media
-                unsetMediaToPost(id_post)
+        if (idPost && startSavePost) {                              //update media
+            console.log("UPDATE MEDIA")
+            const listDeleteMedia = checkDifferencesDelete(dataPost, selectedFile)
+            if (listDeleteMedia) {
+                listDeleteMedia.map((item) => unsetMediaToPost(id_post, item))
             }
-            if(stateMedia === 'new'){
-                unsetMediaToPost(id_post)
-                loadMedia(id_post)
-                console.log("CREATE NEW MEDIA")
-                setAlertSavePostShow({ show: true, msgInfo: "Медиа обновлено", severity: "success" }) 
+            const listUploadMedia = checkDifferencesNew(dataPost, selectedFile)
+            if (listUploadMedia) {
+                listUploadMedia.map((item) => loadMedia(id_post, item))
+
             }
-            if(stateMedia === 'update' && selectedFile){
-                setTags(idMedia) 
-            }
+            // if (stateMedia === 'delete') {                         //delete media
+            //     //unsetMediaToPost(id_post, idMedia)
+            // }
+            // if (stateMedia === 'new') {
+            //     //unsetMediaToPost(id_post, idMedia)
+            //     console.log("CREATE NEW MEDIA")
+            //     loadMedia(id_post)
+            //     setAlertSavePostShow({ show: true, msgInfo: "Медиа обновлено", severity: "success" })
+            // }
+            // if (stateMedia === 'update' && selectedFile) {
+            //     //setTags(idMedia) 
+            // }
         }
-        setLoading(false)   
-    }, [getText]);
+        setLoading(false)
+    }, [startSavePost]);
+
 
     const waitStateUpdate = async (setState, value) => {
         new Promise(resolve => setState(value));
-        }
+    }
 
     // Save new post or update post
     const savePost = async () => {
         setLoading(true)
-        if(getText){
-            await waitStateUpdate(setGetText, false);
+        if (startSavePost) {
+            await waitStateUpdate(setStartSavePost, false);
         }
-        console.log('update')
-        console.log(getText)
-        await waitStateUpdate(setGetText, true);
+        await waitStateUpdate(setStartSavePost, true);
     };
 
-    const createPost = () => { 
+
+    const createPost = () => {
         post_create(textPost)      // create new post 
-        .then(function (data) {
-            if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка сохранения поста", severity: "error" }) }
-            setTextPost(data.text)
-            setIdPost(data.id_post)
-            if (selectedFile) {
-                loadMedia(data.id_post)
-            }else{
-                setModeEdit(true)
-                setLoading(false)
-                setAlertSavePostShow({ show: true, msgInfo: "Пост создан", severity: "success" }) 
-            }
-            navigate(`/post/${data.id_post}`)
-        }) 
+            .then(function (data) {
+                if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка сохранения поста", severity: "error" }) }
+                setTextPost(data.text)
+                setIdPost(data.id_post)
+                setDataPost(data)
+                if (selectedFile) {
+                    console.log(selectedFile)
+                    for (let i = 0; i < selectedFile.length; i++) {
+                        console.log(selectedFile[i])
+                        loadMedia(data.id_post, selectedFile[i].file, selectedFile[i].id_media)
+                    }
+                } else {
+                    setModeEdit(true)
+                    setLoading(false)
+                    setAlertSavePostShow({ show: true, msgInfo: "Пост создан", severity: "success" })
+                }
+                navigate(`/post/${data.id_post}`)
+            })
     }
 
     const updatePost = (id_post) => {
@@ -172,55 +225,58 @@ export default function Post() {
             then((data) => {
                 if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка обновления поста", severity: "error" }) }
                 setTextPost(data.text)
-                setAlertSavePostShow({ show: true, msgInfo: "Текст обновлен", severity: "success" }) 
+                setSelectedFile(data.media)
+                setAlertSavePostShow({ show: true, msgInfo: "Текст обновлен", severity: "success" })
             })
     }
 
 
-    const unsetMediaToPost = (id_post) => {
-        if(idMedia){
-        unset_media_to_post(idMedia, id_post).
+    const unsetMediaToPost = (id_post, id_media) => {
+        console.log("delete media", id_media)
+        if (id_media) {
+            unset_media_to_post(id_media, id_post).
                 then((data) => {
                     if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка удаление медиа", severity: "error" }) }
-                    setIdMedia('')
+                    setAlertSavePostShow({ show: true, msgInfo: "Медиа удалено", severity: "success" })
                 })
-            }
+        }
     }
 
-    // control select file or delete or update media file 
-    useEffect(() => {
-        if(typeof selectedFile === 'string'){
-            setStateMedia('update')
-            return  
-        }
-        if(selectedFile === null){
-            setStateMedia('delete')
-        }
-        
-        if(selectedFile){
-            setStateMedia('new')
-        }  
 
-    }, [selectedFile]);
+    function updateStateIdFile(new_id, old_id) {
+        const updatedStateFile = selectedFile.map((item) => {
+            if (item.id_media === old_id) {
+                return {
+                    ...item,
+                    id_media: new_id
+                };
+            }
+            return item;
+        });
+        console.log(updatedStateFile)
+        setSelectedFile(updatedStateFile);
+    }
 
 
     // load new media
-    const loadMedia = (id_post) => {
-        post_media(selectedFile).
-            then(function (data) {
+    const loadMedia = (id_post, file, id_media) => {
+        console.log("id_post", id_post)
+        console.log("file", file)
+        post_media(file).
+            then((data) => {
                 if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка сохранения медиа", severity: "error" }) }
-                setIdMedia(data.id_media)
                 setMediaPost(data.id_media, id_post)
-                console.log("UPDATE NEW MEDIA!!!")
+                //updateStateIdFile(data.id_media, id_media)
                 setModeEdit(true)
-                setLoading(false)
-                setAlertSavePostShow({ show: true, msgInfo: "Пост обновлен", severity: "success" }) 
-                setStateMedia('update')
+                setAlertSavePostShow({ show: true, msgInfo: "Медиа обновлено", severity: "success" })
             })
+        setLoading(false)
     }
 
+    console.log(selectedFile)
 
     const setMediaPost = (id_media, id_post) => {
+        console.log("id_media", id_media)
         set_media_to_post(id_media, id_post)
             .then((data) => {
                 if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка сохранения медиа", severity: "error" }) }
@@ -235,7 +291,7 @@ export default function Post() {
         let difference = listGetTags.filter(x => !selectedTag.includes(x))
         set_tags_to_media(id_media, selectedTag).
             then((data) => {
-                if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка сохранения медиа", severity: "error" }) }
+                if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка сохранения тег", severity: "error" }) }
             })
         if (difference) {
             unset_tags_to_media(id_media, difference).
@@ -254,7 +310,7 @@ export default function Post() {
         let listTags = []
         get_media_by_id(id_media).
             then((data) => {
-                if (data.error) return setAlertSavePostShow({ show: true, msgInfo: "Ошибка получения тегов", severity: "error" }) 
+                if (data.error) return setAlertSavePostShow({ show: true, msgInfo: "Ошибка получения тегов", severity: "error" })
                 for (const element of data.tags) {
                     listTags.push(element.id_tag)
                 }
@@ -268,7 +324,7 @@ export default function Post() {
     const deletePost = () => {
         delete_post(idPost).
             then((data) => {
-                if (data.error) return setAlertSavePostShow({ show: true, msgInfo: "Ошибка удаление поста", severity: "error" }) 
+                if (data.error) return setAlertSavePostShow({ show: true, msgInfo: "Ошибка удаление поста", severity: "error" })
                 newPost()
             })
     }
@@ -278,67 +334,68 @@ export default function Post() {
     const newPost = () => {
         setIdPost('')
         setModeEdit(false)
-        setSelectedFile(null)
-        setTextPost('')
-        navigate(`/post/`)
+        setSelectedFile([])
+        setDataPost(null)
+        navigate(`/post`)
     }
 
 
     const renderVideo = useMemo(() => (
-        <FileInput selectedFile={selectedFile} setSelectedFile={setSelectedFile} typeMedia={typeMedia}/>
+        <FileInput selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
     ), [selectedFile])
 
-return (
-    <Box sx={{ border: 1, borderColor: '#DCDCDC', borderRadius: 2 }}>
-    {showProgressLoad ? <ProgressLoad /> : 
-        <Grid container >
-            <Grid xs={12}>
-                {modeEdit ? <NewPost newPost={newPost}/> : <Typography variant="h5" gutterBottom >Содать пост</Typography>} 
-            </Grid>
-            <Grid xs={12} md={6} >
-                {renderVideo}
-            </Grid>
-            <Grid xs={12} md={6} >
-                <Box sx={{ border: "solid", borderColor: "LightGray", borderWidth: 1, borderRadius: 2 }}>
-                    <SelectChannel setIdChannel={setIdChannel} channel={idChannel} />
-                    <SelectTags selectedTag={selectedTag} setSelectedTag={setSelectedTag} idChannel={idChannel} />
-                </Box>
-            </Grid>
-            <Grid xs={12} md={6}>
-            <EditorText getText={getText} setGetText={setGetText} textPost={textPost} setTextPost={setTextPost}/>
-                <AlertInfo showAlert={alertSavePostShow.show} setAlertShow={setAlertSavePostShow} severity={alertSavePostShow.severity} value={alertSavePostShow.msgInfo} />
-                <LoadingButton
-                    onClick={savePost}
-                    loading={loading}
-                    loadingPosition="start"
-                    startIcon={<SaveIcon />}
-                    variant="contained"
-                    sx={{ margin: 1, width: "150px" }}
-                >
-                    <span>Сохранить</span>
-                </LoadingButton>
-                {modeEdit && <Button variant="contained"
+    return (
+        <Box sx={{ border: 1, borderColor: '#DCDCDC', borderRadius: 2 }}>
+            {showProgressLoad ? <ProgressLoad /> :
+                <Grid container >
+                    <Grid xs={12}>
+                        {modeEdit ? <NewPost newPost={newPost} /> : <Typography variant="h5" gutterBottom >Содать пост</Typography>}
+                    </Grid>
+                    <Grid xs={12} md={6} >
+                        {renderVideo}
+                    </Grid>
+                    <Grid xs={12} md={6} >
+                        <Box sx={{ border: "solid", borderColor: "LightGray", borderWidth: 1, borderRadius: 2 }}>
+                            <SelectChannel setIdChannel={setIdChannel} channel={idChannel} />
+                            <SelectTags selectedTag={selectedTag} setSelectedTag={setSelectedTag} idChannel={idChannel} />
+                        </Box>
+                    </Grid>
+                    <Grid xs={12} md={6}>
+                        <EditorText startSavePost={startSavePost} setStartSavePost={setStartSavePost} textPost={textPost} setTextPost={setTextPost} />
+                        <AlertInfo showAlert={alertSavePostShow.show} setAlertShow={setAlertSavePostShow} severity={alertSavePostShow.severity} value={alertSavePostShow.msgInfo} />
+                        <LoadingButton
+                            onClick={savePost}
+                            loading={loading}
+                            loadingPosition="start"
+                            startIcon={<SaveIcon />}
+                            variant="contained"
+                            sx={{ margin: 1, width: "150px" }}
+                        >
+                            <span>Сохранить</span>
+                        </LoadingButton>
+                        {modeEdit && <Button variant="contained"
                             sx={{ margin: 1, width: "100px" }}
                             onClick={deletePost} >Удалить</Button>}
-            </Grid>
-            <Grid xs={12} md={6} >
-                {modeEdit && <BlockTimePublish idPost={idPost} idChannel={idChannel} 
-                savePost={savePost} datePublishPost={datePublishPost} setDatePublishPost={setDatePublishPost}
-                dateRemovePost={dateRemovePost} setDateRemovePost={setDateRemovePost} idEvent={idEvent} setIdEvent={setIdEvent}/>}
-            </Grid>
-        </Grid>
-    }
-    </Box>
-)}
-//<PostTextInput textPost={textPost} setTextPost={setTextPost}  editorStateText={editorStateText} setEditorStateText={setEditorStateText} />
+                    </Grid>
+                    <Grid xs={12} md={6} >
+                        {modeEdit && <BlockTimePublish idPost={idPost} idChannel={idChannel}
+                            savePost={savePost} datePublishPost={datePublishPost} setDatePublishPost={setDatePublishPost}
+                            dateRemovePost={dateRemovePost} setDateRemovePost={setDateRemovePost} idEvent={idEvent} setIdEvent={setIdEvent} />}
+                    </Grid>
+                </Grid>
+            }
+        </Box>
+    )
+}
 
-const NewPost = ({newPost}) => {
-    return(
+
+const NewPost = ({ newPost }) => {
+    return (
         <Stack direction='row' >
             <Typography variant="h6" gutterBottom >Содать новый пост:</Typography>
             <Button variant="contained"
-                            sx={{ margin: 1, width: "100px" }}
-                            onClick={newPost} >Новый</Button>
+                sx={{ margin: 1, width: "100px" }}
+                onClick={newPost} >Новый</Button>
         </Stack>
     )
 }

@@ -27,7 +27,6 @@ export default function SelectChannel(props) {
         }
     }, [props.channel])
 
-    console.log(props.channel)
     return (
         <Box sx={{ minWidth: 120 }}>
             <FormControl sx={{ marginBottom: 2}} fullWidth>

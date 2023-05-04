@@ -31,6 +31,7 @@ const FileInput = ({ setSelectedFile, selectedFile, typeMedia}) => {
         if (typeof selectedFile === 'string') {
             return selectedFile
         }
+        console.log(selectedFile)
         return URL.createObjectURL(selectedFile)
     }
 
