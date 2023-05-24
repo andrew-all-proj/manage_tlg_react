@@ -133,18 +133,6 @@ export default function Post() {
     }
 
 
-    // create new post
-    useEffect(() => {
-        if (startSavePost) {
-            if (idPost) {             // update text post
-                updatePost(idPost)
-                return
-            }
-            createPost()
-        }
-    }, [textPost]);
-
-
     useEffect(() => {
         if (idPost && startSavePost) {                                                 //update media
             const listDeleteMedia = checkDifferencesDelete(dataPost, selectedFile)
@@ -154,7 +142,7 @@ export default function Post() {
             const listUploadMedia = checkDifferencesNew(dataPost, selectedFile)
             if (listUploadMedia) {
                 listUploadMedia.map((item) => loadMedia(id_post, item))
-            }                                                          
+            }
         }
         setLoading(false)
     }, [dataPost]);
@@ -174,26 +162,42 @@ export default function Post() {
         setLoading(true);
     };
 
+    // update post
+    useEffect(() => {
+        console.log(startSavePost)
+        if (startSavePost) {
+            console.log("create post1")
+            if(textPost){
+                createPost(textPost);
+            }else{
+                createPost('');
+            }
+            
+        }
+        if (textPost && idPost && startSavePost) {             // update text post
+            updatePost(idPost)
+            return
+        }
+    }, [textPost]);
+
 
     useEffect(() => {
-        if (!idPost && selectedFile && startSavePost) {
-            createPost()                                            // Create new post! if don't have text, but have media. 
-        }
-        if(startSavePost && idPost){                               // start update post 
+        console.log(textPost)
+        if (startSavePost && idPost) {                               // start update post 
             get_post(idPost)                                       // get state post in server
-            .then((data) => {
-                if (data.error) {
-                    return setAlertSavePostShow({ show: true, msgInfo: "Пост не найден", severity: "error" })
-                }
-                setDataPost(data)
-            })
+                .then((data) => {
+                    if (data.error) {
+                        return setAlertSavePostShow({ show: true, msgInfo: "Пост не найден", severity: "error" })
+                    }
+                    setDataPost(data)
+                })
         }
     }, [startSavePost]);
 
 
-    const createPost = () => {
+    const createPost = async (text_post) => {
         setLoading(true)
-        post_create(textPost)                   // create new post 
+        post_create(text_post)                   // create new post 
             .then(async function (data) {
                 if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка сохранения поста", severity: "error" }) }
                 setTextPost(data.text)
@@ -204,11 +208,13 @@ export default function Post() {
                 } else {
                     setModeEdit(true)
                     setLoading(false)
-                    setStartSavePost(false)
                     setAlertSavePostShow({ show: true, msgInfo: "Пост создан", severity: "success" })
                 }
                 setIdPost(data.id_post)
                 navigate(`/post/${data.id_post}`)
+            }).then(() => {
+                setStartSavePost(false)
+                setLoading(false)
             })
     }
 
@@ -252,7 +258,7 @@ export default function Post() {
     }
 
     useEffect(() => {
-        if(newIdMedia){
+        if (newIdMedia) {
             updateIdMedia(newIdMedia[0], newIdMedia[1])
         }
     }, [newIdMedia]);
@@ -261,7 +267,6 @@ export default function Post() {
     // load new media
     const loadMedia = async (id_post, file, id_media) => {
         setLoading(true)
-        console.log(id_media)
         await post_media(file).
             then((data) => {
                 if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка сохранения медиа", severity: "error" }) }

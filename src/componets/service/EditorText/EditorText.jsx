@@ -83,7 +83,7 @@ const Toolbar = ({ startSavePost, setStartSavePost, textPost, setTextPost }) => 
         html = html.replace(/<\/?span[^>]*>/gi, "");   // Удаляем теги <span> и </span>
         html = html.replace(/<\/?strong[^>]*>/gi, ""); // Удаляем теги <strong> и </strong>
         html = html.replace(/<\/?em[^>]*>/gi, "");     // Удаляем теги <em> и </em>
-        html = html.replace(/<\/?br[^>]*>/gi, "");     // Удаляем теги <br> и </br>
+        html = html.replace(/<\/?br>/gi, "");     // Удаляем теги <br> и </br>
         html = html.replace(/\s*rel="noopener"/gi, "");// Удаляем rel="noopener"
         html = html.replace(/\s*class="editor-link"/gi, "");// Удаляем class="editor-link"
 
@@ -115,7 +115,9 @@ const Toolbar = ({ startSavePost, setStartSavePost, textPost, setTextPost }) => 
                 console.log('htmlString', htmlString);
                 //setTextPost(removeTags(htmlString))
                 console.log(removeTags(htmlString));
-                setTextPost(removeTags(htmlString))
+                let str = removeTags(htmlString)
+                if(str === '') {str = null}
+                setTextPost(str)
             });
         }
     }, [startSavePost]);
