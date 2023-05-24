@@ -10,6 +10,7 @@ const RequireAuth = ({children}) => {
     const dispatch = useDispatch() 
     const mobileMode = useSelector(state => state.mobileMode)
 
+    // если мобильный режим => скрывает при каждом переходе меню
     useEffect(() => {
         if (mobileMode.mobileMode && mobileMode.showNavBar){
             dispatch(setShowNavBar({showNavBar: false}))

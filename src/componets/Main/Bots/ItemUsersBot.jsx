@@ -9,7 +9,6 @@ import Divider from '@mui/material/Divider';
 import { padding } from '@mui/system';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { addTodo, removeTodo } from '../../../store/todoSlice';
 import { get_list_tags, add_tag, remove_tag, update_tag } from '../../../api/tags'
 import { useState, useEffect } from "react";
 import SelectChannel from '../../service/SelectChannel'

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useLocation, Navigate } from 'react-router-dom'
 
-export const BASE_URL = "http://127.0.0.1:5000/api/v1/" // http://127.0.0.1:5000/api/v1/ https://www.managetlg.com/api/v1/
+export const BASE_URL = "https://www.managetlg.com/api/v1/" // http://127.0.0.1:5000/api/v1/ https://www.managetlg.com/api/v1/
 
 export const PER_PAGE = 10
 
@@ -16,7 +16,7 @@ export function encodePassword(password) {
     return encodedPassword;
 }
 
-
+// вставляем JWT токен в заголовок (храню в локал стораж) подумать на счет других вариантов
 export const headers = () => {
     let headers = {
         headers: {
@@ -27,13 +27,14 @@ export const headers = () => {
     return headers
 }
 
-
+// при ошибке, отсутвие, просроченом JWT токене делает редерект на страницу login
 export const no_auth_rederect = () => {
     console.log("ERROR AUTH")
     localStorage.setItem('manage_jwt', '')
     window.location = "/login"
 };
 
+// обрабочик ошибок запросов
 export const error_response = (err) => {
     console.log(err)
     if (err.code === 'ERR_NETWORK') {

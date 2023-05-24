@@ -71,7 +71,7 @@ export const get_media_by_id = async (id_media) => {
         });
 }
 
-//media?published=${published}&id_channel=${id_chanel}&last_time_used=${last_time_used} events/channels/${id_channel}?page=${page}&per_page=${per_page}
+
 // GET ALL MEDIA FILTER
 export const get_media = async (page=1, per_page=100, published, id_chanel, limit=100, last_time_used, list_tags) => {
     let str_query = '?'

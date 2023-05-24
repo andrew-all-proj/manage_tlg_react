@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-//REMOVE THIS HOC!!!!!!!!!!
+//REMOVE THIS HOC!!!!!!!!!! USE BEFORE REDUX
 
 export const AuthContext = createContext(null)
 

@@ -194,13 +194,12 @@ export default function Post() {
     const createPost = () => {
         setLoading(true)
         post_create(textPost)                   // create new post 
-            .then(function (data) {
+            .then(async function (data) {
                 if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка сохранения поста", severity: "error" }) }
                 setTextPost(data.text)
                 if (selectedFile) {
                     for (let i = 0; i < selectedFile.length; i++) {
-                        setLoading(true)
-                        loadMedia(data.id_post, selectedFile[i].file, selectedFile[i].id_media)
+                        await loadMedia(data.id_post, selectedFile[i].file, selectedFile[i].id_media)
                     }
                 } else {
                     setModeEdit(true)
@@ -260,8 +259,10 @@ export default function Post() {
 
 
     // load new media
-    const loadMedia = (id_post, file, id_media) => {
-        post_media(file).
+    const loadMedia = async (id_post, file, id_media) => {
+        setLoading(true)
+        console.log(id_media)
+        await post_media(file).
             then((data) => {
                 if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка сохранения медиа", severity: "error" }) }
                 setMediaPost(data.id_media, id_post)

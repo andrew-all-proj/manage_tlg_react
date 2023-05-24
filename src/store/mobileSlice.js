@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-
+// переключение в мобильный вид
 const mobileSlice = createSlice({
     name: 'mobileMode',
     initialState: {

@@ -8,7 +8,6 @@ import { BASE_URL } from "./api";
 import { offsetTimeTOUTC } from "../componets/service/localDateTime"
 
 
-
 // GET LIST EVENTS FOR CHANNEL AND SORT BY FILTER
 export const get_list_events = async (id_channel, page=1, per_page=100, reverse_sort, date_time_start, date_time_stop) => {
     let str_query = '?'

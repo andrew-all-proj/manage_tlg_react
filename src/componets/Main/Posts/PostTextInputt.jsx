@@ -26,7 +26,7 @@ import { Lexical } from 'react-lexical';
 
 const Bold = ({ attributes, children }) => {
     return <strong {...attributes}>{children}</strong>;
-  };
+    };
 
 const MyInput = ({ editorStateText, setEditorStateText }) => {
     const [anchorEl, setAnchorEl] = useState(null);
