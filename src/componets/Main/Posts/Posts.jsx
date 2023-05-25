@@ -29,7 +29,6 @@ import ProgressLoad from "../../service/ProgressLoad"
 
 const checkDifferencesDelete = (dataPost, selectedFile) => {
     let differences = [];
-    console.log(dataPost)
     for (let i = 0; i < dataPost.media.length; i++) {
         let id = dataPost.media[i].id_media;
         let index = selectedFile.findIndex(x => x.id_media === id);
@@ -113,7 +112,6 @@ export default function Post() {
 
 
     const getPost = (id_post) => {
-        console.log("GET POST")
         get_post(id_post)
             .then((data) => {
                 if (data.error) {
@@ -140,7 +138,7 @@ export default function Post() {
                 listDeleteMedia.map((item) => unsetMediaToPost(id_post, item))
             }
             const listUploadMedia = checkDifferencesNew(dataPost, selectedFile)
-            if (listUploadMedia) {
+            if (listUploadMedia.length > 0) {
                 listUploadMedia.map((item) => loadMedia(id_post, item))
             }
         }
@@ -164,9 +162,7 @@ export default function Post() {
 
     // update post
     useEffect(() => {
-        console.log(startSavePost)
-        if (startSavePost) {
-            console.log("create post1")
+        if (!idPost && startSavePost) {
             if(textPost){
                 createPost(textPost);
             }else{
@@ -182,7 +178,6 @@ export default function Post() {
 
 
     useEffect(() => {
-        console.log(textPost)
         if (startSavePost && idPost) {                               // start update post 
             get_post(idPost)                                       // get state post in server
                 .then((data) => {
@@ -232,7 +227,6 @@ export default function Post() {
 
 
     const unsetMediaToPost = (id_post, id_media) => {
-        console.log("delete media", id_media)
         if (id_media) {
             unset_media_to_post(id_media, id_post).
                 then((data) => {
@@ -336,6 +330,7 @@ export default function Post() {
     // NEW POST 
     const newPost = () => {
         setIdPost('')
+        setTextPost('')
         setModeEdit(false)
         setSelectedFile([])
         setDataPost(null)
