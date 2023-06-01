@@ -4,7 +4,7 @@ import Input from '@mui/material/Input';
 import { useEffect } from "react";
 
 
-export const TextChangeDoubleClick = ({label, inputData, setInputData, inputText, setInputText, id='0', getId=()=>{} }) => {
+export const TextChangeDoubleClick = ({label, inputData, setInputData, inputText, setInputText, id=0, getId }) => {
     const [text, setText] = useState('');
 
     useEffect(() => {
