@@ -192,6 +192,10 @@ export default function Post() {
 
     const createPost = async (text_post) => {
         setLoading(true)
+        if (text_post.length > 1020) {
+            text_post = text_post.substring(0, 1020);
+            }
+
         post_create(text_post)                   // create new post 
             .then(async function (data) {
                 if (data.error) { setLoading(false); return setAlertSavePostShow({ show: true, msgInfo: "Ошибка сохранения поста", severity: "error" }) }

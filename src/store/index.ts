@@ -3,9 +3,14 @@ import userReducer from './userSlice'
 import mobileReducer from './mobileSlice'
 
 
-export default configureStore({
+const store = configureStore({
     reducer: {
         user:userReducer,
         mobileMode:mobileReducer
     }
 })
+
+export default store;
+
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch

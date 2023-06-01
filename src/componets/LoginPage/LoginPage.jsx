@@ -22,7 +22,7 @@ import { useDispatch } from 'react-redux';
 import { authUser, logOutUser } from '../../store/userSlice';
 
 
-const LoginPage = () => {
+const LoginPage  = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [email, setEmail] = useState('');

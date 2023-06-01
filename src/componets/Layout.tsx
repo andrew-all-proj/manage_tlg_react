@@ -6,10 +6,10 @@ import Footer from './Footer/Footer'
 import Header from './Heder/Header'
 import Navbar from './Navbar/Navbar'
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../hook_redux';
 
-const Layout = () => {
-    const mobileMode = useSelector(state => state.mobileMode)
+const Layout: React.FC = () => {
+    const mobileMode = useAppSelector(state => state.mobileMode)
 
     return (
         <Container sx={{paddingLeft: '2px', paddingRight: "2px" }} maxWidth='lg' >

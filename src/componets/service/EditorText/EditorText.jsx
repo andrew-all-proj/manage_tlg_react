@@ -59,6 +59,7 @@ export default function LexicalEditor({ startSavePost, setStartSavePost, textPos
                     contentEditable={<ContentEditable className="editor-input" />}
                     placeholder={<Placeholder />}
                     ErrorBoundary={LexicalErrorBoundary}
+
                 />
                 <LinkPlugin />
                 <AutoLinkPlugin />
@@ -110,13 +111,13 @@ const Toolbar = ({ startSavePost, setStartSavePost, textPost, setTextPost }) => 
         if (startSavePost) {
             editor.update(() => {
                 const editorState = editor.getEditorState();
-                const jsonString = JSON.stringify(editorState);
+                //const jsonString = JSON.stringify(editorState);
                 const htmlString = $generateHtmlFromNodes(editor);
                 console.log('htmlString', htmlString);
                 //setTextPost(removeTags(htmlString))
                 console.log(removeTags(htmlString));
                 let str = removeTags(htmlString)
-                if(str === '') {str = null}
+                if (str === '') { str = null }
                 setTextPost(str)
             });
         }
@@ -151,6 +152,13 @@ const Toolbar = ({ startSavePost, setStartSavePost, textPost, setTextPost }) => 
         }
     };
 
+    editor.registerUpdateListener(({ editorState }) => {
+        editorState.read((a) => {
+            const htmlString = removeTags($generateHtmlFromNodes(editor));
+            //console.log(typeof htmlString)
+            //console.log(htmlString.length)
+        });
+    });
 
     return (
         <Box sx={{ border: 1, borderColor: '#DCDCDC', borderRadius: 2 }}>

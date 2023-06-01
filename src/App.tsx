@@ -23,22 +23,22 @@ import Bots from './componets/Main/Bots/Bots';
 import Settings from './componets/Main/Settings/Settings';
 import { useState, useEffect } from "react";
 import { useResize } from "./componets/hook/useResize"
-import { useSelector, useDispatch } from 'react-redux';
 import { setMobile, setShowNavBar } from './store/mobileSlice';
+import { useAppSelector, useAppDispatch } from './hook_redux';
 
 
-
-const App = () => {
-  const dispatch = useDispatch()
+const App: React.FC = () => {
+  const dispatch = useAppDispatch()
   const size = useResize()
 
+  //set mbileMode if change size screen
   useEffect(() => {
     if (!size.isScreenMd) {
-      dispatch(setMobile({ mobileMode: true }))
-      dispatch(setShowNavBar({ showNavBar: false }))
+      dispatch(setMobile(true ))
+      dispatch(setShowNavBar(false))
     } else {
-      dispatch(setMobile({ mobileMode: false }))
-      dispatch(setShowNavBar({ showNavBar: true }))
+      dispatch(setMobile(false))
+      dispatch(setShowNavBar(true))
     }
 
   }, [size.isScreenMd]);
