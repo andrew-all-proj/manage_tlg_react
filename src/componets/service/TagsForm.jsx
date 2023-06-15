@@ -7,7 +7,7 @@ import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import Typography from '@mui/material/Typography';
 import { useResize } from "../hook/useResize";
 import {get_list_tags, set_tags_to_media} from '../../api/tags'
-import {AlertInfo} from './AlertInfo'
+import {AlertInfo} from './serviceComponents/AlertInfo'
 
 export const TagsForm = ({listTags, selectedTag, setSelectedTag}) => {
     const [showTags, setShowTags] = useState(true);

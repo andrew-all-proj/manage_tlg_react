@@ -9,7 +9,7 @@ import { InputDateTime, InputTime } from '../../service/DataTime'
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Stack } from '@mui/system';
-import { AlertInfo } from '../../service/AlertInfo';
+import { AlertInfo } from '../../service/serviceComponents/AlertInfo';
 
 
 import SelectChannel from "../../service/SelectChannel"

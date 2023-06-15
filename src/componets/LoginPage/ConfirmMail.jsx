@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { AlertInfo } from '../service/AlertInfo';
+import { AlertInfo } from '../service/serviceComponents/AlertInfo';
 import { get_jwt, send_email_confirm } from '../../api/api';
 
 

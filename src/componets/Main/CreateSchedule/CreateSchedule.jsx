@@ -11,7 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import SelectTags from '../../service/TagsForm'
 import { get_media } from '../../../api/media'
-import { AlertInfo } from '../../service/AlertInfo';
+import { AlertInfo } from '../../service/serviceComponents/AlertInfo';
 import TextField from '@mui/material/TextField';
 import  FormListNewSchedule from './FormListNewSchedule'
 import { PER_PAGE } from '../../../api/api'

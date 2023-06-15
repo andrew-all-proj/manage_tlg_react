@@ -16,7 +16,7 @@ import { Button } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {SelectFilterSorte} from '../../service/serviceComponents/SelectFilterSorte'
-import { AlertInfo } from '../../service/AlertInfo';
+import { AlertInfo } from '../../service/serviceComponents/AlertInfo';
 
 import NoFile from "../../../assets/images/nofile.jpg"
 

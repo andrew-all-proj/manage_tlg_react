@@ -7,12 +7,20 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { useState } from "react";
 
-const PasswordInput = ({onChange, value, label, id}) => {
+
+type PasswordInputType = {
+    id?: string
+    value: string
+    label: string
+    onChange: (e: { target: {value: React.SetStateAction<string>}}) => void
+}
+
+const PasswordInput: React.FC<PasswordInputType> = ({onChange, value, label, id}) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    const handleMouseDownPassword = (event) => {
+    const handleMouseDownPassword = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
     };
 

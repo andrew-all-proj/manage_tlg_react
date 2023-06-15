@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import { useState, useEffect } from "react";
 import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
 import Pagination from '@mui/material/Pagination';
-import { AlertInfo } from '../../service/AlertInfo';
+import { AlertInfo } from '../../service/serviceComponents/AlertInfo';
 import { post_create } from '../../../api/posts'
 import { set_media_to_post } from '../../../api/media'
 import { post_event} from '../../../api/events'

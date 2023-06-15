@@ -18,7 +18,7 @@ import { post_media, set_media_to_post, get_media_by_id, unset_media_to_post } f
 import { get_post, update_post, delete_post, post_create } from '../../../api/posts'
 import { BASE_URL } from '../../../api/api';
 
-import { AlertInfo } from '../../service/AlertInfo';
+import { AlertInfo } from '../../service/serviceComponents/AlertInfo';
 import SelectChannel from '../../service/SelectChannel'
 import { formatDateTime, localDate } from '../../service/localDateTime'
 import { get_event } from '../../../api/events'

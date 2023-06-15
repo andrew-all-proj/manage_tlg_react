@@ -7,7 +7,7 @@ import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/material/Stack';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Typography from '@mui/material/Typography';
-import { AlertInfo } from '../../service/AlertInfo';
+import { AlertInfo } from '../../service/serviceComponents/AlertInfo';
 import { get_channel_by_id, put_channel_by_id } from '../../../api/channels'
 import { TextChangeDoubleClick } from '../../service/TextChangeDoubleClick'
 import IconButton from '@mui/material/IconButton';

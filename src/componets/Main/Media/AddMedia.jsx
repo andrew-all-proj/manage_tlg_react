@@ -6,7 +6,7 @@ import FotoCard from '../../service/FotoCard';
 import TagsForm from '../../service/TagsForm';
 import Grid, { grid2Classes } from '@mui/material/Unstable_Grid2';
 import SelectTags from '../../service/TagsForm'
-import { AlertInfo } from '../../service/AlertInfo'
+import { AlertInfo } from '../../service/serviceComponents/AlertInfo'
 import FileInput from '../../service/InputFile'
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';

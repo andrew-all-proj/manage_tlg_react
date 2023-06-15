@@ -8,8 +8,8 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import PasswordInput from "../service/PasswordInput"
-import { AlertInfo } from '../service/AlertInfo';
+import PasswordInput from "../service/serviceComponents/PasswordInput"
+import { AlertInfo } from '../service/serviceComponents/AlertInfo';
 import { useState } from "react";
 import { create_new_user } from '../../api/user'
 import { send_email_confirm } from '../../api/api'

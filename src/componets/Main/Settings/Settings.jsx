@@ -10,8 +10,8 @@ import IconButton from '@mui/material/IconButton';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import Stack from '@mui/material/Stack';
 import {get_user_by_id, update_user} from '../../../api/user';
-import PasswordInput from '../../service/PasswordInput';
-import { AlertInfo } from '../../service/AlertInfo';
+import PasswordInput from '../../service/serviceComponents/PasswordInput';
+import { AlertInfo } from '../../service/serviceComponents/AlertInfo';
 import { check_valid_create_user } from '../../service/serviceFunctions/checkImputReg';
 //check_valid_create_user = (username=null, email=null, password=null, repeatPassword=null)
 

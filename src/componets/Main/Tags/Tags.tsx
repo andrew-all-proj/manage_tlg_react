@@ -3,9 +3,11 @@ import Box from '@mui/material/Box';
 import { get_list_tags, add_tag, remove_tag, update_tag, IListTags } from '../../../api/tags'
 import { useState, useEffect } from "react";
 import SelectChannel from '../../service/SelectChannel'
-import { AlertInfo } from '../../service/AlertInfo';
+import { AlertInfo, setAlertShowType } from '../../service/serviceComponents/AlertInfo';
 import { AddItemTag } from './AddItemTag'
 import { TagsBoxItem } from './TagsBoxItem'
+import { AlertColor } from '@mui/material';
+
 
 
 const Tags: React.FC = () => {
@@ -15,7 +17,7 @@ const Tags: React.FC = () => {
   const [tagIdRemove, setTagIdremove] = useState<null | number>(null);
   const [tagIdUpdate, setTagIdUpdate] = useState<null | number>(null);
   const [updateNameTag, setUpdateNameTag] = useState<string>('');
-  const [showAlert, setAlertShow] = useState({ show: false, msgInfo: '', severity: "error" })
+  const [showAlert, setAlertShow] = useState<setAlertShowType>({ show: false, msgInfo: '', severity: "error" })
 
   useEffect(() => {
     //get list tag
@@ -80,7 +82,7 @@ const Tags: React.FC = () => {
       <Box sx={{ maxWidth: "400px", margin: 1 }}>
         <SelectChannel setIdChannel={setIdChannel} channel={idChannel} />
       </Box>
-      <AlertInfo showAlert={showAlert.show} setAlertShow={setAlertShow} severity={showAlert.severity} value={showAlert.msgInfo} />
+      <AlertInfo showAlert={showAlert.show} setAlertShow={setAlertShow} severity={showAlert.severity} value={showAlert.msgInfo || ''} />
       {listTags && <AddItemTag setTextTag={setNameNewTag} />}
       {Array.isArray(listTags) &&
         listTags.map((tag) =>

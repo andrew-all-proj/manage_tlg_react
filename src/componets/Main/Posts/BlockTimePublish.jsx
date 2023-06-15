@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import { useState, useEffect} from "react";
-import { AlertInfo } from '../../service/AlertInfo';
+import { AlertInfo } from '../../service/serviceComponents/AlertInfo';
 import { Card } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import ComponentDateTimePicker from '../../service/DataTime';
